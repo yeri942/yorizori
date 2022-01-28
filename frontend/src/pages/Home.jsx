@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "../states";
 import { useUserActions } from "../actions";
-const HomeBlock = styled.div``;
+import BottomNav from "../Components/nav/BottomNav";
+import TopNav_main from "../Components/nav/TopNav_main";
+const HomeBlock = styled.div`
+  position: relative;
+  height: 100vh;
+`;
 
 const Home = () => {
   console.log("랜더링");
@@ -25,13 +30,17 @@ const Home = () => {
 
   return (
     <HomeBlock>
+      <TopNav_main></TopNav_main>
       <Link to="/login">
         <button>login</button>
       </Link>
       {state.isLogin && <button onClick={userActions.logout}>logout</button>}
+
       <Link to="/view_all">
         <button>전체글 보기</button>
       </Link>
+
+      <BottomNav></BottomNav>
     </HomeBlock>
   );
 };
