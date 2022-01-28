@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import Headers from '../Components/auth/Header';
-import LoginForm from '../Components/auth/LoginForm';
+import React from "react";
+import styled from "styled-components";
+import Headers from "../Components/auth/Header";
+import LoginForm from "../Components/auth/LoginForm";
 
 const LoginPageBlock = styled.div`
   font-size: 18px;
