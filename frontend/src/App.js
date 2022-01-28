@@ -2,11 +2,13 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PostPage from "./pages/PostPage";
+import MyPage from "./pages/MyPage";
+import ViewAllPage from "./pages/ViewAllPage";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Home from "./pages/Home";
-import ViewAllPage from "./pages/ViewAllPage";
+
 function App() {
   return (
     <RecoilRoot>
@@ -16,6 +18,8 @@ function App() {
         <Route element={<RegisterPage />} path="/register" />
         <Route element={<PostPage />} path="/post" />
         <Route element={<ViewAllPage />} path="/view_all" />
+
+        <Route element={<MyPage />} path="/users/mypage" />
       </Routes>
     </RecoilRoot>
   );

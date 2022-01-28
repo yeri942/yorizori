@@ -15,7 +15,7 @@ const BottomNavBlock = styled.div`
 const IconImg = styled.div`
   width: 12.5vh;
 
-  background-image: url(./images/BottomIcon.png);
+  background-image: url(../images/BottomIcon.png);
   ${(props) =>
     props.write &&
     css`
