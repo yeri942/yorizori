@@ -2,6 +2,7 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PostPage from './pages/PostPage';
+import MyPage from "./pages/MyPage";
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
@@ -15,7 +16,7 @@ function App() {
         <Route element={<RegisterPage />} path="/register" />
         <Route element={<PostPage />} path="/post" />
 
-        <Route element={<PostPage />} path="/users/mypage"/>
+        <Route element={<MyPage />} path="/users/mypage"/>
 
       </Routes>
     </RecoilRoot>
