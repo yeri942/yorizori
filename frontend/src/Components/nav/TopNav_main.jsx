@@ -1,17 +1,36 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const TopNav_mainBlock = styled.div`
-  height: 80px;
-  width: 100vh;
-  position: absolute;
-  top: 0;
-  background-color: red;
-  height: 80px;
-`;
+const TopNavMainBox = styled.div`
+  width: 100%;
+  height: 70px;
+  padding: 5px;
+  border-bottom: 5px solid rgba(255,210,136, .46);
+`
 
-const TopNav_main = () => {
-  return <TopNav_mainBlock></TopNav_mainBlock>;
+const TopNavMainLogo = styled.img`
+  width: 54px;
+  left: 12px;
+  top: 3%;
+`
+const TopNavMainInput = styled.input`
+  position: relative;
+  bottom: 10px;
+  border: none;
+  border-bottom: solid 1px;
+  
+`
+
+const TopNavMain = () => {
+  return (
+    <TopNavMainBox>
+      <Link to="/">
+          <TopNavMainLogo src="../images/onlylogo.png" alt="arrow.png"></TopNavMainLogo>
+      </Link>
+      <TopNavMainInput></TopNavMainInput>
+    </TopNavMainBox>
+  )
 };
 
-export default TopNav_main;
+export default TopNavMain;

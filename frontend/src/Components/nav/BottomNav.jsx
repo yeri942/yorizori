@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 
 const BottomNavBlock = styled.div`
   height: 80px;
-  width: 100vh;
+  width: 100%;
   position: absolute;
   bottom: 0;
   display: flex;
