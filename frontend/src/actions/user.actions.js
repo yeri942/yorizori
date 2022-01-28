@@ -1,5 +1,5 @@
 import { useSetRecoilState } from 'recoil';
-import { authAtom, usersAtom } from '../state';
+import { authAtom, usersAtom } from '../states';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import React, { useState } from 'react';

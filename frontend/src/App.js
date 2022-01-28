@@ -14,6 +14,9 @@ function App() {
         <Route element={<LoginPage />} path="/login" />
         <Route element={<RegisterPage />} path="/register" />
         <Route element={<PostPage />} path="/post" />
+
+        <Route element={<PostPage />} path="/users/mypage"/>
+
       </Routes>
     </RecoilRoot>
   );
