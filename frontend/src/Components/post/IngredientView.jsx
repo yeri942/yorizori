@@ -5,6 +5,14 @@ const IngredientViewBlock = styled.div``;
 
 const ContentTextWrapper = styled.div`
   display: flex;
+  position: relative;
+`;
+
+const DeleteBtn = styled.div`
+  color: #7777;
+  right: 20px;
+  top: 20px;
+  position: absolute;
 `;
 
 const ContentText = styled.textarea`
@@ -46,14 +54,26 @@ const ContentText = styled.textarea`
     `}
 `;
 
-const IngredientView = ({ ingredientList }) => {
+const IngredientView = ({ ingredientList, onRemove }) => {
   return (
     <div>
       {ingredientList.map((item, index) => {
         return (
-          <ContentTextWrapper>
-            <ContentText half placeholder="예) 소고기"></ContentText>
-            <ContentText half placeholder="예) 300g"></ContentText>
+          <ContentTextWrapper key={`wrapper_${index}`}>
+            <ContentText key={`ingredient_${index}`} half placeholder="예) 소고기"></ContentText>
+            <ContentText
+              key={`ingredient_weight_${index}`}
+              half
+              placeholder="예) 300g"
+            ></ContentText>
+            <DeleteBtn
+              onClick={(event) => {
+                onRemove(index);
+              }}
+              type="button"
+            >
+              x
+            </DeleteBtn>
           </ContentTextWrapper>
         );
       })}

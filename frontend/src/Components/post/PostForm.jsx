@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { Dropdown, Selection } from "react-dropdown-now";
+import IngredientView from "./IngredientView";
 
 const PostFormBlock = styled.div`
   display: flex;
@@ -175,10 +176,27 @@ const DropdownWrapper = styled.div`
 `;
 
 const PostForm = () => {
-  const [ingredientList, setIngredientList] = useState([1]);
+  const [ingredientList, setIngredientList] = useState([0]);
+  const [count, setCount] = useState(1);
 
   const addIngredient = () => {
     console.log("test");
+    setIngredientList((current) => {
+      const newList = [...current];
+      setCount((el) => el + 1);
+      newList.push(count);
+      return newList;
+    });
+  };
+
+  const onRemove = (index) => {
+    setIngredientList((current) => {
+      const newList = [...current];
+      console.log(newList);
+      newList.splice(index, 1);
+      console.log(index);
+      return newList;
+    });
   };
 
   return (
@@ -285,6 +303,8 @@ const PostForm = () => {
       <TitleBox>
         <p>재료</p>
       </TitleBox>
+      <IngredientView ingredientList={ingredientList} onRemove={onRemove} />
+      <AddCookOrder onClick={addIngredient}>재료추가</AddCookOrder>
       <TitleBox>
         <p>양념</p>
       </TitleBox>
@@ -292,7 +312,7 @@ const PostForm = () => {
         <ContentText half placeholder="예) 소고기"></ContentText>
         <ContentText half placeholder="예) 300g"></ContentText>
       </ContentTextWrapper>
-      <AddCookOrder onClick={addIngredient}>재료추가</AddCookOrder>
+
       <TitleBox>
         <p>요리순서</p>
       </TitleBox>
