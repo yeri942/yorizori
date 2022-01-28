@@ -81,7 +81,6 @@ const DropdownWrapper = styled.div`
 `;
 
 const PostForm = () => {
-  const sizes = ["X-Small", "Small", "Medium", "Large", "X-Large", "2X-Large"];
   return (
     <PostFormBlock>
       <TitleBox>

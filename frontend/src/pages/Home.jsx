@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import { authAtom } from "../states";
 import { useUserActions } from "../actions";
 import BottomNav from "../Components/nav/BottomNav";
+import TopNav_main from "../Components/nav/TopNav_main";
 const HomeBlock = styled.div`
   position: relative;
   height: 100vh;
@@ -29,6 +30,7 @@ const Home = () => {
 
   return (
     <HomeBlock>
+      <TopNav_main></TopNav_main>
       <Link to="/login">
         <button>login</button>
       </Link>
