@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import {
-  StyledButton,
-  StyledInput,
-  ErrorText,
-  StyledDiv,
-  CenterLink,
-  StyledHr,
-} from './AuthStyle';
-import { useUserActions } from '../../actions';
-import { useRecoilValue } from 'recoil';
-import { authAtom } from '../../state';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { StyledButton, StyledInput, ErrorText, StyledDiv, CenterLink, StyledHr } from "./AuthStyle";
+import { useUserActions } from "../../actions";
+import { useRecoilValue } from "recoil";
+import { authAtom } from "../../states";
 
 const LoginFormBlock = styled.form`
   display: flex;
@@ -38,25 +31,22 @@ const LoginForm = () => {
   };
 
   // 렌더링 횟수 및 에러확인
-  console.log('랜더링');
+  console.log("랜더링");
   console.log(errors);
 
   return (
     <LoginFormBlock onSubmit={handleSubmit(onSubmit)}>
-      <StyledInput
-        placeholder="아이디"
-        {...register('email', { required: true })}
-      />
-      {errors.email?.type === 'required' && (
+      <StyledInput placeholder="아이디" {...register("email", { required: true })} />
+      {errors.email?.type === "required" && (
         <ErrorText loginError>아이디를 입력해주세요.</ErrorText>
       )}
 
       <StyledInput
         type="password"
         placeholder="비밀번호"
-        {...register('password', { required: true })}
+        {...register("password", { required: true })}
       />
-      {errors.password?.type === 'required' && (
+      {errors.password?.type === "required" && (
         <ErrorText loginError>비밀번호를 입력해주세요.</ErrorText>
       )}
 
