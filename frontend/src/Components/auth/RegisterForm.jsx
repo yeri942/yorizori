@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
-import { useUserActions } from '../../actions';
+import React, { useState, useRef } from "react";
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useUserActions } from "../../actions";
 import {
   StyledButton,
   StyledInput,
@@ -12,7 +12,7 @@ import {
   StyledDiv,
   DivWrapper,
   StyledHr,
-} from './AuthStyle';
+} from "./AuthStyle";
 
 const RegisterFormBlock = styled.form`
   display: flex;
@@ -41,11 +41,11 @@ const RegisterForm = () => {
     return userActions.register(email, password);
   };
   // 렌더링 횟수 및 에러확인
-  console.log('랜더링');
+  console.log("랜더링");
   console.log(errors);
 
   const password = useRef({});
-  password.current = watch('password', '');
+  password.current = watch("password", "");
 
   return (
     <RegisterFormBlock onSubmit={handleSubmit(onSubmit)}>
@@ -53,24 +53,20 @@ const RegisterForm = () => {
       <StyledInput
         placeholder="elice@naver.com"
         id="email"
-        {...register('email', {
+        {...register("email", {
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            errors: '이메일 형식에 맞게 입력해주세요',
+            errors: "이메일 형식에 맞게 입력해주세요",
           },
           required: true,
         })}
       />
-      {errors.email?.type === 'pattern' && (
-        <ErrorText>이메일 형식이 올바르지 않습니다.</ErrorText>
-      )}
-      {errors.email?.type === 'required' && (
-        <ErrorText>이메일을 입력해주세요.</ErrorText>
-      )}
+      {errors.email?.type === "pattern" && <ErrorText>이메일 형식이 올바르지 않습니다.</ErrorText>}
+      {errors.email?.type === "required" && <ErrorText>이메일을 입력해주세요.</ErrorText>}
 
       <InputLabel htmlFor="name">닉네임</InputLabel>
       <StyledInput
-        {...register('name', {
+        {...register("name", {
           minLength: 2,
           required: true,
         })}
@@ -78,16 +74,14 @@ const RegisterForm = () => {
         type="text"
         id="name"
       />
-      {errors.name?.type === 'required' && (
-        <ErrorText>닉네임을 입력해주세요.</ErrorText>
-      )}
-      {errors.name?.type === 'minLength' && (
+      {errors.name?.type === "required" && <ErrorText>닉네임을 입력해주세요.</ErrorText>}
+      {errors.name?.type === "minLength" && (
         <ErrorText>닉네임은 최소 2글자 이상 입력해주세요.</ErrorText>
       )}
 
       <InputLabel htmlFor="password">비밀번호</InputLabel>
       <StyledInput
-        {...register('password', {
+        {...register("password", {
           minLength: 8,
           required: true,
         })}
@@ -95,27 +89,24 @@ const RegisterForm = () => {
         id="password"
         type="password"
       />
-      {errors.password?.type === 'required' && (
-        <ErrorText>비밀번호를 입력해주세요.</ErrorText>
-      )}
-      {errors.password?.type === 'minLength' && (
+      {errors.password?.type === "required" && <ErrorText>비밀번호를 입력해주세요.</ErrorText>}
+      {errors.password?.type === "minLength" && (
         <ErrorText>비밀번호는 최소 8글자 이상 입력해주세요.</ErrorText>
       )}
 
       <InputLabel htmlFor="passwordCheck">비밀번호 확인</InputLabel>
       <StyledInput
-        {...register('passwordCheck', {
+        {...register("passwordCheck", {
           required: true,
-          validate: (value) =>
-            value === password.current || '비밀번호가 일치하지 않습니다.',
+          validate: (value) => value === password.current || "비밀번호가 일치하지 않습니다.",
         })}
         type="password"
         placeholder="********"
       />
-      {errors.passwordCheck?.type === 'required' && (
+      {errors.passwordCheck?.type === "required" && (
         <ErrorText>비밀번호 확인을 입력해주세요.</ErrorText>
       )}
-      {errors.passwordCheck?.type === 'validate' && (
+      {errors.passwordCheck?.type === "validate" && (
         <ErrorText>비밀번호가 일치하지 않습니다.</ErrorText>
       )}
 
@@ -126,7 +117,7 @@ const RegisterForm = () => {
         <StyledHr />
       </DivWrapper>
 
-      <KakaoImg src="kakao.png" />
+      <KakaoImg src="./images/kakao.png" />
     </RegisterFormBlock>
   );
 };

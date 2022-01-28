@@ -23,10 +23,10 @@ const AuthTemplate = () => {
   return (
     <AuthTemplateBlock>
       <Link to="/">
-        <ArrowImageBox src="arrow.png" alt="arrow.png"></ArrowImageBox>
+        <ArrowImageBox src="./images/arrow.png" alt="arrow.png"></ArrowImageBox>
       </Link>
       <Link to="/">
-        <LogoImageBox src="logo.png" alt="logo.png"></LogoImageBox>
+        <LogoImageBox src="./images/logo.png" alt="logo.png"></LogoImageBox>
       </Link>
     </AuthTemplateBlock>
   );
