@@ -69,7 +69,7 @@
 
 ## 5. 프로젝트 구성도
 
-![dddd](/uploads/264c7b21d1dbb248552a82d5e07ef54f/dddd.PNG)
+![dddd](https://kdt-gitlab.elice.io/YeriKim/produce-myself/uploads/06a29bcccf9b8ac837bc9a6c192a02e5/dddd.PNG)
 
 
 [클릭](https://www.figma.com/file/lk1GcrIT58iIcYYk2KBpzn/%EC%97%98%EB%A6%AC%EC%8A%A4-Team9?node-id=0%3A1) 하시면 Figma사이트에서 확인 가능합니다.
