@@ -174,22 +174,21 @@ const PostForm = () => {
       <TitleBox>
         <p>재료</p>
       </TitleBox>
-      <RecoilRoot>
-        <IngredientList />
-        <AddIngredinet />
-      </RecoilRoot>
+      <IngredientList />
+      <AddIngredinet />
+
       <TitleBox>
         <p>양념</p>
       </TitleBox>
-      <RecoilRoot>
-        <SourceList />
-        <AddSource />
-      </RecoilRoot>
+      <SourceList />
+      <AddSource />
+
       <TitleBox>
         <p>요리순서</p>
       </TitleBox>
       <CookOrderList />
       <AddOrder />
+
       <TitleBox>
         <p>완성사진</p>
       </TitleBox>

@@ -13,6 +13,7 @@ export const DeleteBtn = styled.div`
 `;
 
 export const ContentText = styled.textarea`
+  resize: none;
   font-size: 0.77rem;
   width: 100vw;
   height: 112px;
@@ -41,13 +42,15 @@ export const ContentText = styled.textarea`
     props.half &&
     css`
       height: 61px;
-      padding: 20px 14px 40px 14px;
+      /* padding: 20px 14px 40px 14px; */
+      padding: 0px 14px;
       font-size: 1rem;
       border-bottom: 1px solid #1111;
       ::-webkit-scrollbar {
         display: none;
         width: 0 !important;
       }
+      padding-top: 20px;
     `}
 `;
 
@@ -188,4 +191,80 @@ export const DropdownWrapper = styled.div`
         border: 0.1px solid #1111;
       }
     `}
+`;
+
+export const CookOrderWrappr = styled.div`
+  display: flex;
+  :focus {
+    outline: none;
+  }
+  align-items: center;
+  height: 100px;
+  border-bottom: 1px solid #1111;
+  padding-left: 12px;
+  position: relative;
+`;
+export const TimeContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  box-sizing: border-box;
+  margin-left: 10px;
+`;
+export const TimeSetDiv = styled.input`
+  border: none;
+  padding-left: 14px;
+`;
+
+export const OrderText = styled.textarea`
+  font-size: 1rem;
+  width: 180px;
+  height: 65px;
+  padding: 15px 14px 0px 14px;
+  border: none;
+  box-sizing: border-box;
+  background-color: white;
+  resize: none;
+  :focus {
+    outline: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+  }
+`;
+
+export const ImgBoxSmall = styled.div`
+  width: 76px;
+  height: 76px;
+  position: relative;
+  background-color: #1111;
+  ::before {
+    content: "+";
+    position: absolute;
+    left: 27px;
+    top: 14px;
+    color: #9999;
+    font-size: 2.5rem;
+  }
+`;
+
+export const OrderNum = styled.div`
+  color: white;
+  width: 10px;
+  padding: 0px 5px;
+  background-color: #feae11;
+  border-radius: 110px;
+  height: 20px;
+`;
+
+export const TimeSetBtn = styled.button`
+  border-style: none;
+  background-color: rgba(254, 174, 17, 0.3);
+  border-radius: 8px;
+  width: 105px;
+  margin: 0px 0px 0px 10px;
+  height: 24px;
+  font-size: 0.7rem;
+  font-weight: 600;
 `;

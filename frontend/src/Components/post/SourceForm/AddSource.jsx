@@ -18,7 +18,7 @@ const AddSource = () => {
       return newList;
     });
   };
-  return <AddCookOrder onClick={addItem}>재료추가</AddCookOrder>;
+  return <AddCookOrder onClick={addItem}>양념 추가</AddCookOrder>;
 };
 
 export default AddSource;

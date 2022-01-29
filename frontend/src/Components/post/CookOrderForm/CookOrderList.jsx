@@ -2,7 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { CookOrderState } from "./_Atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { ContentTextWrapper, DeleteBtn, ContentText, ImgBox } from "../PostStyle";
+import {
+  CookOrderWrappr,
+  DeleteBtn,
+  OrderNum,
+  TimeContentWrapper,
+  OrderText,
+  TimeSetBtn,
+  ImgBoxSmall,
+} from "../PostStyle";
 const CookOrderList = () => {
   const CookOrderList = useRecoilValue(CookOrderState);
   const setCookOrderList = useSetRecoilState(CookOrderState);
@@ -15,53 +23,24 @@ const CookOrderList = () => {
     });
   };
 
-  const CookOrderWrappr = styled.div`
-    display: flex;
-    :focus {
-      outline: none;
-    }
-  `;
-  const TimeContentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-  `;
-  const TimeSetDiv = styled.input`
-    border: none;
-    padding-left: 14px;
-  `;
-
-  const OrderText = styled.textarea`
-    font-size: 1rem;
-    width: 100vw;
-    height: 61px;
-    padding: 24px 14px;
-    border: none;
-    box-sizing: border-box;
-    background-color: white;
-    :focus {
-      outline: none;
-    }
-  `;
-
   return (
     <div>
       {CookOrderList.map((item, index) => {
         return (
           <CookOrderWrappr key={`wrapper_${index}`}>
-            <div>1</div>
+            <OrderNum>{index + 1}</OrderNum>
+
             <TimeContentWrapper>
               <OrderText
                 key={`cookorder_${index}`}
                 half
                 placeholder="예) 소고기 기름기를 떼어내고 ... "
               ></OrderText>
-              <TimeSetDiv key={`cookorder_time_${index}`} placeholder="00:00" />
+              <TimeSetBtn key={`cookorder_time_${index}`}>시간 설정하기</TimeSetBtn>
             </TimeContentWrapper>
-            <ImgBox
-              key={`cookorder_weight_${index}`}
-              small
-              // placeholder="예) 300g"
-            ></ImgBox>
+
+            <ImgBoxSmall key={`cookorder_img_${index}`}></ImgBoxSmall>
+
             {index + 1 === CookOrderList.length && (
               <DeleteBtn
                 onClick={(event) => {
