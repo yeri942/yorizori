@@ -13,7 +13,7 @@ import Category from "./CategoryForm/Category";
 import CookInfomation from "./CookInfoForm/CookInfomation";
 import AlbumForm from "./AlbumForm/AlbumForm";
 import NavBottom from "../nav/BottomNav";
-
+import TopNav from "../nav/TopNav";
 const PostFormBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -150,6 +150,7 @@ const PostForm = () => {
   return (
     <>
       <PostFormBlock>
+        {/* <TopNav /> */}
         <TitleBox>
           <p>레시피 제목</p>
         </TitleBox>
