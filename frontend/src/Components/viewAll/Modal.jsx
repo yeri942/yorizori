@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { buttonState } from "./ModalAtom";
 
 const ModalWrapping = styled.div`
-  display: flex;
-  ${(props) => (props.RandomButtonPush === true ? "flex" : "none")};
+  display: ${(props) => (props.RandomButtonPush === true ? "flex" : "none")};
   position: absolute;
   width: 100%;
   height: 100%;
@@ -127,12 +127,9 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const buttonState = atom({
-  key: "buttonState",
-  default: false,
-});
-
-const Modal = ([randomButton, setRandomButton]) => {
+const Modal = () => {
+  const randomButton = useRecoilValue(buttonState);
+  const setRandomButton = useSetRecoilState(buttonState);
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);

@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { buttonState } from "./ModalAtom";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -89,13 +90,10 @@ const DropdownWrapper = styled.div`
   }
 `;
 
-const buttonState = atom({
-  key: "buttonState",
-  default: false,
-});
-
 const Buttons = () => {
-  const [randomButton, setRandomButton] = useRecoilState(buttonState);
+  const randomButton = useRecoilValue(buttonState);
+  const setRandomButton = useSetRecoilState(buttonState);
+
   const randompost = () => {
     setRandomButton(true);
     console.log(randomButton);
