@@ -16,3 +16,12 @@ export const MyPageMainImgBox = styled.div`
 export const MyPageMainBtnBox = styled.div`
   text-align: center;
 `
+
+export const MypageResipeBox = styled.div`
+  height: 55px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`
