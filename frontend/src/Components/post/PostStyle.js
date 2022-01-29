@@ -65,3 +65,127 @@ export const AddCookOrder = styled.div`
     border-radius: 100px;
   }
 `;
+
+export const PostFormBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+export const TitleBox = styled.div`
+  width: 100vw;
+  height: 55px;
+  background-color: #feae11;
+  color: white;
+  font-size: 1rem;
+  padding-left: 15px;
+  box-sizing: border-box;
+  ${(props) =>
+    props.cookinfo &&
+    css`
+      display: flex;
+    `}
+`;
+
+export const TitleInput = styled.input`
+  font-size: 1rem;
+  width: 100vw;
+  padding: 30px 0px 30px 15px;
+  border: none;
+  background-color: white;
+  :focus {
+    outline: none;
+  }
+`;
+
+export const TagInfo = styled.div`
+  font-size: 0.77rem;
+  width: 360px;
+  height: 50px;
+  padding: 18px 14px 44px 14px;
+  border: none;
+  box-sizing: border-box;
+  background-color: white;
+  border-bottom: 1px solid #1111;
+`;
+
+export const ImgBox = styled.div`
+  width: 100vw;
+  height: 242px;
+  background-color: #c4c4c4;
+  ${(props) =>
+    props.small &&
+    css`
+      width: 76px;
+      height: 76px;
+    `}
+`;
+
+export const CookInfo = styled.div`
+  width: 50vw;
+  height: 61px;
+  box-sizing: border-box;
+  padding: 20px 0px 20px 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: Roboto;
+  position: relative;
+  border: 0.1px solid #1111;
+`;
+
+export const DropdownWrapper = styled.div`
+  display: flex;
+  .rdn {
+    width: 50vw;
+    height: 61px;
+    box-sizing: border-box;
+    padding: 20px 0px 20px 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: Roboto;
+    position: relative;
+  }
+  .rdn-control-placeholder {
+    padding-left: 8px;
+  }
+
+  .rdn-control {
+    position: relative;
+    display: flex;
+  }
+
+  .rdn-control-arrow {
+    width: 0;
+    height: 0;
+    border-top: 10px solid #feae11;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    position: absolute;
+    right: 10px;
+    top: 7px;
+  }
+
+  .rdn-drop {
+    margin-top: 10px;
+    position: absolute;
+    left: 10px;
+    right: 40px;
+    top: -50px;
+    box-shadow: 5px 5px 5px #9999;
+    z-index: 100;
+  }
+
+  .rdn-drop-menu-option {
+    background-color: white;
+    box-sizing: border-box;
+    padding: 8px;
+  }
+
+  ${(props) =>
+    props.cookinfo &&
+    css`
+      .rdn {
+        border: 0.1px solid #1111;
+      }
+    `}
+`;
