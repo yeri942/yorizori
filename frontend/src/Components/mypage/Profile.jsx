@@ -42,7 +42,7 @@ const MyPageTemplate = () => {
   return (
     <div>
       <NavTop />
-        <MyPageMainBox>
+        <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
           <MyPageMainImgBox>
             <MyPageImage />
               <p>요리조리1234</p>
@@ -52,42 +52,11 @@ const MyPageTemplate = () => {
                 <MyPageMainProfileEdit type="button">프로필 수정</MyPageMainProfileEdit>
               </Link>
 
-              <ResipeButton />
-              <ResipeButton />
-              <ResipeButton />
-              <ResipeButton />
-              {/* <MypageResipeBox>
-                <ResipeButton />
-                <ResipeMenu1 >
-                  <span>내가 작성한 레시피</span>
-                </ResipeMenu1>
-                <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
-              </MypageResipeBox>
-
-              <MypageResipeBox>
-
-                <ResipeMenu1 >
-                  <span>좋아요 누른 레시피</span>
-                </ResipeMenu1>
-                 <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
-              </MypageResipeBox>
-
-              <MypageResipeBox>
-
-                <ResipeMenu1 >
-                  <span>최근 확인한 레시피</span>
-                </ResipeMenu1>
-                 <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
-              </MypageResipeBox>
-
-              <MypageResipeBox>
-                <ResipeMenu1 >
-                  <span>댓글 단 레시피</span>
-
-                </ResipeMenu1>
-                 <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
-              </MypageResipeBox>                             */}
-
+              <ResipeButton nums="0"/>
+              <ResipeButton nums="1"/>
+              <ResipeButton nums="2"/>
+              <ResipeButton nums="3"/>
+              
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
         </MyPageMainBox>
