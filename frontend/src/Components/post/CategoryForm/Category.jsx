@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { DropdownWrapper, CookInfo, TitleBox } from "../PostStyle";
 
-const CategoryBlock = styled.div``;
-
 const Category = () => {
   return (
     <>
