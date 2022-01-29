@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { Dropdown, Selection } from "react-dropdown-now";
-import IngredientView from "./IngredientView";
+import { Dropdown } from "react-dropdown-now";
+import IngredientList from "./IngredientForm/IngredientList";
+import AddIngredinet from "./IngredientForm/AddIngredinet";
+import AddSource from "./SourceForm/AddSource";
+import SourceList from "./SourceForm/SourceList";
+import { RecoilRoot } from "recoil";
+import { ContentText } from "./PostStyle";
 
 const PostFormBlock = styled.div`
   display: flex;
@@ -32,72 +37,17 @@ const TitleInput = styled.input`
 
 const TagInfo = styled.div`
   font-size: 0.77rem;
-  width:360px;
+  width: 360px;
   height: 50px;
   padding: 18px 14px 44px 14px;
   border: none;
   box-sizing: border-box;
   background-color: white;
   border-bottom: 1px solid #1111;
-  p
 `;
 
 const ContentTextWrapper = styled.div`
   display: flex;
-`;
-
-const AddCookOrder = styled.div`
-  width: 100vw;
-  text-align: center;
-  padding: 12px 0;
-  font-weight: 600;
-  ::before {
-    content: "+";
-    color: white;
-    margin-right: 5px;
-    padding: 0px 5px;
-    background-color: #feae11;
-    border-radius: 100px;
-  }
-`;
-
-const ContentText = styled.textarea`
-  font-size: 0.77rem;
-  width: 100vw;
-  height: 112px;
-  padding: 24px 14px;
-  border: none;
-  box-sizing: border-box;
-  background-color: white;
-  :focus {
-    outline: none;
-  }
-  ${(props) =>
-    props.tip &&
-    css`
-      height: 81px;
-      padding: 30px 0 30px 15px;
-      font-size: 1rem;
-    `}
-  ${(props) =>
-    props.tag &&
-    css`
-      height: 150px;
-      padding: 8px 14px 40px 14px;
-      font-size: 1rem;
-    `}
-  ${(props) =>
-    props.half &&
-    css`
-      height: 61px;
-      padding: 20px 14px 40px 14px;
-      font-size: 1rem;
-      border-bottom: 1px solid #1111;
-      ::-webkit-scrollbar {
-        display: none;
-        width: 0 !important;
-      }
-    `}
 `;
 
 const ImgBox = styled.div`
@@ -188,7 +138,12 @@ const PostForm = () => {
       return newList;
     });
   };
-
+  const [inputValue, setInputValue] = useState("");
+  const handleChangeInput = (event) => {
+    console.log(inputValue);
+    setInputValue(event.target.value);
+  };
+  console.log(inputValue);
   const onRemove = (index) => {
     setIngredientList((current) => {
       const newList = [...current];
@@ -303,15 +258,20 @@ const PostForm = () => {
       <TitleBox>
         <p>재료</p>
       </TitleBox>
-      <IngredientView ingredientList={ingredientList} onRemove={onRemove} />
-      <AddCookOrder onClick={addIngredient}>재료추가</AddCookOrder>
+
+      <RecoilRoot>
+        <IngredientList />
+        <AddIngredinet />
+      </RecoilRoot>
+
       <TitleBox>
         <p>양념</p>
       </TitleBox>
-      <ContentTextWrapper>
-        <ContentText half placeholder="예) 소고기"></ContentText>
-        <ContentText half placeholder="예) 300g"></ContentText>
-      </ContentTextWrapper>
+
+      <RecoilRoot>
+        <SourceList />
+        <AddSource />
+      </RecoilRoot>
 
       <TitleBox>
         <p>요리순서</p>
