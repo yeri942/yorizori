@@ -86,21 +86,22 @@
 
 ### Frontend
 
+<img src="https://user-images.githubusercontent.com/94670393/151659943-7b8f2f8e-04c9-4288-8d29-cd15887ecf7b.png"  width="150" /> 
+<img src="https://user-images.githubusercontent.com/94670393/151660470-1bc9b2a6-2212-480e-ab19-e7a4e85c20e0.png"  height="100" />
+<img src="https://user-images.githubusercontent.com/94670393/151660721-0ab53060-fe77-4ba9-a266-47572e47d06e.png"  width="150" />
+
 ### Backend
 
-![image](https://user-images.githubusercontent.com/94670393/151659943-7b8f2f8e-04c9-4288-8d29-cd15887ecf7b.png)
-<img src="https://user-images.githubusercontent.com/94670393/151659943-7b8f2f8e-04c9-4288-8d29-cd15887ecf7b.png"  width="200" />
-| 프론트엔드 기술 스택 | React , Recoli , Javascript |
-| -------------------- | :------------------------------------: |
-| 백엔드 기술 스택 | Node.js , express , MongoDB , Mongoose |
+<img src="https://user-images.githubusercontent.com/94670393/151660845-7ea960d7-0873-41a4-99ea-cf260cb73e71.png"  width="150" />
+<img src="https://user-images.githubusercontent.com/94670393/151660849-0fbe21f6-be94-41ba-90e4-6326b0411d8b.png" width="150"   />
+<img src="https://user-images.githubusercontent.com/94670393/151660854-f0b08dab-9638-4d35-ab6d-6551e77b1d74.png"  height="100"/>
 
 <br>
 
 ## 5. 프로젝트 구성도
 
-![dddd](https://kdt-gitlab.elice.io/YeriKim/produce-myself/uploads/06a29bcccf9b8ac837bc9a6c192a02e5/dddd.PNG)
-
-[클릭](https://www.figma.com/file/lk1GcrIT58iIcYYk2KBpzn/%EC%97%98%EB%A6%AC%EC%8A%A4-Team9?node-id=0%3A1) 하시면 Figma사이트에서 확인 가능합니다.
+![image](https://user-images.githubusercontent.com/94670393/151661115-edbb6d4d-a59d-40f3-b5f2-1931a80ba694.png)
+[클릭](https://www.figma.com/file/lk1GcrIT58iIcYYk2KBpzn/%EC%97%98%EB%A6%AC%EC%8A%A4-Team9?node-id=282%3A2098) 하시면 Figma사이트에서 확인 가능합니다.
 
 <br>
 
@@ -121,15 +122,15 @@
 
 1. 프론트엔드 담당
 
-- 기획 단계: 구체적인 설계와 지표에 따른 프로젝트 제안서 작성
-- 개발 단계: 팀원간의 일정 등 조율 + 프론트 or 백엔드 개발
-- 수정 단계: 기획, 스크럼 진행, 코치님 피드백 반영해서 수정, 발표 준비
+- 기획 단계: 문제 해결 아이디어 도출, 와이어프레임 작성, 프로젝트 제안서 작성
+- 개발 단계: 와이어프레임을 기반으로 구현, UI 디자인 완성
+- 수정 단계: 피드백 반영해서 프론트 디자인 수정
 
 2. 백엔드 담당
 
-- 기획 단계: 큰 주제에서 문제 해결 아이디어 도출, 와이어프레임 작성
-- 개발 단계: 와이어프레임을 기반으로 구현, UI 디자인 완성
-- 수정 단계: 피드백 반영해서 프론트 디자인 수정
+- 기획 단계: 문제 해결 아이디어 도출, 와이어프레임 작성, 프로젝트 제안서 작성
+- 개발 단계: 백엔드 아키텍처 설계 및 패키지 설계
+- 수정 단계: 피드백 반영해서 백 구조 변경
 
 ## 7. 버전
 
