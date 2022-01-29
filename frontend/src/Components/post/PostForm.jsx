@@ -19,6 +19,7 @@ const PostFormBlock = styled.div`
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  margin-top: 55px;
 `;
 
 const TitleBox = styled.div`
@@ -150,7 +151,7 @@ const PostForm = () => {
   return (
     <>
       <PostFormBlock>
-        {/* <TopNav /> */}
+        <TopNav />
         <TitleBox>
           <p>레시피 제목</p>
         </TitleBox>
