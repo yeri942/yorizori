@@ -5,10 +5,11 @@ const BottomNavBlock = styled.div`
   height: 80px;
   width: 100%;
   position: fixed;
-  bottom: 0px;
+  bottom: 0;
   display: flex;
   // flex-direction: row;
   border-top: 1px solid #c5c5c5;
+  background-color: white;
 `;
 
 const IconImg = styled.div`
