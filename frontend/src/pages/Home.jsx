@@ -62,27 +62,27 @@ const Home = () => {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
           labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
+        </div>
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
           labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
+        </div>
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
           labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
+        </div>
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
           labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
+        </div>
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
           labore rem molestias, tempora dolore accusantium?
-        </div>{" "}
+        </div>
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo natus molestiae modi
           similique, odit praesentium cupiditate temporibus in eum totam atque omnis alias quaerat,
