@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link,   } from "react-router-dom";
 import NavBottom from "../nav/BottomNav"
 import NavTop from "../nav/TopNav"
 import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
+import ResipeButton from "../mypage/ResipeList"
+
 
 const MyPageImage = styled.img`
   width: 115px;
@@ -33,13 +35,8 @@ const MyPageMainProfileEdit = styled.button`
   margin-top: 14px;
 `
 
-const ResipeMenu1 = styled.div`
-  span {
-    font-size: 16px;
-    margin-top: 4px;
-    margin-left: 30px;
-  }
-`
+
+
 const MyPageTemplate = () => {
 
   return (
@@ -55,14 +52,20 @@ const MyPageTemplate = () => {
                 <MyPageMainProfileEdit type="button">프로필 수정</MyPageMainProfileEdit>
               </Link>
 
-              <MypageResipeBox>
+              <ResipeButton />
+              <ResipeButton />
+              <ResipeButton />
+              <ResipeButton />
+              {/* <MypageResipeBox>
+                <ResipeButton />
                 <ResipeMenu1 >
                   <span>내가 작성한 레시피</span>
                 </ResipeMenu1>
-                 <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
+                <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
               </MypageResipeBox>
 
               <MypageResipeBox>
+
                 <ResipeMenu1 >
                   <span>좋아요 누른 레시피</span>
                 </ResipeMenu1>
@@ -70,6 +73,7 @@ const MyPageTemplate = () => {
               </MypageResipeBox>
 
               <MypageResipeBox>
+
                 <ResipeMenu1 >
                   <span>최근 확인한 레시피</span>
                 </ResipeMenu1>
@@ -79,9 +83,10 @@ const MyPageTemplate = () => {
               <MypageResipeBox>
                 <ResipeMenu1 >
                   <span>댓글 단 레시피</span>
+
                 </ResipeMenu1>
                  <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
-              </MypageResipeBox>                            
+              </MypageResipeBox>                             */}
 
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
