@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { Dropdown } from "react-dropdown-now";
 import IngredientList from "./IngredientForm/IngredientList";
 import AddIngredinet from "./IngredientForm/AddIngredinet";
 import AddSource from "./SourceForm/AddSource";
 import SourceList from "./SourceForm/SourceList";
 import AddOrder from "./CookOrderForm/AddOrder";
 import CookOrderList from "./CookOrderForm/CookOrderList";
-import { RecoilRoot } from "recoil";
 import { ContentText, ImgBox } from "./PostStyle";
 import Category from "./CategoryForm/Category";
 import CookInfomation from "./CookInfoForm/CookInfomation";
 import AlbumForm from "./AlbumForm/AlbumForm";
 import NavBottom from "../nav/BottomNav";
 import TopNav from "../nav/TopNav";
-const PostFormBlock = styled.div`
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { recipeNameAtom, descAtom } from "./postStates/postStates";
+import { useForm } from "react-hook-form";
+
+const PostFormBlock = styled.form`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -128,39 +130,34 @@ const DropdownWrapper = styled.div`
 `;
 
 const PostForm = () => {
-  const [input, setInput] = useState({ min: 5, sec: 6 });
-  const [test, setTest] = useState({ a: 1, b: 2 });
-  const onChangeTest = (e) => {
-    const { value } = e.target;
-    const { a, b } = e.target.value;
-    console.log(a);
-    console.log(b);
+  const setRecipeName = useSetRecoilState(recipeNameAtom);
+  const recipeName = useRecoilValue(recipeNameAtom);
+  const { register, handleSubmit } = useForm();
 
-    setTest(value);
+  // 폼 데이터 확인
+  const onSubmit = ({ recipeName, desc }) => {
+    console.log(recipeName);
+    console.log(desc);
   };
-  const { min, sec } = input;
-  const onChangeTime = (e) => {
-    // const { min, sec } = e.target.value;
-    console.log(e.target.value.input.min);
-    // setInput({
-    //   ...input,
-    //   [min]: min,
-    //   [sec]: sec,
-    // });
-  };
+
   return (
     <>
-      <PostFormBlock>
+      <PostFormBlock onSubmit={handleSubmit(onSubmit)}>
+        <button type="submit">테스트</button>
         <TopNav />
         <TitleBox>
           <p>레시피 제목</p>
         </TitleBox>
-        <TitleInput placeholder="예) 소고기 미역국 끓이기" />
+        <TitleInput
+          placeholder="예) 소고기 미역국 끓이기"
+          {...register("recipeName", { required: true })}
+        />
         <ImgBox />
         <TitleBox>
           <p>요리소개</p>
         </TitleBox>
         <ContentText
+          {...register("desc", { required: true })}
           placeholder="이 레시피의 탄생 배경을 적어주세요.
 예) 아내의 생일ㄹ을 맞아 소고기 미역국을 끓여봤어요.
 어머니로부터 배운 미역국 레시피를 아내의 입맛에 맞게 고안했습니다."
