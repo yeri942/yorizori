@@ -16,7 +16,6 @@ const EditImage = styled.img`
   border-radius: 50%;
   /* background-image: url("../images/profile.png");
   background-size: cover; */
-  margin-top: 25px;
 
   + p {
     margin: 0;

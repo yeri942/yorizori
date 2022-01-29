@@ -13,7 +13,6 @@ const MyPageImage = styled.img`
   border-radius: 50%;
   background-image: url("../images/profile.jpg");
   background-size: cover;
-  margin-top: 25px;
 
   + p {
     margin: 0;
@@ -46,7 +45,7 @@ const MyPageTemplate = () => {
           <MyPageMainImgBox>
             <MyPageImage />
               <p>요리조리1234</p>
-            <MyPageMainBtnBox>
+            <MyPageMainBtnBox >
 
               <Link to="/users/edit">
                 <MyPageMainProfileEdit type="button">프로필 수정</MyPageMainProfileEdit>

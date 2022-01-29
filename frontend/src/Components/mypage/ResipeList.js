@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react'
 import {MypageResipeBox} from "./ProfileStyle"
 import styled, { css } from "styled-components";
+import { Link } from "react-router-dom";
 
 const ResipeMenu1 = styled.div`
   span {
@@ -11,19 +12,22 @@ const ResipeMenu1 = styled.div`
 `
 
 const ResipeListBox = styled.div`
-  width: 100%;
+  width: 300px;
+  position: relative;
+  left: 32px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  text-align: center;
   img {
-    margin: 10px 20px;
+    margin: 10px 25px 0px 25px;
     width: 100px;
     height: 100px;
     border-radius: 15px;
     
   }
   p {
-    
+    margin: 0px;
   }
 `
 const ResipeListItem = styled.div`
@@ -54,8 +58,16 @@ export default function ResipeButton(props) {
             onResipe 
             ? <ResipeListBox>
                 <ResipeListItem>
-                  <img src="../images/food1.jpg" alt=""/>
-                  <img src="../images/food2.jpg" alt=""/>
+                  <Link to="/">
+                    <img src="../images/food1.jpg" alt=""/>
+                  </Link>
+                  <p>햄버거 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
                 </ResipeListItem>
               </ResipeListBox> 
             : ""
