@@ -10,7 +10,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 
 dotenv.config();
-
+console.log("hello test")
 mongoose.connect(process.env.DB_URL);
 
 mongoose.connection.on("connected", () => {
