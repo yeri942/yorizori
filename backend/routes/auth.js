@@ -3,6 +3,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares"); // 내가 만든 사용자 미들웨어
 const User = require("../models/User");
+const axios = require("axios");
 
 const router = express.Router();
 
@@ -69,11 +70,37 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
 });
 
 //* 로그아웃 (isLoggedIn 상태일 경우)
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", isLoggedIn, async (req, res, next) => {
   // req.user (사용자 정보가 안에 들어있다. 당연히 로그인되어있으니 로그아웃하려는 거니까)
+  try {
+    const { accessToken } = req.user;
+    if (accessToken) {
+      const logout = await axios({
+        method: "POST",
+        url: "https://kapi.kakao.com/v1/user/logout",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log("카카오 로그아웃 완료");
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
   req.logout();
   req.session.destroy(); // 로그인인증 수단으로 사용한 세션쿠키를 지우고 파괴한다. 세션쿠키가 없다는 말은 즉 로그아웃 인 말.
   res.status(200).json({ message: "로그아웃 성공" });
 });
+
+router.get("/kakao", passport.authenticate("kakao"));
+
+router.get(
+  "/kakao/callback",
+  passport.authenticate("kakao", { failureRedirect: "/" }),
+  (req, res) => {
+    res.status(200).json({ message: "kakao 로그인 성공" });
+  }
+);
 
 module.exports = router;
