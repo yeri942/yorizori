@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState } from "./ModalAtom";
+import { buttonState } from "./ViewAllAtom";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -68,7 +68,7 @@ const DropdownWrapper = styled.div`
     font-size: 14px;
     font-weight: 900;
     color: #feae11;
-    background-color: white;
+
     &:not(:last-child) {
       margin-right: 11px;
     }
@@ -89,15 +89,14 @@ const DropdownWrapper = styled.div`
     }
   }
 `;
-
 const Buttons = () => {
   const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
 
   const randompost = () => {
     setRandomButton(true);
-    console.log(randomButton);
   };
+
   return (
     <>
       <Wrapper>
@@ -113,28 +112,27 @@ const Buttons = () => {
         <DropdownWrapper>
           <Dropdown
             placeholder="종류"
-            className="my-className"
             options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
             value="one"
             onChange={(value) => console.log("change!", value)}
-            onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
-            onOpen={() => console.log("open!")}
+            onSelect={(value) => {
+              console.log("selected!", value);
+            }} // always fires once a selection happens even if there is no change
+            onClose={console.log("close")}
+            onOpen={console.log("open")}
           />
 
           <Dropdown
             placeholder="재료"
-            className="my-className"
             options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
             value="one"
             onChange={(value) => console.log("change!", value)}
             onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
-            onOpen={() => console.log("open!")}
+            onClose={console.log("close")}
+            onOpen={console.log("open")}
           />
           <Dropdown
             placeholder="상황"
-            className="my-className"
             options={[
               "파티",
               "주말에 혼먹",
@@ -149,19 +147,18 @@ const Buttons = () => {
             value="one"
             onChange={(value) => console.log("change!", value)}
             onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
-            onOpen={() => console.log("open!")}
+            onClose={console.log("close")}
+            onOpen={console.log("open")}
           />
           <Dropdown
             placeholder="방법"
-            className="my-className"
             options={["볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
+            className="last"
             value="one"
             onChange={(value) => console.log("change!", value)}
             onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={(closedBySelection) => console.log("closedBySelection?:", closedBySelection)}
-            onOpen={() => console.log("open!")}
-            className="last"
+            onClose={console.log("close")}
+            onOpen={console.log("open")}
           />
         </DropdownWrapper>
         <Line />
