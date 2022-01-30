@@ -6,15 +6,25 @@ import AddSource from "./SourceForm/AddSource";
 import SourceList from "./SourceForm/SourceList";
 import AddOrder from "./CookOrderForm/AddOrder";
 import CookOrderList from "./CookOrderForm/CookOrderList";
-import { ContentText, ImgBox } from "./PostStyle";
+import { ContentText, ImgBox, ImgWrapper, StyledBtn, StyledBtnWrapper } from "./PostStyle";
 import Category from "./CategoryForm/Category";
 import CookInfomation from "./CookInfoForm/CookInfomation";
 import AlbumForm from "./AlbumForm/AlbumForm";
 import NavBottom from "../nav/BottomNav";
 import TopNav from "../nav/TopNav";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, atom } from "recoil";
 import { recipeNameAtom, descAtom } from "./postStates/postStates";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import FileUpload from "@mimoid-prog/react-file-upload";
+import {
+  categoryAtom,
+  conditionAtom,
+  materialAtom,
+  cookAtom,
+  servingsAtom,
+  timeAtom,
+  difficAtom,
+} from "./postStates/postStates";
 
 const PostFormBlock = styled.form`
   display: flex;
@@ -22,6 +32,7 @@ const PostFormBlock = styled.form`
   position: relative;
   overflow: hidden;
   margin-top: 55px;
+  margin-bottom: 80px;
 `;
 
 const TitleBox = styled.div`
@@ -130,20 +141,44 @@ const DropdownWrapper = styled.div`
 `;
 
 const PostForm = () => {
-  const setRecipeName = useSetRecoilState(recipeNameAtom);
-  const recipeName = useRecoilValue(recipeNameAtom);
-  const { register, handleSubmit } = useForm();
+  const category = useRecoilValue(categoryAtom);
+  const condition = useRecoilValue(conditionAtom);
+  const material = useRecoilValue(materialAtom);
+  const cook = useRecoilValue(cookAtom);
+  const servings = useRecoilValue(servingsAtom);
+  const time = useRecoilValue(timeAtom);
+  const diffic = useRecoilValue(difficAtom);
+
+  const methods = useForm();
+  const { register, handleSubmit } = methods;
+
+  //이미지 데이터 확인
+  let mainImg;
+  const handleChange = (data) => {
+    if (data) {
+      mainImg = data["value"];
+    }
+  };
 
   // 폼 데이터 확인
-  const onSubmit = ({ recipeName, desc }) => {
-    console.log(recipeName);
-    console.log(desc);
+  const onSubmit = (data) => {
+    const newList = {
+      ...data,
+      category: category,
+      condition: condition,
+      material: material,
+      cook: cook,
+      serving: servings,
+      time: time,
+      diffic: diffic,
+      mainImg: mainImg,
+    };
+    console.log(newList);
   };
 
   return (
-    <>
+    <FormProvider {...methods}>
       <PostFormBlock onSubmit={handleSubmit(onSubmit)}>
-        <button type="submit">테스트</button>
         <TopNav />
         <TitleBox>
           <p>레시피 제목</p>
@@ -152,7 +187,13 @@ const PostForm = () => {
           placeholder="예) 소고기 미역국 끓이기"
           {...register("recipeName", { required: true })}
         />
-        <ImgBox />
+
+        <ImgBox>
+          <ImgWrapper big>
+            <FileUpload name="photo3" shape="rounded" size="big" onChange={handleChange} />
+          </ImgWrapper>
+        </ImgBox>
+
         <TitleBox>
           <p>요리소개</p>
         </TitleBox>
@@ -199,9 +240,13 @@ const PostForm = () => {
           다이어트, 비만, 칼슈므 감기예방
         </TagInfo>
         <ContentText tag placeholder="예) 돼지고기, 다이어트, 비만, 캄슘, 감기예방"></ContentText>
+        <StyledBtnWrapper>
+          <StyledBtn type="submit">글 작성하기</StyledBtn>
+        </StyledBtnWrapper>
       </PostFormBlock>
+
       <NavBottom post />
-    </>
+    </FormProvider>
   );
 };
 

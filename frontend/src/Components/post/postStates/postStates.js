@@ -46,6 +46,12 @@ const difficAtom = atom({
   default: null,
 });
 
+//아직 확정아님 재료
+const ingredientAtom = atom({
+  key: "ingredient",
+  default: [],
+});
+
 export {
   categoryAtom,
   descAtom,
@@ -56,4 +62,5 @@ export {
   timeAtom,
   difficAtom,
   recipeNameAtom,
+  ingredientAtom,
 };
