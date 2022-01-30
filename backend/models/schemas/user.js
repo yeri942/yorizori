@@ -1,7 +1,9 @@
 const { Schema } = require("mongoose");
+const shortId = require("../types/short-id");
 
 const UserSchema = new Schema(
   {
+    shortId,
     //유저아메일
     email: {
       type: String,
