@@ -139,7 +139,7 @@ export const ImgWrapper = styled.div`
     background-color: #a3a3a3;
     text-align: center;
     width: 19px;
-    z-index: 999;
+    z-index: 900;
     border: none;
   }
 
@@ -329,7 +329,7 @@ export const ImgBoxSmall = styled.div`
 
 export const OrderNum = styled.div`
   color: white;
-  width: 10px;
+  width: 20px;
   padding: 0px 5px;
   background-color: #feae11;
   border-radius: 110px;

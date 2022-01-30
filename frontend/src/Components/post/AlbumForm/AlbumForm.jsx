@@ -16,13 +16,13 @@ const AlbumForm = () => {
         <FileUpload name="photo1" shape="rounded" size="big" />
       </ImgBoxSmall>
       <ImgBoxSmall album>
-        <FileUpload name="photo1" shape="rounded" size="big" />
+        <FileUpload name="photo2" shape="rounded" size="big" />
       </ImgBoxSmall>
       <ImgBoxSmall album>
-        <FileUpload name="photo1" shape="rounded" size="big" />
+        <FileUpload name="photo3" shape="rounded" size="big" />
       </ImgBoxSmall>
       <ImgBoxSmall album>
-        <FileUpload name="photo1" shape="rounded" size="big" />
+        <FileUpload name="photo4" shape="rounded" size="big" />
       </ImgBoxSmall>
     </AlbumFormBlock>
   );

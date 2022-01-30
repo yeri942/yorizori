@@ -16,6 +16,8 @@ import { useRecoilValue, useSetRecoilState, atom } from "recoil";
 import { recipeNameAtom, descAtom } from "./postStates/postStates";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 import FileUpload from "@mimoid-prog/react-file-upload";
+import TimeModal from "./CookOrderForm/TimeModal";
+import { modalStateAtom } from "./CookOrderForm/_Atom";
 import {
   categoryAtom,
   conditionAtom,
@@ -67,79 +69,6 @@ const TagInfo = styled.div`
   border-bottom: 1px solid #1111;
 `;
 
-const ContentTextWrapper = styled.div`
-  display: flex;
-`;
-
-const CookInfo = styled.div`
-  width: 50vw;
-  height: 61px;
-  box-sizing: border-box;
-  padding: 20px 0px 20px 10px;
-  font-size: 1rem;
-  font-weight: 400;
-  font-family: Roboto;
-  position: relative;
-  border: 0.1px solid #1111;
-`;
-
-const DropdownWrapper = styled.div`
-  display: flex;
-  .rdn {
-    width: 50vw;
-    height: 61px;
-    box-sizing: border-box;
-    padding: 20px 0px 20px 10px;
-    font-size: 1rem;
-    font-weight: 400;
-    font-family: Roboto;
-    position: relative;
-  }
-  .rdn-control-placeholder {
-    padding-left: 8px;
-  }
-
-  .rdn-control {
-    position: relative;
-    display: flex;
-  }
-
-  .rdn-control-arrow {
-    width: 0;
-    height: 0;
-    border-top: 10px solid #feae11;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    position: absolute;
-    right: 10px;
-    top: 7px;
-  }
-
-  .rdn-drop {
-    margin-top: 10px;
-    position: absolute;
-    left: 10px;
-    right: 40px;
-    top: -50px;
-    box-shadow: 5px 5px 5px #9999;
-    z-index: 100;
-  }
-
-  .rdn-drop-menu-option {
-    background-color: white;
-    box-sizing: border-box;
-    padding: 8px;
-  }
-
-  ${(props) =>
-    props.cookinfo &&
-    css`
-      .rdn {
-        border: 0.1px solid #1111;
-      }
-    `}
-`;
-
 const PostForm = () => {
   const category = useRecoilValue(categoryAtom);
   const condition = useRecoilValue(conditionAtom);
@@ -148,6 +77,9 @@ const PostForm = () => {
   const servings = useRecoilValue(servingsAtom);
   const time = useRecoilValue(timeAtom);
   const diffic = useRecoilValue(difficAtom);
+
+  const modalState = useRecoilValue(modalStateAtom);
+  const setModalState = useSetRecoilState(modalStateAtom);
 
   const methods = useForm();
   const { register, handleSubmit } = methods;
@@ -178,7 +110,8 @@ const PostForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <PostFormBlock onSubmit={handleSubmit(onSubmit)}>
+      <TimeModal />
+      <PostFormBlock onSubmit={handleSubmit(onSubmit)} modalState={modalState}>
         <TopNav />
         <TitleBox>
           <p>레시피 제목</p>
@@ -190,7 +123,7 @@ const PostForm = () => {
 
         <ImgBox>
           <ImgWrapper big>
-            <FileUpload name="photo3" shape="rounded" size="big" onChange={handleChange} />
+            <FileUpload name="photo0" shape="rounded" size="big" onChange={handleChange} />
           </ImgWrapper>
         </ImgBox>
 
