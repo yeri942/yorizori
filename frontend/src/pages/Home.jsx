@@ -62,6 +62,9 @@ const Home = () => {
         <Link to="/users/mypage">
           <button>mypage</button>
         </Link>
+        <Link to="/oldpost">
+          <button>oldpost</button>
+        </Link>
         <Link to="/post">
           <button>post</button>
         </Link>
