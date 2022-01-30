@@ -65,8 +65,8 @@ const Home = () => {
         <Link to="/oldpost">
           <button>oldpost</button>
         </Link>
-        <Link to="/post">
-          <button>post</button>
+        <Link to="/poststep1">
+          <button>poststep1</button>
         </Link>
         <h3>Single file upload</h3>
         <ImgWrapper>
