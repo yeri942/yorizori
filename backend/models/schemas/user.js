@@ -3,7 +3,7 @@ const shortId = require("../types/short-id");
 
 const UserSchema = new Schema(
   {
-    shortId,
+    shortId, //변경 제안해서 맞춰야함  ... userId = shortId 어떨까요
     //유저아메일
     email: {
       type: String,
