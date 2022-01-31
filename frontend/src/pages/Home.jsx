@@ -68,6 +68,9 @@ const Home = () => {
         <Link to="/poststep1">
           <button>poststep1</button>
         </Link>
+        <Link to="/poststep2">
+          <button>poststep2</button>
+        </Link>
         <h3>Single file upload</h3>
         <ImgWrapper>
           <FileUpload name="photo3" onChange={handleChange} shape="rounded" size="big" />

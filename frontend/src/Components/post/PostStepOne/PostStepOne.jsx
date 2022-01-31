@@ -56,7 +56,7 @@ const PostStepOne = () => {
   `;
 
   return (
-    <PostTemplete stepNum={1} page={1}>
+    <PostTemplete stepNum={1}>
       <TitleInput placeholder="마늘 50개 들어간 알리오 올리오" />
       <PositionRelative>
         <ImgUploadLabel htmlFor="main_img" />

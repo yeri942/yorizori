@@ -59,7 +59,7 @@ const PageBtn = styled.button`
   }};
 `;
 
-const PostTemplete = ({ children, stepNum, page }) => {
+const PostTemplete = ({ children, stepNum }) => {
   return (
     <PostTempleteBlock>
       <PostNav />
@@ -68,7 +68,7 @@ const PostTemplete = ({ children, stepNum, page }) => {
       <ContentsWrapper>{children}</ContentsWrapper>
 
       <BtnWrapper>
-        <PageBtn page={page}>[ 1 ]</PageBtn>
+        <PageBtn>[ 1 ]</PageBtn>
         <PageBtn>[ 2 ]</PageBtn>
         <PageBtn>[ 3 ]</PageBtn>
         <PageBtn>[ 4 ]</PageBtn>
