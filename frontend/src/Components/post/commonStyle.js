@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const StyledP = styled.p`
-  padding-left: 40px;
+  padding-left: 30px;
   width: 100vw;
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.5);
@@ -47,7 +47,8 @@ export const ResetTextarea = css`
 
 export const ContainerDiv = styled.div`
   width: 321px;
-  overflow-y: scroll;
+  overflow-y: auto;
+
   height: ${(props) => {
     if (props.big) {
       return "321px";
@@ -57,7 +58,7 @@ export const ContainerDiv = styled.div`
     }
     return "147px";
   }};
-  max-height: 147px;
+
   border: 1px solid #cfcfcf;
   box-sizing: border-box;
   border-radius: 14px;

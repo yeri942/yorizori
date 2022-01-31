@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { SourceListAtom } from "../../PostAtom/PostAtom";
 import { ResetTextarea } from "../../commonStyle";
+import { useForm } from "react-hook-form";
 
 const SourceList = () => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
@@ -15,21 +16,52 @@ const SourceList = () => {
     });
   };
 
+  const { register, watch, setValue } = useForm();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+      localStorage.setItem("source", JSON.stringify(value));
+    });
+  }, [watch]);
+
+  useEffect(() => {
+    if (localStorage.getItem("source")) {
+      const getSource = JSON.parse(localStorage.getItem("source"));
+      SourceList.forEach((el, idx) => {
+        setValue(`source_${idx + 1}`, eval(`getSource.source_${idx + 1}`));
+      });
+      SourceList.forEach((el, idx) => {
+        setValue(`volume_${idx + 1}`, eval(`getSource.volume_${idx + 1}`));
+      });
+    }
+  }, []);
+
   return (
     <>
       {SourceList.map((item, index) => {
         return (
-          <Wrapper key={`wrapper_${index}`}>
-            <Ingredient placeholder="ex) 간장" key={`ingredient_${index}`}></Ingredient>
-            <Volume placeholder="한 큰술" key={`volume_${index}`}></Volume>
-            <DeleteBtn
-              key={`DeleteBtn_${index}`}
-              onClick={() => {
-                deleteIngredient(index);
-              }}
-            >
-              x
-            </DeleteBtn>
+          <Wrapper key={`source_wrapper_${index}`}>
+            <Ingredient
+              {...register(`source_${index + 1}`)}
+              placeholder="ex) 간장"
+              key={`source_${index}`}
+            ></Ingredient>
+            <Volume
+              {...register(`volume_${index + 1}`)}
+              placeholder="한 큰술"
+              key={`source_volume_${index}`}
+            ></Volume>
+            {index + 1 === SourceList.length && (
+              <DeleteBtn
+                key={`DeleteBtn_${index}`}
+                onClick={() => {
+                  deleteIngredient(index);
+                }}
+              >
+                x
+              </DeleteBtn>
+            )}
           </Wrapper>
         );
       })}

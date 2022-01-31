@@ -16,7 +16,7 @@ const PostStepFour = () => {
     >
       <StyledP stepFour>카테고리</StyledP>
       <ContainerDiv></ContainerDiv>
-      <StyledP>요리정보</StyledP>
+      <StyledP stepFour>요리정보</StyledP>
       <ContainerDiv small></ContainerDiv>
     </PostTemplete>
   );

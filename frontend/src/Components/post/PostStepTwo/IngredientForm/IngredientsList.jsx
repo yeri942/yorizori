@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { IngredientsListAtom } from "../../PostAtom/PostAtom";
 import { ResetTextarea } from "../../commonStyle";
+import { useForm } from "react-hook-form";
 
 const IngredientsList = () => {
   const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
@@ -15,21 +16,52 @@ const IngredientsList = () => {
     });
   };
 
+  const { register, watch, setValue } = useForm();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+      localStorage.setItem("ingredient", JSON.stringify(value));
+    });
+  }, [watch]);
+
+  useEffect(() => {
+    if (localStorage.getItem("ingredient")) {
+      const getIngredients = JSON.parse(localStorage.getItem("ingredient"));
+      ingredientsList.forEach((el, idx) => {
+        setValue(`ingredient_${idx + 1}`, eval(`getIngredients.ingredient_${idx + 1}`));
+      });
+      ingredientsList.forEach((el, idx) => {
+        setValue(`volume_${idx + 1}`, eval(`getIngredients.volume_${idx + 1}`));
+      });
+    }
+  }, []);
+
   return (
     <>
       {ingredientsList.map((item, index) => {
         return (
-          <Wrapper key={`wrapper_${index}`}>
-            <Ingredient placeholder="ex) 우유" key={`ingredient_${index}`}></Ingredient>
-            <Volume placeholder="200ml" key={`volume_${index}`}></Volume>
-            <DeleteBtn
-              key={`DeleteBtn_${index}`}
-              onClick={() => {
-                deleteIngredient(index);
-              }}
-            >
-              x
-            </DeleteBtn>
+          <Wrapper key={`ingredient_wrapper_${index}`}>
+            <Ingredient
+              {...register(`ingredient_${index + 1}`)}
+              placeholder="ex) 우유"
+              key={`ingredient_${index}`}
+            ></Ingredient>
+            <Volume
+              {...register(`volume_${index + 1}`)}
+              placeholder="200ml"
+              key={`ingredient_volume_${index}`}
+            ></Volume>
+            {index + 1 === ingredientsList.length && (
+              <DeleteBtn
+                key={`DeleteBtn_${index}`}
+                onClick={() => {
+                  deleteIngredient(index);
+                }}
+              >
+                x
+              </DeleteBtn>
+            )}
           </Wrapper>
         );
       })}

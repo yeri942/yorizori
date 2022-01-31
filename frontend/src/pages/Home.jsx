@@ -68,6 +68,22 @@ const Home = () => {
     console.log(recipeName);
   };
 
+  const [ingredientState, setIngredientState] = useState([
+    {
+      test: "test",
+      id: 1,
+    },
+  ]);
+  const testClick = () => {
+    setIngredientState((el) => [
+      ...el,
+      {
+        test2: "test2",
+        id: 2,
+      },
+    ]);
+  };
+  console.log(ingredientState);
   return (
     <HomeBlock>
       <TopNav_main />
@@ -112,6 +128,7 @@ const Home = () => {
         </div>
         <input name="recipeName" onChange={onChange} value={recipeName}></input>
         <input name="desc" onChange={onChange} value={desc}></input>
+        <button onClick={testClick}>test</button>
       </div>
       <BottomNav />
     </HomeBlock>

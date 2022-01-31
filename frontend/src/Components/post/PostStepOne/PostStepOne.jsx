@@ -15,12 +15,14 @@ const PostStepOne = () => {
   const { recipeName, desc } = stepOne;
   const stateRef = useRef([]);
   useEffect(() => {
-    const savedState = JSON.parse(localStorage.getItem("stepOne"));
-    const { recipeName, desc } = savedState;
-    setStepOne({
-      recipeName: recipeName,
-      desc: desc,
-    });
+    if (localStorage.getItem("stepOne")) {
+      const savedState = JSON.parse(localStorage.getItem("stepOne"));
+      const { recipeName, desc } = savedState;
+      setStepOne({
+        recipeName: recipeName,
+        desc: desc,
+      });
+    }
   }, []);
 
   const saveData = () => {

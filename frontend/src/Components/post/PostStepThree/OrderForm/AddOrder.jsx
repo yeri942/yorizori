@@ -4,13 +4,13 @@ import { AddBtn } from "../../commonStyle";
 
 import { useSetRecoilState } from "recoil";
 
-import { SourceListAtom } from "../../PostAtom/PostAtom";
+import { OrderListAtom } from "../../PostAtom/PostAtom";
 
-const AddSource = () => {
-  const setSourceList = useSetRecoilState(SourceListAtom);
+const AddOrder = () => {
+  const setOrderList = useSetRecoilState(OrderListAtom);
   const addItem = (e) => {
     e.preventDefault();
-    setSourceList((oldList) => {
+    setOrderList((oldList) => {
       const newList = [
         ...oldList,
         {
@@ -21,7 +21,7 @@ const AddSource = () => {
     });
   };
 
-  return <AddBtn onClick={addItem}>양념 추가</AddBtn>;
+  return <AddBtn onClick={addItem}>요리 순서 추가</AddBtn>;
 };
 
-export default AddSource;
+export default AddOrder;

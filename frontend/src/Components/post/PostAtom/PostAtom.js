@@ -7,12 +7,17 @@ export const stepUrlAtom = atom({
 
 export const IngredientsListAtom = atom({
   key: "IngredientListState",
-  default: [1],
+  default: ["waqeqcasdcq"],
 });
 
 export const SourceListAtom = atom({
   key: "SourceListState",
-  default: [1],
+  default: ["dqwcdqwcdzx"],
+});
+
+export const OrderListAtom = atom({
+  key: "OrderListState",
+  default: ["cdsacqwecasd"],
 });
 
 // //요리제목

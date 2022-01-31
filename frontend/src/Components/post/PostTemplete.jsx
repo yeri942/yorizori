@@ -35,7 +35,14 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
           [ 4 ]
         </PageBtn>
       </BtnWrapper>
-      <StyledBtn page={page}>작성 완료</StyledBtn>
+      <StyledBtn
+        page={page}
+        onClick={() => {
+          localStorage.clear();
+        }}
+      >
+        작성 완료
+      </StyledBtn>
       <NavBottom post={"post"} />
     </PostTempleteBlock>
   );
