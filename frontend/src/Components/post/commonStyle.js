@@ -38,8 +38,16 @@ export const StyledScroll = css`
   }
 `;
 
+export const ResetTextarea = css`
+  resize: none;
+  :focus {
+    outline: none;
+  }
+`;
+
 export const ContainerDiv = styled.div`
   width: 321px;
+  overflow-y: scroll;
   height: ${(props) => {
     if (props.big) {
       return "321px";
@@ -49,8 +57,26 @@ export const ContainerDiv = styled.div`
     }
     return "147px";
   }};
+  max-height: 147px;
   border: 1px solid #cfcfcf;
   box-sizing: border-box;
   border-radius: 14px;
-  ${StyledScroll}
+  padding: 7px 29px 0px 15px;
+  display: flex;
+  flex-direction: column;
+  ${StyledScroll};
+`;
+
+export const AddBtn = styled.div`
+  text-align: center;
+  padding: 12px 0;
+  font-weight: 600;
+  ::before {
+    content: "+";
+    color: white;
+    margin-right: 5px;
+    padding: 0px 5px;
+    background-color: #feae11;
+    border-radius: 100px;
+  }
 `;

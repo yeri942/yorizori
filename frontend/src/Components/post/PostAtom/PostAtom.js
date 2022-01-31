@@ -5,21 +5,31 @@ export const stepUrlAtom = atom({
   default: null,
 });
 
-//요리제목
-export const recipeNameAtom = atom({
-  key: "recipeName",
-  default: null,
-});
-//요리소개
-export const descAtom = atom({
-  key: "desc",
-  default: null,
+export const IngredientsListAtom = atom({
+  key: "IngredientListState",
+  default: [1],
 });
 
-export const stepOneAtom = atom({
-  key: "stepOne",
-  default: {
-    recipeName: "",
-    desc: "",
-  },
+export const SourceListAtom = atom({
+  key: "SourceListState",
+  default: [1],
 });
+
+// //요리제목
+// export const recipeNameAtom = atom({
+//   key: "recipeName",
+//   default: null,
+// });
+// //요리소개
+// export const descAtom = atom({
+//   key: "desc",
+//   default: null,
+// });
+
+// export const stepOneAtom = atom({
+//   key: "stepOne",
+//   default: {
+//     recipeName: '',
+//     desc: '',
+//   },
+// });

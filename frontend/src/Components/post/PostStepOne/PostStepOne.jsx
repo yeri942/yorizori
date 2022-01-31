@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import PostTemplete from "../PostTemplete";
-import { StyledP, StyledScroll } from "../commonStyle";
+import { StyledP, StyledScroll, ResetTextarea } from "../commonStyle";
+
 // import { stepOneAtom } from "../PostAtom/PostAtom";
 import { debounce } from "lodash";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
@@ -74,6 +75,7 @@ const TitleInput = styled.input`
   font-weight: bold;
   padding-left: 24px;
   padding-right: 60px;
+  ${ResetTextarea}
 `;
 const ImgUploadLabel = styled.label`
   position: absolute;
@@ -99,11 +101,8 @@ const StyledTextArea = styled.textarea`
   box-sizing: border-box;
   border-radius: 50px;
   padding: 50px 45px 0 45px;
-  resize: none;
   font-size: 1rem;
   font-weight: bold;
-  :focus {
-    outline: none;
-  }
+  ${ResetTextarea}
   ${StyledScroll}
 `;
