@@ -180,7 +180,7 @@ export const Preview = styled.div`
   left: 110px;
 
   ${(props) =>
-    props.order &&
+    props.cookImgPreview &&
     css`
       top: -37px;
       bottom: 0px;

@@ -95,12 +95,11 @@ const OrderList = () => {
               key={`order_${index}`}
             ></Ingredient>
             <TimeWrapper key={`TimeWrapper_${index}`}>
-              {/* {subImage.file[index + 1] ? (
-                <Preview />
+              {subImage.file[index + 1] ? (
+                <Preview cookImgPreview />
               ) : (
                 <ImgUploadLabel key={`ImgUploadLabel_${index}`} htmlFor={`main_img_${index}`} />
-              )} */}
-              <ImgUploadLabel key={`ImgUploadLabel_${index}`} htmlFor={`main_img_${index}`} />
+              )}
               <ImgUploadInput
                 name={`${index + 1}`}
                 onChange={(e) => {
