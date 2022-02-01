@@ -1,11 +1,7 @@
+const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 
-const Ingredient = new Schema({
-  name: String,
-  amount: String,
-});
-
-const PostSchema = new Schema(
+const PostSchema = new mongoose.Schema(
   {
     //레시피명
     recipeName: {
@@ -14,6 +10,18 @@ const PostSchema = new Schema(
     },
     //요리 소개
     desc: String,
+    //재료 [{재료1:'김치',양:'두주먹'}]
+    ingredient: [{ name: String, amount: String }],
+    //양념
+    seasoning: [{ name: String, amount: String }],
+    //조리과정
+    process: [{ type: String, required: true }],
+    //조리과정 이미지
+    processImage: [{ type: String }],
+    // 썸네일
+    thumbnail: { type: String, required: true, default: "" },
+    //완성 사진을 받는 부분입니다.
+    doneImage: [{ type: String }],
     //종류별
     category: String,
     //상황별 :
@@ -28,18 +36,7 @@ const PostSchema = new Schema(
     time: Number,
     //난이도
     diffic: Number,
-    //재료 [{재료1:'김치',양:'두주먹'}]
-    ingredient: [{ name: String, amount: String }],
-    //양념
-    seasoning: [{ name: String, amount: String }],
-    //조리과정
-    process: [{ type: String }],
-    //조리과정 이미지
-    processImage: [{ type: String }],
-    // 썸네일
-    thumbnail: { type: String, required: true, default: "" },
-    //완성 사진을 받는 부분입니다.
-    doneImage: [{ type: String }],
+
     //작성글이 받은 좋아요 수
     likeCount: {
       type: Number,
