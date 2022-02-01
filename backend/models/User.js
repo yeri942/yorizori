@@ -3,7 +3,6 @@ const shortId = require("./types/short-id");
 
 const userSchema = new mongoose.Schema(
   {
-    shortId,
     email: {
       type: String,
       required: true,
@@ -27,4 +26,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);
