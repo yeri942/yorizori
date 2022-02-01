@@ -30,8 +30,6 @@ const IngredientsList = () => {
       const getIngredients = JSON.parse(localStorage.getItem("ingredient"));
       ingredientsList.forEach((el, idx) => {
         setValue(`ingredient_${idx + 1}`, eval(`getIngredients.ingredient_${idx + 1}`));
-      });
-      ingredientsList.forEach((el, idx) => {
         setValue(`volume_${idx + 1}`, eval(`getIngredients.volume_${idx + 1}`));
       });
     }

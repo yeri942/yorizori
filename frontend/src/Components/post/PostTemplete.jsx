@@ -13,7 +13,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
   const navigate = useNavigate();
 
   return (
-    <PostTempleteBlock>
+    <PostTempleteBlock autocomplete="off" onsubmit="return false">
       <PostNav />
       <StepDiv>STEP {stepNum}</StepDiv>
       <Pre>
@@ -37,6 +37,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       </BtnWrapper>
       <StyledBtn
         page={page}
+        type="submit"
         onClick={() => {
           localStorage.clear();
         }}

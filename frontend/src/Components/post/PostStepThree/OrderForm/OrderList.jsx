@@ -30,9 +30,8 @@ const OrderList = () => {
       const getOrder = JSON.parse(localStorage.getItem("order"));
       OrderList.forEach((el, idx) => {
         setValue(`order_${idx + 1}`, eval(`getOrder.order_${idx + 1}`));
-      });
-      OrderList.forEach((el, idx) => {
-        setValue(`volume_${idx + 1}`, eval(`getOrder.volume_${idx + 1}`));
+        setValue(`orderTimeMin_${idx + 1}`, eval(`getOrder.orderTimeMin_${idx + 1}`));
+        setValue(`orderTimeSec_${idx + 1}`, eval(`getOrder.orderTimeSec_${idx + 1}`));
       });
     }
   }, []);
@@ -54,6 +53,7 @@ const OrderList = () => {
                 {...register(`orderTimeMin_${index + 1}`)}
                 placeholder="05"
                 type="number"
+                min="0"
                 key={`TimeInput_min_${index}`}
               />
               <p>:</p>
@@ -61,6 +61,8 @@ const OrderList = () => {
                 {...register(`orderTimeSec_${index + 1}`)}
                 placeholder="00"
                 type="number"
+                max="60"
+                min="0"
                 key={`TimeInput_sec_${index}`}
               />
             </TimeWrapper>
@@ -104,6 +106,7 @@ const TimeInput = styled.input`
   font-weight: bold;
   border: none;
   padding-left: 7px;
+  height: 16px;
 `;
 
 const Ingredient = styled.textarea`

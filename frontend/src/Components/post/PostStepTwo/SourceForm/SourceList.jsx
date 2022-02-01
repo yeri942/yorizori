@@ -30,8 +30,6 @@ const SourceList = () => {
       const getSource = JSON.parse(localStorage.getItem("source"));
       SourceList.forEach((el, idx) => {
         setValue(`source_${idx + 1}`, eval(`getSource.source_${idx + 1}`));
-      });
-      SourceList.forEach((el, idx) => {
         setValue(`volume_${idx + 1}`, eval(`getSource.volume_${idx + 1}`));
       });
     }
