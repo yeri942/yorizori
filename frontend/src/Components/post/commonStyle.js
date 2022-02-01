@@ -168,3 +168,81 @@ export const DropdownWrapper = styled.div`
       }
     `}
 `;
+
+export const Preview = styled.div`
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 26px;
+  height: 20px;
+  background-image: url("../images/PreviewEye.png");
+  bottom: 18px;
+  left: 110px;
+
+  ${(props) =>
+    props.order &&
+    css`
+      top: -37px;
+      bottom: 0px;
+      right: 15px;
+      left: 53px;
+    `}
+`;
+export const ModalBox = styled.div`
+  position: fixed;
+  top: 200px;
+  width: 346px;
+  height: 300px;
+  background-color: white;
+  border-radius: 11px;
+  font-weight: 900;
+  display: ${(props) => (props.modalState === true ? "flex" : "none")};
+
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 999;
+`;
+
+export const ImgBox = styled.img`
+  width: 300px;
+  height: 300px;
+  position: relative;
+`;
+
+export const DeleteImg = styled.div`
+  position: absolute;
+  border-radius: 10px;
+  background-color: #888;
+  color: white;
+  padding: 5px;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+`;
+
+export const ModalClose = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #888;
+  color: white;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+`;
+
+export const ModalBackground = styled.div`
+  display: ${(props) => (props.modalState === true ? "flex" : "none")};
+
+  position: fixed;
+  top: -150px;
+  width: 100%;
+  height: 150%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+  justify-content: center;
+  overflow: hidden;
+`;

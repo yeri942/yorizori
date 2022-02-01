@@ -20,6 +20,24 @@ export const OrderListAtom = atom({
   default: ["cdsacqwecasd"],
 });
 
+export const MainImageStateAtom = atom({
+  key: "MainImageState",
+  default: {
+    file: [],
+    state: false,
+    preview: "",
+  },
+});
+
+export const SubImageStateAtom = atom({
+  key: "SubImageState",
+  default: {
+    file: Array.from({ length: 50 }, () => null),
+    state: false,
+    preview: Array.from({ length: 50 }, () => null),
+  },
+});
+
 // //요리제목
 // export const recipeNameAtom = atom({
 //   key: "recipeName",

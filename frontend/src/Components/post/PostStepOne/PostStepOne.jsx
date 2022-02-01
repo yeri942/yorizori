@@ -1,65 +1,115 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import PostTemplete from "../PostTemplete";
-import { StyledP, StyledScroll, ResetTextarea } from "../commonStyle";
-
-// import { stepOneAtom } from "../PostAtom/PostAtom";
-import { debounce } from "lodash";
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import {
+  StyledP,
+  StyledScroll,
+  ResetTextarea,
+  Preview,
+  ModalBox,
+  ImgBox,
+  DeleteImg,
+  ModalClose,
+  ModalBackground,
+} from "../commonStyle";
+import { useForm } from "react-hook-form";
+import { MainImageStateAtom } from "../PostAtom/PostAtom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const PostStepOne = () => {
+  const ImgLabel = useRef();
+  const ImgInput = useRef();
+  const PreviewRef = useRef();
+  const { register, watch, setValue } = useForm();
+
+  const mainImage = useRecoilValue(MainImageStateAtom);
+  const setMainImage = useSetRecoilState(MainImageStateAtom);
+
+  const [modalState, setModalState] = useState(false);
   const [stepOne, setStepOne] = useState({
     recipeName: "",
     desc: "",
   });
-  const { recipeName, desc } = stepOne;
-  const stateRef = useRef([]);
+
   useEffect(() => {
-    if (localStorage.getItem("stepOne")) {
-      const savedState = JSON.parse(localStorage.getItem("stepOne"));
-      const { recipeName, desc } = savedState;
-      setStepOne({
-        recipeName: recipeName,
-        desc: desc,
-      });
+    const subscription = watch((value) => {
+      localStorage.setItem("TitleAndDesc", JSON.stringify(value));
+    });
+
+    PreviewRef.current.src = mainImage.preview;
+  }, [watch, mainImage]);
+
+  useEffect(() => {
+    if (localStorage.getItem("TitleAndDesc")) {
+      const stepOne = JSON.parse(localStorage.getItem("TitleAndDesc"));
+      setValue("recipeName", stepOne.recipeName);
+      setValue("desc", stepOne.desc);
     }
   }, []);
 
-  const saveData = () => {
-    localStorage.setItem("stepOne", JSON.stringify(stepOne));
+  const handleImage = (e) => {
+    // ImgInput.current.toDataURL("data:image/png;");
+    let cur_file = e.target.files[0];
+    const filesInArr = Array.from(e.target.files);
+    if (cur_file) {
+      setMainImage({
+        ...mainImage,
+        file: filesInArr,
+        state: true,
+        preview: window.URL.createObjectURL(cur_file),
+      });
+    }
   };
 
-  useEffect(() => {
-    saveData();
-  }, [stepOne]);
+  const openPreview = () => {
+    setModalState(true);
+  };
 
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    setStepOne({
-      ...stepOne,
-      [name]: value,
+  const closePreview = () => {
+    setModalState(false);
+  };
+
+  const changeImg = () => {
+    setModalState(false);
+    setMainImage({
+      ...mainImage,
+      state: false,
     });
   };
 
   const [test, setTest] = useState(true);
   return (
     <PostTemplete stepNum={1} page={1} request={"레시피 제목을 입력해주세요."}>
-      <TitleInput
-        name="recipeName"
-        onChange={onChange}
-        value={recipeName}
-        ref={(el) => (stateRef.current[0] = el)}
-        placeholder="마늘 50개 들어간 알리오 올리오"
+      <ModalBackground
+        modalState={modalState}
+        onClick={() => {
+          setModalState(false);
+        }}
       />
+      <ModalBox modalState={modalState}>
+        <ImgBox ref={PreviewRef} src="" alt="none" />
+        <DeleteImg onClick={changeImg}>삭제하기</DeleteImg>
+        <ModalClose onClick={closePreview}>x</ModalClose>
+      </ModalBox>
+
+      <TitleInput {...register(`recipeName`)} placeholder="마늘 50개 들어간 알리오 올리오" />
       <PositionRelative>
-        <ImgUploadLabel htmlFor="main_img" />
-        <ImgUploadInput id="main_img" type="file" />
+        {mainImage.state ? (
+          <Preview onClick={openPreview} />
+        ) : (
+          <ImgUploadLabel ref={ImgLabel} htmlFor="main_img" />
+        )}
+        <ImgUploadInput
+          accept="image/*"
+          ref={ImgInput}
+          onChange={handleImage}
+          id="main_img"
+          type="file"
+        />
       </PositionRelative>
       <StyledP stepOne>간단한 레시피 소개를 해주세요.{<br />}(필수사항은 아닙니다.)</StyledP>
       <StyledTextArea
-        onChange={onChange}
-        value={desc}
-        name="desc"
+        {...register(`desc`)}
         placeholder="직접 백종원 선생님의 레시피를 참고하여 변형하였습니다. "
       ></StyledTextArea>
     </PostTemplete>
@@ -79,7 +129,10 @@ const TitleInput = styled.input`
   padding-right: 60px;
   ${ResetTextarea}
 `;
+
 const ImgUploadLabel = styled.label`
+  background-repeat: no-repeat;
+  background-size: contain;
   position: absolute;
   width: 26px;
   height: 28px;

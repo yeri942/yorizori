@@ -1,17 +1,36 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import { ResetTextarea } from "../../commonStyle";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  ResetTextarea,
+  Preview,
+  ModalBox,
+  ImgBox,
+  DeleteImg,
+  ModalClose,
+  ModalBackground,
+} from "../../commonStyle";
 import { useForm } from "react-hook-form";
-import { OrderListAtom } from "../../PostAtom/PostAtom";
+import { OrderListAtom, SubImageStateAtom } from "../../PostAtom/PostAtom";
 
 const OrderList = () => {
   const [OrderList, setOrderList] = useRecoilState(OrderListAtom);
+  const subImage = useRecoilValue(SubImageStateAtom);
+  const setSubImage = useSetRecoilState(SubImageStateAtom);
   const deleteIngredient = (index) => {
     setOrderList((oldList) => {
-      const newList = oldList.filter(function (el, i) {
-        return index !== i;
+      const newList = oldList.filter(function (el, idx) {
+        return index !== idx;
       });
+      return newList;
+    });
+
+    setSubImage((oldList) => {
+      const newList = {
+        ...oldList,
+        file: oldList.file.filter((el, idx) => index + 1 !== idx),
+        preview: oldList.preview.filter((el, idx) => index + 1 !== idx),
+      };
       return newList;
     });
   };
@@ -23,7 +42,8 @@ const OrderList = () => {
       console.log(value);
       localStorage.setItem("order", JSON.stringify(value));
     });
-  }, [watch]);
+    console.log(subImage);
+  }, [watch, subImage]);
 
   useEffect(() => {
     if (localStorage.getItem("order")) {
@@ -35,6 +55,34 @@ const OrderList = () => {
       });
     }
   }, []);
+  const handleImage = (e, index) => {
+    let cur_file = e.target.files[0];
+    console.log(e.target);
+    const filesInArr = Array.from(e.target.files);
+    const previewArr = [window.URL.createObjectURL(cur_file)];
+    if (cur_file) {
+      setSubImage((oldList) => {
+        const newList = {
+          ...oldList,
+          file: oldList.file.map((el, idx) => {
+            if (el) {
+              return el;
+            } else if (idx === index + 1) {
+              return cur_file;
+            }
+          }),
+          preview: oldList.preview.map((el, idx) => {
+            if (el) {
+              return el;
+            } else if (idx === index + 1) {
+              return window.URL.createObjectURL(cur_file);
+            }
+          }),
+        };
+        return newList;
+      });
+    }
+  };
 
   return (
     <>
@@ -47,8 +95,22 @@ const OrderList = () => {
               key={`order_${index}`}
             ></Ingredient>
             <TimeWrapper key={`TimeWrapper_${index}`}>
-              <ImgUploadLabel htmlFor="main_img" />
-              <ImgUploadInput id="main_img" type="file" />
+              {/* {subImage.file[index + 1] ? (
+                <Preview />
+              ) : (
+                <ImgUploadLabel key={`ImgUploadLabel_${index}`} htmlFor={`main_img_${index}`} />
+              )} */}
+              <ImgUploadLabel key={`ImgUploadLabel_${index}`} htmlFor={`main_img_${index}`} />
+              <ImgUploadInput
+                name={`${index + 1}`}
+                onChange={(e) => {
+                  handleImage(e, index);
+                }}
+                key={`ImgUploadInput_${index}`}
+                id={`main_img_${index}`}
+                type="file"
+                accept="image/*"
+              />
               <TimeInput
                 {...register(`orderTimeMin_${index + 1}`)}
                 placeholder="05"
