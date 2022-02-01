@@ -2,6 +2,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 import PostTemplete from "../PostTemplete";
 import { StyledP, ContainerDiv } from "../commonStyle";
+import { Dropdown } from "react-dropdown-now";
+import CategoryDropdown from "./CategoryDropdown";
+import CookInfoDropdown from "./CookInfoDropdown";
 
 const PostStepFourBlock = styled.div``;
 
@@ -15,9 +18,14 @@ const PostStepFour = () => {
       }
     >
       <StyledP stepFour>카테고리</StyledP>
-      <ContainerDiv></ContainerDiv>
+      <ContainerDiv drop>
+        <CategoryDropdown />
+      </ContainerDiv>
+
       <StyledP stepFour>요리정보</StyledP>
-      <ContainerDiv small></ContainerDiv>
+      <ContainerDiv drop small>
+        <CookInfoDropdown />
+      </ContainerDiv>
     </PostTemplete>
   );
 };

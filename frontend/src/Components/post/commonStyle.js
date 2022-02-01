@@ -47,14 +47,14 @@ export const ResetTextarea = css`
 
 export const ContainerDiv = styled.div`
   width: 321px;
-  overflow-y: auto;
+  overflow-y: ${(props) => (props.drop ? "visible" : "auto")};
 
   height: ${(props) => {
     if (props.big) {
       return "321px";
     }
     if (props.small) {
-      return "75px";
+      return "80px";
     }
     return "147px";
   }};
@@ -66,6 +66,12 @@ export const ContainerDiv = styled.div`
   display: flex;
   flex-direction: column;
   ${StyledScroll};
+
+  ${(props) =>
+    props.drop &&
+    css`
+      padding: 7px 15px 0px 15px;
+    `}
 `;
 
 export const AddBtn = styled.div`
@@ -80,4 +86,85 @@ export const AddBtn = styled.div`
     background-color: #feae11;
     border-radius: 100px;
   }
+`;
+
+export const DropdownWrapper = styled.div`
+  display: flex;
+  margin: 5px 0;
+  justify-content: center;
+
+  .rdn {
+    position: relative;
+  }
+
+  .rdn-drop {
+    position: absolute;
+    top: 40px;
+    left: 2px;
+    z-index: 999;
+  }
+
+  .rdn-control {
+    position: relative;
+  }
+
+  .rdn-control-arrow {
+    width: 14px;
+    height: 14px;
+    /* border-top: 10px solid #feae11;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent; */
+    background-image: url("../images/dropArrow.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    top: 8px;
+    right: 6px;
+  }
+
+  & > div {
+    width: 132px;
+    height: 55px;
+    border: 2px solid #feae11;
+    border-radius: 50px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-weight: 900;
+    text-align: center;
+    padding-top: 14px;
+    padding-right: 20px;
+    &:not(:last-child) {
+      margin-right: 11px;
+    }
+    & > div:not(:first-child) {
+      background-color: white;
+      width: 120px;
+      z-index: 100;
+      color: #feae11;
+      /* transform: translateY(-5px) translateX(10px); */
+      border-radius: 10px;
+      border: 2px solid #feae11;
+    }
+    .last:not(:first-child) {
+      /* transform: translateY(-5px) translateX(-60px); */
+    }
+    .situation:nth-child(2) > :nth-child(3) {
+      font-size: 13px;
+    }
+  }
+
+  ${(props) =>
+    props.small &&
+    css`
+      & > div {
+        width: 90px;
+        font-size: 0.9rem;
+      }
+
+      .rdn-control-arrow {
+        top: 8px;
+        right: -5px;
+        width: 10px;
+      }
+    `}
 `;
