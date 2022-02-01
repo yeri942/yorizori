@@ -5,15 +5,48 @@ import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-// import { stepUrlAtom } from "./PostAtom/PostAtom";
+import { SubImageStateAtom, MainImageStateAtom } from "./PostAtom/PostAtom";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
-  // const stepUrl = useRecoilValue(stepUrlAtom);
-  // const setStepUrl = useSetRecoilState(stepUrlAtom);
+  const subImage = useRecoilValue(SubImageStateAtom);
+  const mainImage = useRecoilValue(MainImageStateAtom);
   const navigate = useNavigate();
+  const formData = new FormData();
+
+  const testclick = () => {
+    formData.append("mainImg", mainImage.file[0]);
+    console.log(mainImage.file[0]);
+
+    const category = JSON.parse(localStorage.getItem("category"));
+    const cookInfo = JSON.parse(localStorage.getItem("cookInfo"));
+    const TitleAndDesc = JSON.parse(localStorage.getItem("TitleAndDesc"));
+    const ingredient = JSON.parse(localStorage.getItem("ingredient"));
+    const source = JSON.parse(localStorage.getItem("source"));
+    const order = JSON.parse(localStorage.getItem("order"));
+    const dataSet = {
+      ...category,
+      ...cookInfo,
+      ...TitleAndDesc,
+      ...ingredient,
+      ...source,
+      ...order,
+    };
+    subImage.file.forEach((el, idx) => {
+      if (el) {
+        console.log(el);
+        formData.append(`subimg_${idx}`, el);
+        console.log(`subimg_${idx} : ${formData.getAll(`subimg_${idx}`)}}`);
+      }
+    });
+    console.log("imgCheck " + formData.getAll("mainImg"));
+    console.log(subImage);
+  };
 
   return (
     <PostTempleteBlock autocomplete="off" onsubmit="return false">
+      <button type="button" onClick={testclick}>
+        테스트버튼
+      </button>
       <PostNav />
       <StepDiv>STEP {stepNum}</StepDiv>
       <Pre>
