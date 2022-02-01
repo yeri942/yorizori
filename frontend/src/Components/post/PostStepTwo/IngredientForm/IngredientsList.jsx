@@ -9,6 +9,9 @@ const IngredientsList = () => {
   const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
   const deleteIngredient = (index) => {
     setIngredientsList((oldList) => {
+      setValue(`ingredient_${index + 1}`, "");
+      setValue(`volume_${index + 1}`, "");
+
       const newList = oldList.filter(function (el, i) {
         return index !== i;
       });

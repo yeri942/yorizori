@@ -1,39 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  ResetTextarea,
-  Preview,
-  ModalBox,
-  ImgBox,
-  DeleteImg,
-  ModalClose,
-  ModalBackground,
-} from "../../commonStyle";
+import { ResetTextarea, Preview } from "../../commonStyle";
 import { useForm } from "react-hook-form";
-import { OrderListAtom, SubImageStateAtom } from "../../PostAtom/PostAtom";
+import {
+  OrderListAtom,
+  SubImageStateAtom,
+  SubModalStateAtom,
+  DeleteIndexAtom,
+} from "../../PostAtom/PostAtom";
 
 const OrderList = () => {
   const [OrderList, setOrderList] = useRecoilState(OrderListAtom);
+  const [subModalState, setSubModalState] = useRecoilState(SubModalStateAtom);
+  const [deleteIndex, setDeleteIndex] = useRecoilState(DeleteIndexAtom);
   const subImage = useRecoilValue(SubImageStateAtom);
   const setSubImage = useSetRecoilState(SubImageStateAtom);
-  const deleteIngredient = (index) => {
-    setOrderList((oldList) => {
-      const newList = oldList.filter(function (el, idx) {
-        return index !== idx;
-      });
-      return newList;
-    });
-
-    setSubImage((oldList) => {
-      const newList = {
-        ...oldList,
-        file: oldList.file.filter((el, idx) => index + 1 !== idx),
-        preview: oldList.preview.filter((el, idx) => index + 1 !== idx),
-      };
-      return newList;
-    });
-  };
 
   const { register, watch, setValue } = useForm();
 
@@ -55,6 +37,30 @@ const OrderList = () => {
       });
     }
   }, []);
+
+  const deleteIngredient = (index) => {
+    setValue(`order_${index + 1}`, "");
+    setValue(`orderTimeMin_${index + 1}`, "");
+    setValue(`orderTimeSec_${index + 1}`, "");
+    setOrderList((oldList) => {
+      const newList = oldList.filter(function (el, idx) {
+        return index !== idx;
+      });
+      return newList;
+    });
+
+    setSubImage((oldList) => {
+      const newList = {
+        ...oldList,
+        file: oldList.file.filter((el, idx) => Number(index + 1) !== Number(idx)),
+        preview: oldList.preview.filter((el, idx) => Number(index + 1) !== Number(idx)),
+      };
+      newList.file.push(0);
+      newList.preview.push(0);
+      return newList;
+    });
+  };
+
   const handleImage = (e, index) => {
     let cur_file = e.target.files[0];
     console.log(e.target);
@@ -84,6 +90,15 @@ const OrderList = () => {
     }
   };
 
+  const openPreview = (e) => {
+    setSubModalState({
+      ...subModalState,
+      state: true,
+      index: e.target.dataset.name,
+    });
+    setDeleteIndex(e.target.dataset.name);
+  };
+
   return (
     <>
       {OrderList.map((item, index) => {
@@ -96,12 +111,16 @@ const OrderList = () => {
             ></Ingredient>
             <TimeWrapper key={`TimeWrapper_${index}`}>
               {subImage.file[index + 1] ? (
-                <Preview cookImgPreview />
+                <Preview
+                  key={`Preview_${index}`}
+                  data-name={`${index + 1}`}
+                  cookImgPreview
+                  onClick={openPreview}
+                />
               ) : (
                 <ImgUploadLabel key={`ImgUploadLabel_${index}`} htmlFor={`main_img_${index}`} />
               )}
               <ImgUploadInput
-                name={`${index + 1}`}
                 onChange={(e) => {
                   handleImage(e, index);
                 }}

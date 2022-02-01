@@ -32,27 +32,26 @@ export const MainImageStateAtom = atom({
 export const SubImageStateAtom = atom({
   key: "SubImageState",
   default: {
-    file: Array.from({ length: 50 }, () => null),
+    file: Array.from({ length: 100 }, () => 0),
     state: false,
-    preview: Array.from({ length: 50 }, () => null),
+    preview: Array.from({ length: 100 }, () => 0),
   },
 });
 
-// //요리제목
-// export const recipeNameAtom = atom({
-//   key: "recipeName",
-//   default: null,
-// });
-// //요리소개
-// export const descAtom = atom({
-//   key: "desc",
-//   default: null,
-// });
+export const SubModalStateAtom = atom({
+  key: "SubModalState",
+  default: {
+    state: false,
+    index: "",
+  },
+});
 
-// export const stepOneAtom = atom({
-//   key: "stepOne",
-//   default: {
-//     recipeName: '',
-//     desc: '',
-//   },
-// });
+export const PreviewRefAtom = atom({
+  key: "PreviewRef",
+  default: null,
+});
+
+export const DeleteIndexAtom = atom({
+  key: "deleteIndex",
+  default: 0,
+});

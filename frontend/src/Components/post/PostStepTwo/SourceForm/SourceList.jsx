@@ -7,7 +7,11 @@ import { useForm } from "react-hook-form";
 
 const SourceList = () => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
+  const { register, watch, setValue } = useForm();
   const deleteIngredient = (index) => {
+    setValue(`source_${index + 1}`, "");
+    setValue(`volume_${index + 1}`, "");
+
     setSourceList((oldList) => {
       const newList = oldList.filter(function (el, i) {
         return index !== i;
@@ -15,8 +19,6 @@ const SourceList = () => {
       return newList;
     });
   };
-
-  const { register, watch, setValue } = useForm();
 
   useEffect(() => {
     const subscription = watch((value) => {

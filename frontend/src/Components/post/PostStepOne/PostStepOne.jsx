@@ -37,6 +37,7 @@ const PostStepOne = () => {
     });
 
     PreviewRef.current.src = mainImage.preview;
+    console.log(mainImage);
   }, [watch, mainImage]);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const PostStepOne = () => {
   const changeImg = () => {
     setModalState(false);
     setMainImage({
-      ...mainImage,
+      file: [],
       state: false,
     });
   };

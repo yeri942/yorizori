@@ -197,11 +197,16 @@ export const ModalBox = styled.div`
   border-radius: 11px;
   font-weight: 900;
   display: ${(props) => (props.modalState === true ? "flex" : "none")};
-
   justify-content: center;
   align-items: center;
   flex-direction: column;
   z-index: 999;
+
+  ${(props) =>
+    props.sub &&
+    css`
+      right: 7px;
+    `}
 `;
 
 export const ImgBox = styled.img`
