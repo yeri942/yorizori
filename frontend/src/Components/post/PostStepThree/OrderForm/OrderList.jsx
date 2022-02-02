@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ResetTextarea, Preview } from "../../commonStyle";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import {
   OrderListAtom,
   SubImageStateAtom,
@@ -17,26 +17,27 @@ const OrderList = () => {
   const subImage = useRecoilValue(SubImageStateAtom);
   const setSubImage = useSetRecoilState(SubImageStateAtom);
 
-  const { register, watch, setValue } = useForm();
+  const { watch, setValue } = useForm();
+  const { register } = useFormContext();
 
-  useEffect(() => {
-    const subscription = watch((value) => {
-      console.log(value);
-      localStorage.setItem("order", JSON.stringify(value));
-    });
-    console.log(subImage);
-  }, [watch, subImage]);
+  // useEffect(() => {
+  //   const subscription = watch((value) => {
+  //     console.log(value);
+  //     localStorage.setItem("order", JSON.stringify(value));
+  //   });
+  //   console.log(subImage);
+  // }, [watch, subImage]);
 
-  useEffect(() => {
-    if (localStorage.getItem("order")) {
-      const getOrder = JSON.parse(localStorage.getItem("order"));
-      OrderList.forEach((el, idx) => {
-        setValue(`order_${idx + 1}`, eval(`getOrder.order_${idx + 1}`));
-        setValue(`orderTimeMin_${idx + 1}`, eval(`getOrder.orderTimeMin_${idx + 1}`));
-        setValue(`orderTimeSec_${idx + 1}`, eval(`getOrder.orderTimeSec_${idx + 1}`));
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("order")) {
+  //     const getOrder = JSON.parse(localStorage.getItem("order"));
+  //     OrderList.forEach((el, idx) => {
+  //       setValue(`order_${idx + 1}`, eval(`getOrder.order_${idx + 1}`));
+  //       setValue(`orderTimeMin_${idx + 1}`, eval(`getOrder.orderTimeMin_${idx + 1}`));
+  //       setValue(`orderTimeSec_${idx + 1}`, eval(`getOrder.orderTimeSec_${idx + 1}`));
+  //     });
+  //   }
+  // }, []);
 
   const deleteIngredient = (index) => {
     setValue(`order_${index + 1}`, "");

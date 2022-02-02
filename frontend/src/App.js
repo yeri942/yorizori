@@ -13,6 +13,7 @@ import PostStepOnePage from "./pages/PostStepOnePage";
 import PostStepTwoPage from "./pages/PostStepTwoPage";
 import PostStepThreePage from "./pages/PostStepThreePage";
 import PostStepFourPage from "./pages/PostStepFourPage";
+import PostPage from "./pages/PostPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route element={<PostStepFourPage />} path="/poststep4" />
         <Route element={<MyPage />} path="/users/mypage" />
         <Route element={<MyPageEdit />} path="/users/edit" />
+        <Route element={<PostPage />} path="/post" />
       </Routes>
     </RecoilRoot>
   );

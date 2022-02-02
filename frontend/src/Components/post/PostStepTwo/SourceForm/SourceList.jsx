@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { SourceListAtom } from "../../PostAtom/PostAtom";
 import { ResetTextarea } from "../../commonStyle";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 
 const SourceList = () => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
-  const { register, watch, setValue } = useForm();
+  const { watch, setValue } = useForm();
+  const { register } = useFormContext();
   const deleteIngredient = (index) => {
     setValue(`source_${index + 1}`, "");
     setValue(`volume_${index + 1}`, "");
@@ -20,22 +21,22 @@ const SourceList = () => {
     });
   };
 
-  useEffect(() => {
-    const subscription = watch((value) => {
-      console.log(value);
-      localStorage.setItem("source", JSON.stringify(value));
-    });
-  }, [watch]);
+  // useEffect(() => {
+  //   const subscription = watch((value) => {
+  //     console.log(value);
+  //     localStorage.setItem("source", JSON.stringify(value));
+  //   });
+  // }, [watch]);
 
-  useEffect(() => {
-    if (localStorage.getItem("source")) {
-      const getSource = JSON.parse(localStorage.getItem("source"));
-      SourceList.forEach((el, idx) => {
-        setValue(`source_${idx + 1}`, eval(`getSource.source_${idx + 1}`));
-        setValue(`volume_${idx + 1}`, eval(`getSource.volume_${idx + 1}`));
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("source")) {
+  //     const getSource = JSON.parse(localStorage.getItem("source"));
+  //     SourceList.forEach((el, idx) => {
+  //       setValue(`source_${idx + 1}`, eval(`getSource.source_${idx + 1}`));
+  //       setValue(`volume_${idx + 1}`, eval(`getSource.volume_${idx + 1}`));
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>

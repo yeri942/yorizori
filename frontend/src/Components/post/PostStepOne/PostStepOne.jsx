@@ -12,7 +12,7 @@ import {
   ModalClose,
   ModalBackground,
 } from "../commonStyle";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { MainImageStateAtom } from "../PostAtom/PostAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -20,8 +20,8 @@ const PostStepOne = () => {
   const ImgLabel = useRef();
   const ImgInput = useRef();
   const PreviewRef = useRef();
-  const { register, watch, setValue } = useForm();
-
+  const { watch, setValue } = useForm();
+  const { register } = useFormContext();
   const mainImage = useRecoilValue(MainImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
 
@@ -32,20 +32,25 @@ const PostStepOne = () => {
   });
 
   useEffect(() => {
-    const subscription = watch((value) => {
-      localStorage.setItem("TitleAndDesc", JSON.stringify(value));
-    });
+    // const subscription = watch((value) => {
+    //   localStorage.setItem("TitleAndDesc", JSON.stringify(value));
+    // });
 
     PreviewRef.current.src = mainImage.preview;
     console.log(mainImage);
   }, [watch, mainImage]);
-  const formData = new FormData();
+
+  // useEffect(() => {
+  //   if (localStorage.getItem("TitleAndDesc")) {
+  //     const stepOne = JSON.parse(localStorage.getItem("TitleAndDesc"));
+  //     setValue("recipeName", stepOne.recipeName);
+  //     setValue("desc", stepOne.desc);
+  //   }
+  // }, []);
 
   const handleImage = (e) => {
-    // ImgInput.current.toDataURL("data:image/png;");
     let cur_file = e.target.files[0];
     const filesInArr = Array.from(e.target.files);
-    console.log(filesInArr[0]);
     if (cur_file) {
       setMainImage({
         ...mainImage,
@@ -53,23 +58,8 @@ const PostStepOne = () => {
         state: true,
         preview: window.URL.createObjectURL(cur_file),
       });
-      formData.append("images", mainImage.file[0]);
-      formData.append("test", cur_file);
-    }
-
-    console.log(formData.get("images"));
-    console.log(formData.get("test"));
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
     }
   };
-  useEffect(() => {
-    if (localStorage.getItem("TitleAndDesc")) {
-      const stepOne = JSON.parse(localStorage.getItem("TitleAndDesc"));
-      setValue("recipeName", stepOne.recipeName);
-      setValue("desc", stepOne.desc);
-    }
-  }, []);
 
   const openPreview = () => {
     setModalState(true);
@@ -87,7 +77,6 @@ const PostStepOne = () => {
     });
   };
 
-  const [test, setTest] = useState(true);
   return (
     <PostTemplete stepNum={1} page={1} request={"레시피 제목을 입력해주세요."}>
       <ModalBackground

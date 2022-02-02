@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { IngredientsListAtom } from "../../PostAtom/PostAtom";
 import { ResetTextarea } from "../../commonStyle";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 
 const IngredientsList = () => {
   const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
@@ -19,24 +19,25 @@ const IngredientsList = () => {
     });
   };
 
-  const { register, watch, setValue } = useForm();
+  const { watch, setValue } = useForm();
+  const { register } = useFormContext();
 
-  useEffect(() => {
-    const subscription = watch((value) => {
-      console.log(value);
-      localStorage.setItem("ingredient", JSON.stringify(value));
-    });
-  }, [watch]);
+  // useEffect(() => {
+  //   const subscription = watch((value) => {
+  //     console.log(value);
+  //     localStorage.setItem("ingredient", JSON.stringify(value));
+  //   });
+  // }, [watch]);
 
-  useEffect(() => {
-    if (localStorage.getItem("ingredient")) {
-      const getIngredients = JSON.parse(localStorage.getItem("ingredient"));
-      ingredientsList.forEach((el, idx) => {
-        setValue(`ingredient_${idx + 1}`, eval(`getIngredients.ingredient_${idx + 1}`));
-        setValue(`volume_${idx + 1}`, eval(`getIngredients.volume_${idx + 1}`));
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("ingredient")) {
+  //     const getIngredients = JSON.parse(localStorage.getItem("ingredient"));
+  //     ingredientsList.forEach((el, idx) => {
+  //       setValue(`ingredient_${idx + 1}`, eval(`getIngredients.ingredient_${idx + 1}`));
+  //       setValue(`volume_${idx + 1}`, eval(`getIngredients.volume_${idx + 1}`));
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>

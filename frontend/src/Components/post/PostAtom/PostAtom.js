@@ -55,3 +55,8 @@ export const DeleteIndexAtom = atom({
   key: "deleteIndex",
   default: 0,
 });
+
+export const pageStateAtom = atom({
+  key: "pageState",
+  default: 1,
+});

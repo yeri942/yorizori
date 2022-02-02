@@ -5,19 +5,14 @@ import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { SubImageStateAtom, MainImageStateAtom } from "./PostAtom/PostAtom";
+import { SubImageStateAtom, MainImageStateAtom, pageStateAtom } from "./PostAtom/PostAtom";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
-  const subImage = useRecoilValue(SubImageStateAtom);
-  const mainImage = useRecoilValue(MainImageStateAtom);
   const navigate = useNavigate();
-  const formData = new FormData();
-
+  const methods = useForm();
+  const onSubmit = (data) => console.log(data);
   const testclick = () => {
-    formData.append("mainImg", mainImage.file[0]);
-    console.log(mainImage.file[0]);
-    const test = formData;
-    console.log(test);
     const category = JSON.parse(localStorage.getItem("category"));
     const cookInfo = JSON.parse(localStorage.getItem("cookInfo"));
     const TitleAndDesc = JSON.parse(localStorage.getItem("TitleAndDesc"));
@@ -32,21 +27,10 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       ...source,
       ...order,
     };
-    formData.append("Json", JSON.stringify(dataSet));
-    subImage.file.forEach((el, idx) => {
-      if (el) {
-        formData.append(`subimg_${idx}`, el);
-        // console.log(`subimg : ${formData.get(`subimg_${idx}`)}}`);
-      }
-    });
-    console.log(formData.get("subimg_"));
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
   };
-
+  const setPageState = useSetRecoilState(pageStateAtom);
   return (
-    <PostTempleteBlock autocomplete="off" onsubmit="return false">
+    <PostTempleteBlock autocomplete="off" onSubmit={methods.handleSubmit(onSubmit)}>
       <button type="button" onClick={testclick}>
         테스트버튼
       </button>
@@ -58,16 +42,16 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       <ContentsWrapper>{children}</ContentsWrapper>
 
       <BtnWrapper page={page}>
-        <PageBtn type="button" onClick={() => navigate("/poststep1")}>
+        <PageBtn type="button" onClick={() => setPageState(1)}>
           [ 1 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => navigate("/poststep2")}>
+        <PageBtn type="button" onClick={() => setPageState(2)}>
           [ 2 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => navigate("/poststep3")}>
+        <PageBtn type="button" onClick={() => setPageState(3)}>
           [ 3 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => navigate("/poststep4")}>
+        <PageBtn type="button" onClick={() => setPageState(4)}>
           [ 4 ]
         </PageBtn>
       </BtnWrapper>
@@ -112,7 +96,7 @@ const StyledBtn = styled.button`
   }}
 `;
 
-const PostTempleteBlock = styled.form`
+const PostTempleteBlock = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
