@@ -12,10 +12,11 @@ const BottomNavBlock = styled.div`
   /* flex-direction: row; */
   border-top: 1px solid #c5c5c5;
   background-color: white;
+  justify-content: center;
 `;
 
 const IconImg = styled.div`
-  width: 12.5vh;
+  width: 90px;
 
   background-image: url(../images/BottomIcon.png);
   ${(props) =>
