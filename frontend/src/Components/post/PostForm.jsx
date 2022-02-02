@@ -2,7 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import PostTemplete from "./PostTemplete";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
-import { pageStateAtom, MainImageStateAtom } from "./PostAtom/PostAtom";
+import {
+  pageStateAtom,
+  MainImageStateAtom,
+  SubImageStateAtom,
+  categoryAtom,
+  cookInfoAtom,
+} from "./PostAtom/PostAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import PostStepOne from "./PostStepOne/PostStepOne";
 import PostStepTwo from "./PostStepTwo/PostStepTwo";
@@ -14,17 +20,23 @@ const PostFormBlock = styled.form``;
 const PostForm = () => {
   const pageState = useRecoilValue(pageStateAtom);
   const mainImage = useRecoilValue(MainImageStateAtom);
+  const cookInfo = useRecoilValue(cookInfoAtom);
+  const category = useRecoilValue(categoryAtom);
   const methods = useForm();
   const formData = new FormData();
   const onSubmit = (data) => {
     console.log(data);
+    const submitData = {
+      ...data,
+      ...cookInfo,
+      ...category,
+    };
+    console.log(submitData);
     formData.append("mainImage", mainImage.file);
-    console.log(mainImage.file);
   };
   return (
     <FormProvider {...methods}>
       <PostFormBlock onSubmit={methods.handleSubmit(onSubmit)}>
-        <button type="submit">테스트으으으</button>
         {pageState === 1 ? (
           <PostStepOne></PostStepOne>
         ) : pageState === 2 ? (
