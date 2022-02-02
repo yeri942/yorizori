@@ -9,11 +9,14 @@ import { SubImageStateAtom, MainImageStateAtom, pageStateAtom } from "./PostAtom
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
+  const pageState = useRecoilValue(pageStateAtom);
   const setPageState = useSetRecoilState(pageStateAtom);
   return (
     <PostTempleteBlock autocomplete="off">
       <PostNav />
+
       <StepDiv>STEP {stepNum}</StepDiv>
+
       <Pre>
         <StyledP temp>{request}</StyledP>
       </Pre>
@@ -48,6 +51,10 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
 };
 
 export default PostTemplete;
+
+const MarginAuto = styled.div`
+  margin: 0 auto;
+`;
 
 const Pre = styled.pre`
   margin: 0;
@@ -86,7 +93,7 @@ const StepDiv = styled.div`
   padding: 35px 20px 10px 30px;
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.5);
-  width: 100vw;
+  margin-right: 232px;
 `;
 
 const ContentsWrapper = styled.div`
