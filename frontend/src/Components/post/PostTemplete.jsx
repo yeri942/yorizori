@@ -20,7 +20,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       <Pre>
         <StyledP temp>{request}</StyledP>
       </Pre>
-      <ContentsWrapper>{children}</ContentsWrapper>
+      <ContentsWrapper pageState={pageState}>{children}</ContentsWrapper>
 
       <BtnWrapper page={page}>
         <PageBtn type="button" onClick={() => setPageState(1)}>
@@ -66,12 +66,11 @@ const StyledBtn = styled.button`
   background: #fcad2c;
   border-radius: 50px;
   color: white;
-  position: absolute;
-  bottom: 100px;
   font-size: 1.1rem;
   font-weight: 550;
   border: none;
   display: none;
+  margin-top: 10px;
   ${(props) => {
     if (props.page === 4) {
       return css`
@@ -102,31 +101,26 @@ const ContentsWrapper = styled.div`
   height: 50vh;
   width: 100vw;
   align-items: center;
+  ${(props) =>
+    props.pageState === 4 &&
+    css`
+      height: 42vh;
+    `}
 `;
 
 const BtnWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 100px;
-  height: 100px;
+  margin-top: 10px;
   button:nth-child(${(props) => props.page}) {
     color: #feae11;
   }
-  ${(props) => {
-    if (props.page === 4) {
-      return css`
-        position: absolute;
-        bottom: 110px;
-      `;
-    }
-  }}
 `;
 
 const PageBtn = styled.button`
   + button {
     margin-left: 3px;
   }
-  margin-top: 40px;
   font-weight: 700;
   font-size: 1rem;
   background-color: white;
