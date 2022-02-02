@@ -37,7 +37,6 @@ const PostStepOne = () => {
     // });
 
     PreviewRef.current.src = mainImage.preview;
-    console.log(mainImage);
   }, [watch, mainImage]);
 
   // useEffect(() => {
@@ -101,6 +100,7 @@ const PostStepOne = () => {
         <ImgUploadInput
           accept="image/*"
           ref={ImgInput}
+          // {...register("main_img")}
           onChange={handleImage}
           id="main_img"
           type="file"

@@ -9,31 +9,9 @@ import { SubImageStateAtom, MainImageStateAtom, pageStateAtom } from "./PostAtom
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
-  const navigate = useNavigate();
-  const methods = useForm();
-  const onSubmit = (data) => console.log(data);
-  const testclick = () => {
-    const category = JSON.parse(localStorage.getItem("category"));
-    const cookInfo = JSON.parse(localStorage.getItem("cookInfo"));
-    const TitleAndDesc = JSON.parse(localStorage.getItem("TitleAndDesc"));
-    const ingredient = JSON.parse(localStorage.getItem("ingredient"));
-    const source = JSON.parse(localStorage.getItem("source"));
-    const order = JSON.parse(localStorage.getItem("order"));
-    const dataSet = {
-      ...category,
-      ...cookInfo,
-      ...TitleAndDesc,
-      ...ingredient,
-      ...source,
-      ...order,
-    };
-  };
   const setPageState = useSetRecoilState(pageStateAtom);
   return (
-    <PostTempleteBlock autocomplete="off" onSubmit={methods.handleSubmit(onSubmit)}>
-      <button type="button" onClick={testclick}>
-        테스트버튼
-      </button>
+    <PostTempleteBlock autocomplete="off">
       <PostNav />
       <StepDiv>STEP {stepNum}</StepDiv>
       <Pre>

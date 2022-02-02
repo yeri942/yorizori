@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { DropdownWrapper } from "../commonStyle";
 import { Dropdown } from "react-dropdown-now";
+import { categoryAtom } from "../PostAtom/PostAtom";
+import { useRecoilState } from "recoil";
 
 const CategoryDropdown = () => {
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useRecoilState(categoryAtom);
 
-  useEffect(() => {
-    if (localStorage.getItem("category")) {
-      const getCategory = JSON.parse(localStorage.getItem("category"));
-      setCategory({
-        category: getCategory.category,
-        material: getCategory.material,
-        condition: getCategory.condition,
-        cook: getCategory.cook,
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("category")) {
+  //     const getCategory = JSON.parse(localStorage.getItem("category"));
+  //     setCategory({
+  //       category: getCategory.category,
+  //       material: getCategory.material,
+  //       condition: getCategory.condition,
+  //       cook: getCategory.cook,
+  //     });
+  //   }
+  // }, []);
 
-  console.log(category);
+  // console.log(category);
 
-  useEffect(() => {
-    localStorage.setItem("category", JSON.stringify(category));
-  }, [category]);
+  // useEffect(() => {
+  //   localStorage.setItem("category", JSON.stringify(category));
+  // }, [category]);
 
   return (
     <>

@@ -60,3 +60,13 @@ export const pageStateAtom = atom({
   key: "pageState",
   default: 1,
 });
+
+export const cookInfoAtom = atom({
+  key: "cookInfo",
+  default: {},
+});
+
+export const categoryAtom = atom({
+  key: "category",
+  default: {},
+});

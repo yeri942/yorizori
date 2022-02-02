@@ -94,15 +94,11 @@ const Home = () => {
         <Link to="/users/mypage">
           <button>mypage</button>
         </Link>
-        <Link to="/oldpost">
-          <button>oldpost</button>
+
+        <Link to="/post">
+          <button>post</button>
         </Link>
-        <Link to="/poststep1">
-          <button>poststep1</button>
-        </Link>
-        <Link to="/poststep2">
-          <button>poststep2</button>
-        </Link>
+
         <h3>Single file upload</h3>
         <ImgWrapper>
           <FileUpload name="photo3" onChange={handleChange} shape="rounded" size="big" />
