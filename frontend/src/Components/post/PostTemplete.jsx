@@ -1,4 +1,4 @@
-import React, { children } from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import PostNav from "../nav/PostNav";
 import NavBottom from "../nav/BottomNav";
@@ -16,7 +16,8 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
   const testclick = () => {
     formData.append("mainImg", mainImage.file[0]);
     console.log(mainImage.file[0]);
-
+    const test = formData;
+    console.log(test);
     const category = JSON.parse(localStorage.getItem("category"));
     const cookInfo = JSON.parse(localStorage.getItem("cookInfo"));
     const TitleAndDesc = JSON.parse(localStorage.getItem("TitleAndDesc"));
@@ -31,15 +32,17 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       ...source,
       ...order,
     };
+    formData.append("Json", JSON.stringify(dataSet));
     subImage.file.forEach((el, idx) => {
       if (el) {
-        console.log(el);
         formData.append(`subimg_${idx}`, el);
-        console.log(`subimg_${idx} : ${formData.getAll(`subimg_${idx}`)}}`);
+        // console.log(`subimg : ${formData.get(`subimg_${idx}`)}}`);
       }
     });
-    console.log("imgCheck " + formData.getAll("mainImg"));
-    console.log(subImage);
+    console.log(formData.get("subimg_"));
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
   };
 
   return (

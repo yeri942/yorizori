@@ -39,19 +39,13 @@ const PostStepOne = () => {
     PreviewRef.current.src = mainImage.preview;
     console.log(mainImage);
   }, [watch, mainImage]);
-
-  useEffect(() => {
-    if (localStorage.getItem("TitleAndDesc")) {
-      const stepOne = JSON.parse(localStorage.getItem("TitleAndDesc"));
-      setValue("recipeName", stepOne.recipeName);
-      setValue("desc", stepOne.desc);
-    }
-  }, []);
+  const formData = new FormData();
 
   const handleImage = (e) => {
     // ImgInput.current.toDataURL("data:image/png;");
     let cur_file = e.target.files[0];
     const filesInArr = Array.from(e.target.files);
+    console.log(filesInArr[0]);
     if (cur_file) {
       setMainImage({
         ...mainImage,
@@ -59,8 +53,23 @@ const PostStepOne = () => {
         state: true,
         preview: window.URL.createObjectURL(cur_file),
       });
+      formData.append("images", mainImage.file[0]);
+      formData.append("test", cur_file);
+    }
+
+    console.log(formData.get("images"));
+    console.log(formData.get("test"));
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
     }
   };
+  useEffect(() => {
+    if (localStorage.getItem("TitleAndDesc")) {
+      const stepOne = JSON.parse(localStorage.getItem("TitleAndDesc"));
+      setValue("recipeName", stepOne.recipeName);
+      setValue("desc", stepOne.desc);
+    }
+  }, []);
 
   const openPreview = () => {
     setModalState(true);
