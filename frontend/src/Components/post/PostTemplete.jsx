@@ -5,12 +5,12 @@ import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { SubImageStateAtom, MainImageStateAtom, pageStateAtom } from "./PostAtom/PostAtom";
+import { SubImageStateAtom, MainImageStateAtom, postPageStateAtom } from "./PostAtom/PostAtom";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 const PostTemplete = ({ children, stepNum, page, request }) => {
-  const pageState = useRecoilValue(pageStateAtom);
-  const setPageState = useSetRecoilState(pageStateAtom);
+  const postPageState = useRecoilValue(postPageStateAtom);
+  const setPostpostPageState = useSetRecoilState(postPageStateAtom);
   return (
     <PostTempleteBlock autocomplete="off">
       <PostNav />
@@ -20,19 +20,19 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       <Pre>
         <StyledP temp>{request}</StyledP>
       </Pre>
-      <ContentsWrapper pageState={pageState}>{children}</ContentsWrapper>
+      <ContentsWrapper postPageState={postPageState}>{children}</ContentsWrapper>
 
       <BtnWrapper page={page}>
-        <PageBtn type="button" onClick={() => setPageState(1)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(1)}>
           [ 1 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => setPageState(2)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(2)}>
           [ 2 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => setPageState(3)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(3)}>
           [ 3 ]
         </PageBtn>
-        <PageBtn type="button" onClick={() => setPageState(4)}>
+        <PageBtn type="button" onClick={() => setPostpostPageState(4)}>
           [ 4 ]
         </PageBtn>
       </BtnWrapper>
@@ -45,7 +45,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
       >
         작성 완료
       </StyledBtn>
-      <NavBottom post={"post"} />
+      <NavBottom />
     </PostTempleteBlock>
   );
 };
@@ -102,7 +102,7 @@ const ContentsWrapper = styled.div`
   width: 100vw;
   align-items: center;
   ${(props) =>
-    props.pageState === 4 &&
+    props.postPageState === 4 &&
     css`
       height: 42vh;
     `}
