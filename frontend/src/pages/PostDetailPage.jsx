@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import TopNav from "../Components/nav/TopNav";
 import BottomNav from "../Components/nav/BottomNav";
-
+import Summary from "../Components/postDetail/Summary";
 const PostDetailPageBlock = styled.div`
   font-size: 18px;
   display: flex;
@@ -17,7 +17,9 @@ const PostDetailPage = () => {
   return (
     <PostDetailPageBlock>
       <TopNav />
-      <div style={{ marginTop: "80px", marginBottom: "90px" }}>디테일한 내용이 들어갈것이다</div>
+      <div style={{ marginTop: "55px", marginBottom: "90px" }}>
+        <Summary></Summary>
+      </div>
       <BottomNav />
     </PostDetailPageBlock>
   );
