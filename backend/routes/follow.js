@@ -4,7 +4,6 @@ const User = require("../models/User");
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
 const asyncHandler = require("../utils/asyncHandler");
-const { findOne } = require("../models/User");
 
 // 다른 유저 follow 요청 post
 router.post(
