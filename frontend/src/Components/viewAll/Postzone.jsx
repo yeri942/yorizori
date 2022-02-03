@@ -106,20 +106,25 @@ const Postzone = () => {
   return (
     <Wrapper>
       <WrapperPost>
-        <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div>
-            <Img />
-            <TextBox>
-              <Title>바스바스감바스</Title>
-              <Author>고래</Author>
-              <WrapperHeartComment>
-                <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-              </WrapperHeartComment>
-            </TextBox>
-          </div>
-        </Link>
+        {[...Array(countPost)].map((n, index) => {
+          return (
+            <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+              <div>
+                <Img />
+                <TextBox>
+                  <Title>바스바스감바스</Title>
+                  <Author>고래</Author>
+                  <WrapperHeartComment>
+                    <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
+                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+                  </WrapperHeartComment>
+                </TextBox>
+              </div>
+            </Link>
+          );
+        })}
       </WrapperPost>
+
       <div ref={setTarget} className="Target-Element">
         {isLoaded && <ReactLoading type="bubbles" color="#feae11" height="40px" />}
       </div>

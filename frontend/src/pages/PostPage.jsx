@@ -1,5 +1,4 @@
 import React from "react";
-import { RecoilRoot } from "recoil";
 import styled from "styled-components";
 import PostForm from "../Components/post/PostForm";
 
