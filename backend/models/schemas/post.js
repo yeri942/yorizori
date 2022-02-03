@@ -37,21 +37,6 @@ const PostSchema = new mongoose.Schema(
     //난이도
     diffic: Number,
 
-    //작성글이 받은 좋아요 수
-    likeCount: {
-      type: Number,
-      default: 0,
-    },
-    //작성글이 받은 댓글 수
-    commentsCount: {
-      type: Number,
-      default: 0,
-    },
-    //작성글이 보여진 횟수
-    viewCount: {
-      type: Number,
-      default: 0,
-    },
     //작성글을 유저와 연결합니다
     userId: {
       type: Schema.Types.ObjectId,
