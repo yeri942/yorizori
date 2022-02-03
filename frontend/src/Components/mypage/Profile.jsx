@@ -37,6 +37,8 @@ const MyPageMainProfileEdit = styled.button`
 
 
 const MyPageTemplate = () => {
+  const [ profileName, setProfileName ] = useState("요리조리1234")
+
 
   return (
     <div>
@@ -44,11 +46,11 @@ const MyPageTemplate = () => {
         <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
           <MyPageMainImgBox>
             <MyPageImage />
-              <p>요리조리1234</p>
+              <p>{profileName}</p>
             <MyPageMainBtnBox >
 
               <Link to="/users/edit">
-                <MyPageMainProfileEdit type="button">프로필 수정</MyPageMainProfileEdit>
+                <MyPageMainProfileEdit type="button" >프로필 수정</MyPageMainProfileEdit>
               </Link>
 
               <ResipeButton nums="0"/>

@@ -59,7 +59,6 @@ const EditImageUpload = styled.input`
 
 const EditMyPage = () => {
 
-
   const [Profileimage, setProfileImage] = useState("../images/profile.jpg");
 
   const ClickUpload = (e) => {
