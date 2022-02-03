@@ -19,8 +19,7 @@ router.post("/", isLoggedIn, async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   try {
     const posts = await Post.find({});
-    res.status(200).json({ message: "레시피 조회가 완료되었습니다." });
-    // res.status(201).json({ message: "레시피조회가 완료되었습니다." });
+    res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
