@@ -10,10 +10,10 @@ const BottomNav = ({ post }) => {
 
   return (
     <BottomNavBlock post={post}>
-      <IconImg pageState={pageState} write onClick={() => navigate("/post")} />
+      <IconImg pageState={pageState} post onClick={() => navigate("/post")} />
       <IconImg pageState={pageState} home onClick={() => navigate("/")} />
       <IconImg pageState={pageState} recipe onClick={() => navigate("/view_all")} />
-      <IconImg pageState={pageState} my onClick={() => navigate("/users/mypage")} />
+      <IconImg pageState={pageState} mypage onClick={() => navigate("/users/mypage")} />
     </BottomNavBlock>
   );
 };
@@ -35,55 +35,25 @@ const BottomNavBlock = styled.div`
 const IconImg = styled.div`
   width: 90px;
   background-image: url(../images/BottomIcon.png);
+  background-position: ${({ post, home, recipe, mypage, pageState }) =>
+    post
+      ? "-30px -15px"
+      : home
+      ? "-111px -15px"
+      : recipe
+      ? "-205px -15px"
+      : mypage
+      ? "-294px -15px"
+      : ""};
 
-  ${(props) =>
-    props.write &&
-    css`
-      background-position: -30px -15px;
-    `}
-
-  ${(props) =>
-    props.home &&
-    css`
-      background-position: -111px -15px;
-    `}
-
-  ${(props) =>
-    props.recipe &&
-    css`
-      background-position: -205px -15px;
-    `}
-
-  ${(props) =>
-    props.my &&
-    css`
-      background-position: -294px -15px;
-    `}
-
-  ${(props) =>
-    props.pageState === "post" &&
-    props.write &&
-    css`
-      background-position: -30px 94px;
-    `}
-  
-  ${(props) =>
-    props.pageState === "viewAllPage" &&
-    props.recipe &&
-    css`
-      background-position: -205px 94px;
-    `}
-
-  ${(props) =>
-    props.pageState === "myPage" &&
-    props.my &&
-    css`
-      background-position: -294px 94px;
-    `}
-  ${(props) =>
-    props.pageState === "home" &&
-    props.home &&
-    css`
-      background-position: -111px 94px;
-    `}
+  background-position: ${({ post, home, recipe, mypage, pageState }) =>
+    post && pageState === "post"
+      ? "-30px  94px"
+      : home && pageState === "home"
+      ? "-111px  94px"
+      : recipe && pageState === "viewAllPage"
+      ? "-205px 94px"
+      : mypage && pageState === "myPage"
+      ? "-294px  94px"
+      : ""};
 `;
