@@ -25,4 +25,15 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+//개별 레시피 조회
+router.get("/:postId", async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    const posts = await Post.findById(postId);
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;
