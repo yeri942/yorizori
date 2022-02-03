@@ -27,7 +27,6 @@ router.post(
       return;
     }
     //기존의 사진이 있으면 그 사진을 삭제하고 새로운 사진을 프로필사진으로 해서 s3에 업로드해야겠죠? 그냥 두는게 나을까요..?
-<<<<<<< HEAD
     if (req.file) {
       //기존에 등록된 프로필사진이 있으면 s3에서 지우는 작업을 수행함
       if (user.profileImage) {
@@ -40,16 +39,6 @@ router.post(
       //user의 프로필 관련 정보 업데이트
       user.profileImage = location;
       user.profileName = key;
-=======
-    if (url) {
-      const params = { Bucket: "yorijori-profile", Key: user.profileName };
-      s3.deleteObject(params, function (error, data) {
-        if (error) console.log(error);
-        else console.log(data);
-      });
-      user.profileImage = location;
-      user.profileName = key; //user의 프로필 관련 정보 업데이트
->>>>>>> 2906882c16067ff6f931452e6a55b6f76c8de520
     }
     if (nickName) user.nickName = nickName; //유저의 nickName 업데이트해줌
     await user.save();
