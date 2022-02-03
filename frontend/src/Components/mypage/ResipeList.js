@@ -3,7 +3,7 @@ import {MypageResipeBox} from "./ProfileStyle"
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
-const ResipeMenu1 = styled.div`
+const ResipeMenus = styled.div`
   span {
     font-size: 16px;
     margin-top: 4px;
@@ -19,6 +19,7 @@ const ResipeListBox = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   text-align: center;
+
   img {
     margin: 10px 25px 0px 25px;
     width: 100px;
@@ -26,6 +27,7 @@ const ResipeListBox = styled.div`
     border-radius: 15px;
     
   }
+  
   p {
     margin: 0px;
   }
@@ -37,7 +39,10 @@ const ResipeListItem = styled.div`
 export default function ResipeButton(props) {
   const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "최근 확인한 레시피", "댓글 남긴 레시피"]
   const [onResipe, setOnResipe] = useState(false)
-  
+  const resipeMenuButton = ["../images/bottomBT.png", "../images/bottomBT.png", "../images/bottomBT.png", "../images/bottomBT.png"]
+
+
+
   const changeResipe = () => {
     setOnResipe((onResipe) => {
       console.log(onResipe)
@@ -45,13 +50,19 @@ export default function ResipeButton(props) {
     })
   }
 
+  const moveButton = () => {
+    document.querySelector(`.buttont${props.nums}`).classList.toggle("gkdlfn")
+  }
   return (
     <>
-      <MypageResipeBox onClick={changeResipe}>
-          <ResipeMenu1>
+      <MypageResipeBox onClick={() => {
+        changeResipe()
+        moveButton()
+      }}>
+          <ResipeMenus>
             <span>{ resipeMenu[props.nums]}</span>
-          </ResipeMenu1>
-            <img src="../images/bottomBT.png" alt=""  style={{ marginRight: "20px"}}/>
+          </ResipeMenus>
+            <img className={`buttont${props.nums}`} src={resipeMenuButton[props.nums]} alt=""/>
 
       </MypageResipeBox>
           {

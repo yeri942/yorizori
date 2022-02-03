@@ -28,4 +28,15 @@ export const MypageResipeBox = styled.button`
   align-items: center;
   display: flex;
   justify-content: space-between;
+
+  img {
+    margin-right: 20px;
+
+  }
+  
+  .gkdlfn {
+    transform: scaleY(-1);
+    transition: .5s;
+  }
+  
 `
