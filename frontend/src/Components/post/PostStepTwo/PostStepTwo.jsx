@@ -1,5 +1,4 @@
 import React from "react";
-import styled, { css } from "styled-components";
 import PostTemplete from "../PostTemplete";
 import { StyledP, ContainerDiv } from "../commonStyle";
 import IngredientsList from "./IngredientForm/IngredientsList";

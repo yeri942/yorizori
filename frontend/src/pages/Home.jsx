@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { authAtom } from "../states";
 import { useUserActions } from "../actions";
 import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
-import { recipeNameAtom } from "../Components/old_post/postStates/postStates";
 import { useSetRecoilState } from "recoil";
 import { pageStateAtom } from "../states";
 

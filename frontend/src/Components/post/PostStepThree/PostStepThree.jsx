@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import PostTemplete from "../PostTemplete";
 import {
   StyledP,
@@ -12,12 +12,7 @@ import {
 } from "../commonStyle";
 import AddOrder from "./OrderForm/AddOrder";
 import OrderList from "./OrderForm/OrderList";
-import {
-  SubModalStateAtom,
-  SubImageStateAtom,
-  PreviewRefAtom,
-  DeleteIndexAtom,
-} from "../PostAtom/PostAtom";
+import { SubModalStateAtom, SubImageStateAtom, DeleteIndexAtom } from "../PostAtom/PostAtom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const PostStepThreeBlock = styled.div``;
