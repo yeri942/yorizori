@@ -11,9 +11,10 @@ const PostSchema = new mongoose.Schema(
     //요리 소개
     desc: String,
     //재료 [{재료1:'김치',양:'두주먹'}]
-    ingredient: [{ name: String, amount: String }],
+    // ingredient: [{ name: String, amount: String }],
+    ingredient: { type: Array, required: true },
     //양념
-    seasoning: [{ name: String, amount: String }],
+    seasoning: { type: Array, required: true },
     //조리과정
     process: [{ type: String, required: true }],
     //조리과정 이미지
@@ -33,9 +34,9 @@ const PostSchema = new mongoose.Schema(
     //인원수
     servings: String,
     //요리 시간
-    time: Number,
+    time: String,
     //난이도
-    diffic: Number,
+    diffic: String,
 
     //작성글을 유저와 연결합니다
     userId: {
@@ -46,5 +47,4 @@ const PostSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-module.exports = PostSchema;
+module.exports = mongoose.model("Post", PostSchema);
