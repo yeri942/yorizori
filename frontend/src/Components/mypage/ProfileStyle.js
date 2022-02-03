@@ -31,10 +31,10 @@ export const MypageResipeBox = styled.button`
 
   img {
     margin-right: 20px;
-
+    transition: .5s;
   }
   
-  .gkdlfn {
+  .buttonMoveTop {
     transform: scaleY(-1);
     transition: .5s;
   }

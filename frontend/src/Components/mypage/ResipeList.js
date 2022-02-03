@@ -51,7 +51,7 @@ export default function ResipeButton(props) {
   }
 
   const moveButton = () => {
-    document.querySelector(`.buttont${props.nums}`).classList.toggle("gkdlfn")
+    document.querySelector(`.buttont${props.nums}`).classList.toggle("buttonMoveTop")
   }
   return (
     <>
