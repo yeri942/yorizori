@@ -71,7 +71,7 @@ export default function ResipeButton(props) {
       </MypageResipeBox>
           {
             onResipe 
-            ? <ResipeListBox>
+            ?  <ResipeListBox>
                 <ResipeListItem>
                   <Link to="/">
                     <img src="../images/food1.jpg" alt=""/>
@@ -102,6 +102,7 @@ export default function ResipeButton(props) {
                   </Link>
                   <p>고기 레시피</p>
                 </ResipeListItem>
+               
               </ResipeListBox> 
             : ""
           }

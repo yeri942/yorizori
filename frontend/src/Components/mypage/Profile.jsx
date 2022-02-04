@@ -57,10 +57,12 @@ const MyPageTemplate = () => {
               <ResipeButton nums="1"/>
               <ResipeButton nums="2"/>
               <ResipeButton nums="3"/>
+              <div style={{width: "300px", height: "70px"}}></div>
               
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
         </MyPageMainBox>
+
       <NavBottom />
     </div>
   
