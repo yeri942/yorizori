@@ -14,7 +14,7 @@ const IngredientInfo = styled.div`
 const Ingredient = () => {
   return (
     <IngredientWrapper>
-      <div>재료</div>
+      <div style={{ fontWeight: 900 }}>재료</div>
       <IngredientInfo>
         <div>재료명</div>
         <div>재료량</div>

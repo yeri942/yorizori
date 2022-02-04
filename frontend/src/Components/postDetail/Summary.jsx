@@ -70,6 +70,7 @@ const Share = styled.div`
 `;
 const Title = styled.div`
   font-size: 18px;
+  font-weight: 900;
   margin: 8px 0px 6px 20px;
 `;
 const Content = styled.div`
@@ -82,7 +83,7 @@ const Author = styled.div`
   font-size: 12px;
   padding: 9px 20px;
 `;
-const ProfileImg = styled.img`
+const ProfileImg = styled.div`
   background-image: url("../images/gam.jpg");
   background-size: cover;
   width: 42px;

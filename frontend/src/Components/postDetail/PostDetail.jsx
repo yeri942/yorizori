@@ -5,6 +5,9 @@ import BottomNav from "../nav/BottomNav";
 import Summary from "./Summary";
 import Ingredient from "./Ingredient";
 import Recipe from "./Recipe";
+import Comments from "./Comments";
+import Recommend from "./Recommend";
+
 const PostDetailBlock = styled.div`
   font-size: 18px;
   display: flex;
@@ -32,6 +35,10 @@ const PostDetail = () => {
         <Ingredient />
         <Line />
         <Recipe />
+        <Line />
+        <Comments />
+        <Line />
+        <Recommend />
       </Content>
       <BottomNav />
     </PostDetailBlock>
