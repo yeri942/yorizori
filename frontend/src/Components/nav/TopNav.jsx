@@ -7,6 +7,7 @@ const TopNavBox = styled.div`
   width: 100%;
   position: fixed;
   display: flex;
+  align-items: center;
   top: 0;
   background-color: white;
   border-bottom: 5px solid rgba(255, 210, 136, 0.46);
@@ -18,7 +19,6 @@ const TopBackBox = styled.img`
   font-size: 24px;
   position: absolute;
   left: 12px;
-  top: 14px;
 `;
 
 const TopNav = () => {
