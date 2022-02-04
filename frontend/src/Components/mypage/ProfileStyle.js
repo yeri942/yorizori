@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 
 export const MyPageMainBox = styled.div`
-  margin-top: 85px;
+text-align: center;
+  margin-top: 70px;
 `
 
 
