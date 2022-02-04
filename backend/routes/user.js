@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
 const asyncHandler = require("../utils/asyncHandler");
-const { Like, Post } = require("../models/");
+const { Like } = require("../models/");
 const User = require("../models/User");
+const Post = require("../models/schemas/post");
 const Comment = require("../models/schemas/comment");
 
 const { profileUpload, s3 } = require("../middlewares/upload");
@@ -17,7 +18,6 @@ router.post(
   // formData 로 요청을 하는 경우엔 formData의 key를 "profileImage" 로 설정해주면 됨
   asyncHandler(async (req, res, next) => {
     console.log(req.file);
-
     const { id: userId } = req.user; //로그인한 유저를 찾아서
     const { location, key } = req.file; //파일이 저장된 경로와 파일 이름(s3)
     const { nickName } = req.body; //formData key='nickName' 으로 변경할 닉네임을 받음
@@ -29,13 +29,13 @@ router.post(
     //기존의 사진이 있으면 그 사진을 삭제하고 새로운 사진을 프로필사진으로 해서 s3에 업로드해야겠죠? 그냥 두는게 나을까요..?
     if (req.file) {
       //기존에 등록된 프로필사진이 있으면 s3에서 지우는 작업을 수행함
-      if (user.profileImage) {
-        const params = { Bucket: "yorijori-profile", Key: user.profileName };
-        s3.deleteObject(params, function (error, data) {
-          if (error) console.log(error);
-          else console.log(data);
-        });
-      }
+      // if (user.profileImage) {
+      //   const params = { Bucket: "yorijori-profile", Key: user.profileName };
+      //   s3.deleteObject(params, function (error, data) {
+      //     if (error) console.log(error);
+      //     else console.log(data);
+      //   });
+      // }
       //user의 프로필 관련 정보 업데이트
       user.profileImage = location;
       user.profileName = key;
@@ -57,10 +57,31 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params; //body에서 유저아이디를 받고
-    const user = await User.findOne({ _id: userId }); //_id가 일치하는 유저를 찾음
-    const { password, ...publicUserInfo } = user; //publicUserInfo 에 password 제외한 정보를 넣음
-    res.status(200).json(publicUserInfo);
+    const user = await User.findOne({ _id: userId }).select("-password"); //_id가 일치하는 유저를 찾음
+    //password 제외한 정보를 보냄
+    res.status(200).json({ user });
   })
 );
 
+//작성한 레시피 조회
+router.get(
+  "/:userId/post",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    const post = await Post.find({ userId });
+    res.status(200).json({ post });
+  })
+);
+
+//특정 유저가 좋아요한 레시피 조회
+router.get(
+  "/:userId/like/",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    const likesList = await Like.find({ userId, isUnliked: false }).populate("postId");
+    res.status(200).json({ likesList });
+  })
+);
 module.exports = router;
