@@ -37,7 +37,7 @@ router.get("/:postId", async (req, res, next) => {
 });
 
 //레시피 수정
-router.post("/:postId", isLoggedIn, async (req, res, next) => {
+router.patch("/:postId", async (req, res, next) => {
   const { postId } = req.params;
   try {
     const posts = await Post.findByIdAndUpdate(postId, req.body, {
