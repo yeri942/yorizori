@@ -13,7 +13,7 @@ const ResipeMenus = styled.div`
 
 const ResipeListBox = styled.div`
   width: 300px;
-  position: relative;
+  height: 100%;
   left: 32px;
   display: flex;
   flex-wrap: wrap;
@@ -21,7 +21,9 @@ const ResipeListBox = styled.div`
   text-align: center;
 
   img {
-    margin: 10px 25px 0px 25px;
+    position: relative;
+    bottom: 15px;
+    margin: 10px 25px 5px 25px;
     width: 100px;
     height: 100px;
     border-radius: 15px;
@@ -29,6 +31,8 @@ const ResipeListBox = styled.div`
   }
   
   p {
+    position: relative;
+    bottom: 15px;
     margin: 0px;
   }
 `
@@ -73,6 +77,24 @@ export default function ResipeButton(props) {
                     <img src="../images/food1.jpg" alt=""/>
                   </Link>
                   <p>햄버거 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p>고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
                   <Link to="/">

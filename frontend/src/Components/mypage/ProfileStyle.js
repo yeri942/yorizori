@@ -15,10 +15,14 @@ export const MyPageMainImgBox = styled.div`
 
 export const MyPageMainBtnBox = styled.div`
   text-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 `
 
+
 export const MypageResipeBox = styled.button`
-  width: 100%;
+  width: 350px;
   border: none;
   background-color: white;
   cursor: pointer;
