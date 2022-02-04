@@ -14,13 +14,13 @@ const PostSchema = new mongoose.Schema(
     // ingredient: [{ name: String, amount: String }],
     ingredient: { type: Array, required: true },
     //양념
-    seasoning: { type: Array, required: true },
+    seasoning: { type: Array },
     //조리과정
-    process: [{ type: String, required: true }],
+    process: { type: Array, required: true },
     //조리과정 이미지
     processImage: [{ type: String }],
     // 썸네일
-    thumbnail: { type: String, required: true, default: "" },
+    thumbnail: { type: String, default: "" },
     //완성 사진을 받는 부분입니다.
     doneImage: [{ type: String }],
     //종류별
