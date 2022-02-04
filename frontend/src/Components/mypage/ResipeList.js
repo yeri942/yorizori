@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const ResipeMenus = styled.div`
   span {
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     margin-top: 4px;
     margin-left: 30px;
@@ -31,13 +32,13 @@ const ResipeListBox = styled.div`
   }
   
   p {
+    font-family: sans-serif;
     position: relative;
     bottom: 15px;
     margin: 0px;
   }
 `
 const ResipeListItem = styled.div`
-
 `
 
 export default function ResipeButton(props) {
