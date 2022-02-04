@@ -50,4 +50,15 @@ router.patch("/:postId", async (req, res, next) => {
   }
 });
 
+//레시피 삭제
+router.delete("/:postId", async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    await Post.findByIdAndDelete(postId); // postId 찾아 삭제
+    res.status(204); //Noconnect
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;
