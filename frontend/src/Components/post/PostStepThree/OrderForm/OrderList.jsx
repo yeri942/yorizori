@@ -45,7 +45,6 @@ const OrderList = () => {
 
   const handleImage = (e, index) => {
     let cur_file = e.target.files[0];
-    console.log(e.target);
     const filesInArr = Array.from(e.target.files);
     const previewArr = [window.URL.createObjectURL(cur_file)];
     if (cur_file) {
