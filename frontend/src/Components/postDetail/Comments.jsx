@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import moment from "moment";
+
 const CommentsWrapper = styled.div`
   margin: 0 20px;
 `;
-const CommentInputWrapper = styled.div`
+const CommentInputForm = styled.form`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 17px;
 `;
-const InputForm = styled.input`
+const Input = styled.input`
   padding: 10px 18px;
   width: 210px;
   height: 36px;
@@ -60,21 +62,40 @@ const MoreComments = styled.div`
   border-top: 1px solid lightgray;
 `;
 const Comments = () => {
+  const [comments, setComments] = useState([]);
+  const [nowComment, setNowComment] = useState("");
+  const nextId = useRef(0);
+  const commentChange = (event) => {
+    setNowComment(event.target.value);
+  };
+  const commentSubmit = () => {
+    const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    const newComment = { id: nextId.current, name: "두부", comment: nowComment, date: nowTime };
+    setComments(comments.concat(newComment));
+    console.log(comments);
+    nextId.current += 1;
+  };
   return (
     <CommentsWrapper>
-      <CommentInputWrapper>
+      <CommentInputForm>
         <ProfileImg />
-        <InputForm placeholder="로그인 후 댓글을 작성 해주세요." />
-        <InputButton>작성</InputButton>
-      </CommentInputWrapper>
-      <Comment>
-        <ProfileImg />
-        <div>
-          <Nickname>두부</Nickname>
-          <CommenContent>너무 맛있어보여요~</CommenContent>
-          <Date>22/02/03 02:03</Date>
-        </div>
-      </Comment>
+        <Input type="text" placeholder="로그인 후 댓글을 작성 해주세요." onChange={commentChange} />
+        <InputButton type="button" onClick={commentSubmit}>
+          작성
+        </InputButton>
+      </CommentInputForm>
+      {comments.map((comments) => {
+        return (
+          <Comment>
+            <ProfileImg />
+            <div>
+              <Nickname>{comments.name}</Nickname>
+              <CommenContent>{comments.comment}</CommenContent>
+              <Date>{comments.date}</Date>
+            </div>
+          </Comment>
+        );
+      })}
       <MoreComments>댓글 더보기</MoreComments>
     </CommentsWrapper>
   );
