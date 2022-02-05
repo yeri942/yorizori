@@ -7,11 +7,11 @@ import { useForm, useFormContext } from "react-hook-form";
 
 const SourceList = () => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
-  const { setValue } = useForm();
-  const { register } = useFormContext();
+
+  const { register, setValue } = useFormContext();
   const deleteIngredient = (index) => {
     setValue(`source_${index + 1}`, "");
-    setValue(`volume_${index + 1}`, "");
+    setValue(`sourceVolume_${index + 1}`, "");
 
     setSourceList((oldList) => {
       const newList = oldList.filter(function (el, i) {

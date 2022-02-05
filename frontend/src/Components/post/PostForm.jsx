@@ -46,6 +46,15 @@ const PostForm = () => {
         return formData.append(`subImg_${idx}`, el);
       }
     });
+    let ingredinet = [];
+    // for (let [key, value] of Object.entries(data)) {
+    //   if (key.indexOf("ingredient_") > -1) {
+    //     ingredinet.push({
+    //       ingre_name : value
+    //     })
+    //   }
+    //   if(key.indexOf(""))
+    // }
 
     const submitData = {
       ...data,
@@ -53,7 +62,9 @@ const PostForm = () => {
       ...category,
     };
 
-    Invalidation(submitData, setPostpostPageState);
+    // delete obj.no;
+
+    // Invalidation(submitData, setPostpostPageState);
     console.log(submitData);
     console.log(formData.get("subImg_1"));
     console.log(formData.get("subImg_2"));

@@ -17,8 +17,7 @@ const OrderList = () => {
   const subImage = useRecoilValue(SubImageStateAtom);
   const setSubImage = useSetRecoilState(SubImageStateAtom);
 
-  const { setValue } = useForm();
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
 
   const deleteIngredient = (index) => {
     setValue(`order_${index + 1}`, "");
