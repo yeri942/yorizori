@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
 const asyncHandler = require("../utils/asyncHandler");
-const { Like } = require("../models/");
+const { Like, History } = require("../models/");
 const User = require("../models/User");
 const Post = require("../models/schemas/post");
 const Comment = require("../models/schemas/comment");
@@ -47,11 +47,7 @@ router.post(
   })
 );
 
-// 유저 프로필 조회 api를 작성할 때
-// 1. 로그인한 유저(본인)조회하는 경우와
-// 2. 그 외 기타유저 조회하는 경우를 분리해야할까요?
-// 1, 2 모두 password 항목 제외하고 데이터 보내주는 개념은 같은 것 같은데 이 부분 궁금합니다.
-// 유저 프로필 조회
+// 특정 유저 프로필 조회
 router.get(
   "/:userId/profile",
   isLoggedIn,
@@ -64,24 +60,44 @@ router.get(
 );
 
 //작성한 레시피 조회
+//post Schema 에 삭제 여부 추가되면 그것도 post.find()의 검색조건에 추가해줘야해!
 router.get(
   "/:userId/post",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const post = await Post.find({ userId });
-    res.status(200).json({ post });
+    const userPosts = await Post.find({ userId });
+    res.status(200).json({ userPosts });
   })
 );
 
 //특정 유저가 좋아요한 레시피 조회
 router.get(
-  "/:userId/like/",
+  "/:userId/like",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const likesList = await Like.find({ userId, isUnliked: false }).populate("postId");
-    res.status(200).json({ likesList });
+    //유저가 좋아요한 like documents 에서 postId만을 뽑아내고
+    const likePostIds = await Like.find({ userId, isUnliked: false }).distinct("postId");
+    console.log(likePostIds);
+    //뽑아낸 postId 로 Post 컬렉션에서 데이터를 찾아서 보냄
+    const likePosts = await Post.find({ _id: { $in: likePostIds } });
+    res.status(200).json({ likePosts });
   })
 );
+
+//특정 유저가 댓글을 단 레시피 목록 조회
+router.get(
+  "/:userId/comment",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    //댓글 collection에서 유저가 작성한 댓글을 필터링한 후 중복된 post를 제거한후 postId를 저장한 배열
+    const commentPostIds = await Comment.find({ userId, isDeleted: false }).distinct("postId");
+    //게시글 컬렉션에서 위에서 저장한 postId를 이용해 게시글을 찾음
+    const commentPosts = await Post.find().where("_id").in(commentPostIds);
+    res.status(200).json({ commentPosts });
+  })
+);
+
 module.exports = router;
