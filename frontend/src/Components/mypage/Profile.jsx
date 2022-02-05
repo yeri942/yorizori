@@ -13,9 +13,9 @@ const MyPageImage = styled.img`
   border-radius: 50%;
   background-image: url("../images/profile.jpg");
   background-size: cover;
-  margin-top: 25px;
 
   + p {
+    font-family: sans-serif;
     margin: 0;
     font-size: 18px;
   }
@@ -33,11 +33,14 @@ const MyPageMainProfileEdit = styled.button`
   cursor: pointer;
   color: white;
   margin-top: 14px;
+  margin-bottom: 35px;
 `
 
 
 
 const MyPageTemplate = () => {
+  const [ profileName, setProfileName ] = useState("요리조리1234")
+
 
   return (
     <div>
@@ -45,21 +48,23 @@ const MyPageTemplate = () => {
         <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
           <MyPageMainImgBox>
             <MyPageImage />
-              <p>요리조리1234</p>
-            <MyPageMainBtnBox>
+              <p>{profileName}</p>
+            <MyPageMainBtnBox >
 
               <Link to="/users/edit">
-                <MyPageMainProfileEdit type="button">프로필 수정</MyPageMainProfileEdit>
+                <MyPageMainProfileEdit type="button" >프로필 수정</MyPageMainProfileEdit>
               </Link>
 
               <ResipeButton nums="0"/>
               <ResipeButton nums="1"/>
               <ResipeButton nums="2"/>
               <ResipeButton nums="3"/>
+              <div style={{width: "300px", height: "70px"}}></div>
               
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
         </MyPageMainBox>
+
       <NavBottom />
     </div>
   
