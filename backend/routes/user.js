@@ -100,4 +100,18 @@ router.get(
   })
 );
 
+//특정 유저가 최근 확인한 게시글 조회
+router.get(
+  "/:userId/history",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    const historyPostIds = await History.find({ userId, isLastViewed: true })
+      .sort({ createdAt: -1 })
+      .distinct("postId");
+    console.log(historyPostIds);
+    const lastViewedPosts = await Post.find().where("_id").in(historyPostIds);
+    res.status(200).json({ lastViewedPosts });
+  })
+);
 module.exports = router;
