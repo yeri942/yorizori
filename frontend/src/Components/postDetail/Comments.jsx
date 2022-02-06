@@ -10,7 +10,7 @@ const CommentInputForm = styled.form`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 17px;
+  margin: 17px 0;
 `;
 const Input = styled.input`
   padding: 10px 18px;
@@ -74,12 +74,18 @@ const Comments = () => {
     setComments(comments.concat(newComment));
     console.log(comments);
     nextId.current += 1;
+    setNowComment("");
   };
   return (
     <CommentsWrapper>
       <CommentInputForm>
         <ProfileImg />
-        <Input type="text" placeholder="로그인 후 댓글을 작성 해주세요." onChange={commentChange} />
+        <Input
+          type="text"
+          placeholder="로그인 후 댓글을 작성 해주세요."
+          onChange={commentChange}
+          value={nowComment}
+        />
         <InputButton type="button" onClick={commentSubmit}>
           작성
         </InputButton>
