@@ -73,6 +73,12 @@ const PostSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    //
+    useYN: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
