@@ -20,8 +20,9 @@ const PostStepOne = () => {
   const ImgLabel = useRef();
   const ImgInput = useRef();
   const PreviewRef = useRef();
-  const { watch, setValue } = useForm();
+  const { watch } = useForm();
   const { register } = useFormContext();
+
   const mainImage = useRecoilValue(MainImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
 

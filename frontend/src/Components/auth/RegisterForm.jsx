@@ -111,13 +111,6 @@ const RegisterForm = () => {
       )}
 
       <StyledButton>회원가입</StyledButton>
-
-      <DivWrapper>
-        <StyledDiv>간편 회원가입</StyledDiv>
-        <StyledHr />
-      </DivWrapper>
-
-      <KakaoImg src="./images/kakao.png" />
     </RegisterFormBlock>
   );
 };

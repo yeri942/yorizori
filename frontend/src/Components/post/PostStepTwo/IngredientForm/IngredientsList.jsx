@@ -23,7 +23,7 @@ const IngredientsList = () => {
   // useEffect(() => {
   //   const subscription = watch((value) => {
   //     console.log(value);
-  //     localStorage.setItem("ingredient", JSON.stringify(value));
+
   //   });
   // }, [watch]);
 

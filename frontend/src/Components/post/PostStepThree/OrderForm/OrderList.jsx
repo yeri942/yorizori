@@ -112,6 +112,7 @@ const OrderList = () => {
               <TimeInput
                 {...register(`orderTimeMin_${index + 1}`)}
                 placeholder="05"
+                defaultValue="00"
                 type="number"
                 min="0"
                 key={`TimeInput_min_${index}`}
@@ -121,6 +122,7 @@ const OrderList = () => {
               <TimeInput
                 {...register(`orderTimeSec_${index + 1}`)}
                 placeholder="00"
+                defaultValue="00"
                 type="number"
                 max="60"
                 min="0"
