@@ -32,11 +32,10 @@ const SummaryWrapper = styled.div`
   }
 `;
 
-const Thumbnail = styled.div`
-  background-image: url("../images/gam.jpg");
-  background-size: cover;
+const Thumbnail = styled.img`
   width: 100%;
   height: 360px;
+  object-fit: cover;
 `;
 const LCVS = styled.div`
   display: flex;
@@ -84,13 +83,12 @@ const Author = styled.div`
   font-size: 12px;
   padding: 9px 20px;
 `;
-const ProfileImg = styled.div`
-  background-image: url("../images/gam.jpg");
-  background-size: cover;
+const ProfileImg = styled.img`
   width: 42px;
   height: 42px;
   border-radius: 50%;
   margin-right: 12px;
+  object-fit: cover;
 `;
 const Nickname = styled.span``;
 
@@ -101,7 +99,7 @@ const Summary = () => {
   };
   return (
     <SummaryWrapper heartstate={heart}>
-      <Thumbnail />
+      <Thumbnail src="../images/gam.jpg" />
       <LCVS>
         <Likes>
           <span className="sprite heart" onClick={HeartState} />
@@ -122,7 +120,7 @@ const Summary = () => {
         <Content>카레의 깊은맛을 느껴보세요 ~</Content>
       </div>
       <Author>
-        <ProfileImg />
+        <ProfileImg src="../images/gam.jpg" />
         <Nickname>스누피</Nickname>
       </Author>
     </SummaryWrapper>

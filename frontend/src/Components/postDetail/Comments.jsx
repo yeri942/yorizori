@@ -37,13 +37,12 @@ const Comment = styled.div`
   align-items: center;
   margin: 18px 0;
 `;
-const ProfileImg = styled.div`
-  background-image: url("../images/gam.jpg");
-  background-size: cover;
+const ProfileImg = styled.img`
   width: 42px;
   height: 42px;
   border-radius: 50%;
   margin-right: 12px;
+  object-fit: cover;
 `;
 const Nickname = styled.div`
   font-size: 14px;
@@ -79,7 +78,7 @@ const Comments = () => {
   return (
     <CommentsWrapper>
       <CommentInputForm>
-        <ProfileImg />
+        <ProfileImg src="../images/gam.jpg" />
         <Input
           type="text"
           placeholder="로그인 후 댓글을 작성 해주세요."
