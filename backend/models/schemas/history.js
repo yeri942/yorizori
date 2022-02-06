@@ -11,7 +11,7 @@ const HistorySchema = new Schema(
     //게시글을 연결합니다.
     postId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Post",
       required: true,
     },
     //같은 게시물 중 마지막으로 본 게시물인지를 체크합니다.
