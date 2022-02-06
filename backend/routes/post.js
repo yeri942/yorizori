@@ -92,7 +92,11 @@ router.patch("/:postId", isLoggedIn, async (req, res, next) => {
 router.delete("/:postId", isLoggedIn, async (req, res, next) => {
   const { postId } = req.params;
   try {
-    await Post.findByIdAndDelete(postId); // postId 찾아 삭제
+    const posts = await Post.findByIdAndDelete(postId); // postId 찾아 삭제
+    if (!posts) {
+      res.status(404).json({ message: "해당하는 postId가 없습니다." });
+      return;
+    }
     res.status(204); //Noconnect
   } catch (err) {
     res.status(500).json({ message: err.message });
