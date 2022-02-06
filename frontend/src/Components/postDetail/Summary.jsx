@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 const SummaryWrapper = styled.div`
@@ -18,7 +18,7 @@ const SummaryWrapper = styled.div`
   .heart {
     width: 28px;
     height: 24.5px;
-    background-position: -36.5px 0px;
+    background-position: ${(props) => (props.heartstate === true ? "-71.5px 0px" : "-36.5px 0px")};
   }
   .comment {
     width: 28px;
@@ -31,6 +31,7 @@ const SummaryWrapper = styled.div`
     background-position: -107px 0px;
   }
 `;
+
 const Thumbnail = styled.div`
   background-image: url("../images/gam.jpg");
   background-size: cover;
@@ -94,12 +95,16 @@ const ProfileImg = styled.div`
 const Nickname = styled.span``;
 
 const Summary = () => {
+  const [heart, SetHeart] = useState(false);
+  const HeartState = () => {
+    SetHeart(!heart);
+  };
   return (
-    <SummaryWrapper>
+    <SummaryWrapper heartstate={heart}>
       <Thumbnail />
       <LCVS>
         <Likes>
-          <span className="sprite heart" />
+          <span className="sprite heart" onClick={HeartState} />
           <span>59명이 좋아합니다.</span>
         </Likes>
         <Comments>
