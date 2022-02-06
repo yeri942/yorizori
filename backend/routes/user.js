@@ -19,15 +19,16 @@ router.post(
   asyncHandler(async (req, res, next) => {
     console.log(req.file);
     const { id: userId } = req.user; //로그인한 유저를 찾아서
-    const { location, key } = req.file; //파일이 저장된 경로와 파일 이름(s3)
     const { nickName } = req.body; //formData key='nickName' 으로 변경할 닉네임을 받음
-    const user = await User.findOne({ _id: userId });
     if (!req.file && !nickName) {
       throw new Error("변경된 내용이 없습니다.");
       return;
     }
-    //기존의 사진이 있으면 그 사진을 삭제하고 새로운 사진을 프로필사진으로 해서 s3에 업로드해야겠죠? 그냥 두는게 나을까요..?
+    const user = await User.findOne({ _id: userId });
     if (req.file) {
+      const { location, key } = req.file;
+      //파일이 저장된 경로와 파일 이름(s3)
+      //기존의 사진이 있으면 그 사진을 삭제하고 새로운 사진을 프로필사진으로 해서 s3에 업로드해야겠죠? 그냥 두는게 나을까요..?
       //기존에 등록된 프로필사진이 있으면 s3에서 지우는 작업을 수행함
       // if (user.profileImage) {
       //   const params = { Bucket: "yorijori-profile", Key: user.profileName };
@@ -78,24 +79,31 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     //유저가 좋아요한 like documents 에서 postId만을 뽑아내고
-    const likePostIds = await Like.find({ userId, isUnliked: false }).distinct("postId");
-    console.log(likePostIds);
-    //뽑아낸 postId 로 Post 컬렉션에서 데이터를 찾아서 보냄
-    const likePosts = await Post.find({ _id: { $in: likePostIds } });
+    const likePosts = await Like.find({ userId, isUnliked: false })
+      .sort({ createdAt: -1 })
+      .populate("postId");
     res.status(200).json({ likePosts });
   })
 );
 
 //특정 유저가 댓글을 단 레시피 목록 조회
+//최근에 댓글을 단 게시물 순으로 정렬
+//여기서 reduce를 썼는데 더 최적화된 방법이 있을까요?
+//아니면 comment 스키마에 isNewest 이런 토글값을 추가하는건 어떨까요?
 router.get(
   "/:userId/comment",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    //댓글 collection에서 유저가 작성한 댓글을 필터링한 후 중복된 post를 제거한후 postId를 저장한 배열
-    const commentPostIds = await Comment.find({ userId, isDeleted: false }).distinct("postId");
-    //게시글 컬렉션에서 위에서 저장한 postId를 이용해 게시글을 찾음
-    const commentPosts = await Post.find().where("_id").in(commentPostIds);
+    //유저가 작성한 댓글을 게시글 순으로 정렬한 후 그 안에서 최신글 순서로 정렬합니다.
+    const allCommentPosts = await Comment.find({ userId, isDeleted: false })
+      .sort({ postId: 1, createdAt: -1 })
+      .populate("postId");
+    //겹치는 게시글들을 제거하기 위해 각 게시글마다 최신 글을 하나씩 모아 commentPosts 배열을 만듭니다.
+    const commentPosts = allCommentPosts.reduce((acc, post) => {
+      if (acc[acc.length - 1]?.postId._id != post.postId._id) acc.push(post);
+      return acc;
+    }, []);
     res.status(200).json({ commentPosts });
   })
 );
@@ -106,11 +114,9 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const historyPostIds = await History.find({ userId, isLastViewed: true })
+    const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
-      .distinct("postId");
-    console.log(historyPostIds);
-    const lastViewedPosts = await Post.find().where("_id").in(historyPostIds);
+      .populate("postId");
     res.status(200).json({ lastViewedPosts });
   })
 );
