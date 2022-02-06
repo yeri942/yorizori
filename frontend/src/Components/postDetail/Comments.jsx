@@ -92,7 +92,7 @@ const Comments = () => {
       </CommentInputForm>
       {comments.map((comments) => {
         return (
-          <Comment>
+          <Comment key={comments.id}>
             <ProfileImg />
             <div>
               <Nickname>{comments.name}</Nickname>
