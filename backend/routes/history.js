@@ -18,8 +18,22 @@ router.post(
       preLastView.isLastViewed = false;
       await preLastView.save();
     }
+    //그 후 최근에 본 게시물을 새로 만듦
     await History.create({ userId, postId });
     res.status(200).json({ message: "마지막으로 본 게시글에 추가되었습니다" });
+  })
+);
+
+//특정 게시물을 본 유저 목록 get
+router.get(
+  "/:postId",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { postId } = req.params;
+    const viewUserList = await History.find({ postId, isLastViewed: true })
+      .sort({ createdAt: -1 })
+      .populate({ path: "userId", select: "-password" });
+    res.status(200).json({ viewUserList });
   })
 );
 
