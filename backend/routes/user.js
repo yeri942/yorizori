@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
 const asyncHandler = require("../utils/asyncHandler");
-const { Like, History } = require("../models/");
+const { Like, History, Follow } = require("../models/");
 const User = require("../models/User");
 const Post = require("../models/schemas/post");
 const Comment = require("../models/schemas/comment");
@@ -27,16 +27,15 @@ router.post(
     const user = await User.findOne({ _id: userId });
     if (req.file) {
       const { location, key } = req.file;
-      //파일이 저장된 경로와 파일 이름(s3)
       //기존의 사진이 있으면 그 사진을 삭제하고 새로운 사진을 프로필사진으로 해서 s3에 업로드해야겠죠? 그냥 두는게 나을까요..?
       //기존에 등록된 프로필사진이 있으면 s3에서 지우는 작업을 수행함
-      // if (user.profileImage) {
-      //   const params = { Bucket: "yorijori-profile", Key: user.profileName };
-      //   s3.deleteObject(params, function (error, data) {
-      //     if (error) console.log(error);
-      //     else console.log(data);
-      //   });
-      // }
+      if (user.profileImage) {
+        const params = { Bucket: "yorijori-profile", Key: user.profileName };
+        s3.deleteObject(params, function (error, data) {
+          if (error) console.log(error);
+          else console.log(data, "기존 프로필 삭제 완료");
+        });
+      }
       //user의 프로필 관련 정보 업데이트
       user.profileImage = location;
       user.profileName = key;
@@ -61,13 +60,12 @@ router.get(
 );
 
 //작성한 레시피 조회
-//post Schema 에 삭제 여부 추가되면 그것도 post.find()의 검색조건에 추가해줘야해!
 router.get(
   "/:userId/post",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
-    const userPosts = await Post.find({ userId });
+    const userPosts = await Post.find({ userId, useYN: true });
     res.status(200).json({ userPosts });
   })
 );
@@ -118,6 +116,34 @@ router.get(
       .sort({ createdAt: -1 })
       .populate("postId");
     res.status(200).json({ lastViewedPosts });
+  })
+);
+
+//특정 유저가 팔로우한 follower 목록 get
+router.get(
+  "/:userId/follower",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    const followers = await Follow.find({ followeeId: userId, isUnfollowed: false }).populate({
+      path: "followerId",
+      select: "-password",
+    });
+    res.status(200).json({ followers });
+  })
+);
+
+//특정 유저를 팔로우하고 있는 followee 목록 get
+router.get(
+  "/:userId/followee",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    const followees = await Follow.find({ followerId: userId, isUnfollowed: false }).populate({
+      path: "followeeId",
+      select: "-password",
+    });
+    res.status(200).json({ followees });
   })
 );
 module.exports = router;
