@@ -1,49 +1,47 @@
 const express = require("express");
 const Post = require("../models/schemas/post");
+const User = require("../models/User");
 const { isLoggedIn } = require("./middlewares");
+const { recipeUpload, s3 } = require("../middlewares/upload");
 
 const router = express.Router();
 
 //레시피 작성
-router.post("/", isLoggedIn, async (req, res, next) => {
-  const {
-    userId,
-    recipeName,
-    desc,
-    ingredient,
-    seasoning,
-    process,
-    category,
-    condition,
-    material,
-    cook,
-    servings,
-    time,
-    diffic,
-  } = req.body;
+router.post(
+  "/",
+  isLoggedIn,
+  recipeUpload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "processImage" },
+    { name: "doneImage" },
+  ]),
+  async (req, res, next) => {
+    const posts = new Post(req.body);
+    try {
+      //thumbnail 이미지 location DB에 넣기
+      posts.thumbnail = req.files.thumbnail[0].location;
 
-  const posts = new Post({
-    userId,
-    recipeName,
-    desc,
-    ingredient,
-    seasoning,
-    process,
-    category,
-    condition,
-    material,
-    cook,
-    servings,
-    time,
-    diffic,
-  });
-  try {
-    await posts.save();
-    res.status(201).json({ message: "레시피등록이 완료되었습니다." });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+      //processImage DB에 넣기
+      let arr_process = [];
+      let process_contents = req.files.processImage;
+      process_contents.forEach((process_contents) => arr_process.push(process_contents.location));
+      posts.processImage = arr_process;
+
+      //doneImage DB에 넣기
+      let arr_done = [];
+      let done_contents = req.files.doneImage;
+      done_contents.forEach((done_contents) => arr_done.push(done_contents.location));
+      posts.doneImage = arr_done;
+      posts.doneImage = req.files.thumbnail[0].location;
+
+      await posts.save();
+
+      res.status(201).json({ message: "레시피등록이 완료되었습니다." });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
-});
+);
 
 //전체 레시피 조회
 router.get("/", async (req, res, next) => {
