@@ -16,19 +16,30 @@ const PostSchema = new mongoose.Schema(
     //재료소개
     ingredient: [
       {
-        ingre_name: { type: String, required: true },
-        ingre_count: { type: String, required: true },
+        ingreName: { type: String, required: true },
+        ingreCount: { type: String, required: true },
       },
     ],
-    //양념
-    seasoning: { type: Array },
+    //양념소개
+    seasoning: [
+      {
+        ingreName: { type: String, required: true },
+        ingreCount: { type: String, required: true },
+      },
+    ],
     //조리과정
-    //타이머 값 어떻게 받아야할지 일단 데이터 테스트할때는 05:00으로 테스트 하기위해서 String 으로 설정하였습니다.
-    process: [{ txt: { type: String, required: true }, process_time: { type: String } }],
+    process: { type: Array, required: true },
+    //process_time은 분따로 초따로 (ex) min:1 sec:20 저장
+    processTime: [
+      {
+        min: { type: Number },
+        sec: { type: Number },
+      },
+    ],
     //조리과정 이미지
-    processImage: [{ type: String }],
+    processImage: [{ type: String, required: true }],
     // 썸네일
-    thumbnail: { type: String, default: "" },
+    thumbnail: { type: String, required: true },
     //완성 사진을 받는 부분입니다.
     doneImage: [{ type: String }],
     //종류별
@@ -66,7 +77,6 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     //작성글을 유저와 연결합니다
     userId: {
       type: Schema.Types.ObjectId,
