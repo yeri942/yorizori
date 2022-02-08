@@ -31,7 +31,10 @@ router.get("/:postId", async (req, res, next) => {
   const { postId } = req.params;
   try {
     // Comments에서 정의한 userId프로퍼티를 populate해서 해당 userId의 user정보도 함께 나오돋록 한다.
-    const comments = await Comment.find({ postId }).populate("userId");
+    const comments = await Comment.find({ postId }).sort({ "createdAt": -1 }).populate({
+      path: "userId",
+      select: "-password",
+    });
     console.log(comments);
     return res.status(200).json({ comments });
   } catch (err) {
