@@ -19,7 +19,7 @@ router.post(
     const {
       recipeName,
       desc,
-      ingregient,
+      ingredient,
       seasoning,
       process,
       processTime,
@@ -69,7 +69,7 @@ router.post(
         userId,
         recipeName,
         desc,
-        ingregient,
+        ingredient,
         seasoning,
         process,
         processTime,
