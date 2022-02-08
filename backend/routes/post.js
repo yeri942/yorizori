@@ -112,7 +112,7 @@ router.patch(
       if (posts.thumbnail != req.files.thumbnail[0].location) {
         //기존의 이미지는 s3에서 삭제
         const params = {
-          Bucket: "yorijori-recipes-eunjung",
+          Bucket: "yorijori-recipes",
           Key: posts.thumbnail_key,
         };
         s3.deleteObject(params, function (error, data) {
@@ -139,7 +139,7 @@ router.patch(
         //s3에서 삭제
         for (i = 0; i < posts.processImage_key.length; i++) {
           const params = {
-            Bucket: "yorijori-recipes-eunjung",
+            Bucket: "yorijori-recipes",
             Key: posts.processImage_key[i],
           };
           s3.deleteObject(params, function (error, data) {
@@ -169,7 +169,7 @@ router.patch(
         //s3에서 삭제
         for (i = 0; i < posts.doneImage_key.length; i++) {
           const params = {
-            Bucket: "yorijori-recipes-eunjung",
+            Bucket: "yorijori-recipes",
             Key: posts.doneImage_key[i],
           };
           s3.deleteObject(params, function (error, data) {
