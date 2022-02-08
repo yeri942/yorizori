@@ -16,7 +16,7 @@ router.post(
     { name: "doneImage" },
   ]),
   async (req, res, next) => {
-    const { recipeName, processImage, thumbnail, doneImage } = req.body;
+    const { recipeName } = req.body;
     const { id: userId } = req.user;
     try {
       //thumbnail 이미지 location DB에 넣기
@@ -33,13 +33,12 @@ router.post(
       let done_contents = req.files.doneImage;
       done_contents.forEach((done_contents) => arr_done.push(done_contents.location));
       doneImage = arr_done;
-      doneImage = req.files.thumbnail[0].location;
 
       await Post.create({ userId, recipeName, thumbnail, processImage, doneImage });
 
       res.status(201).json({ message: "레시피등록이 완료되었습니다." });
     } catch (err) {
-      res.status(500).json({ data: req.user, message: err.message });
+      res.status(500).json({ message: err.message });
     }
   }
 );
