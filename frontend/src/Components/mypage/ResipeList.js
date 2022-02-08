@@ -9,6 +9,8 @@ const ResipeMenus = styled.div`
     font-size: 16px;
     margin-top: 4px;
     margin-left: 30px;
+    font-weight: bold;
+    color: gray;
   }
 `
 
@@ -32,10 +34,19 @@ const ResipeListBox = styled.div`
   }
   
   p {
+    width: 140px;
+    text-align: center;
     font-family: sans-serif;
     position: relative;
     bottom: 15px;
     margin: 0px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    color: gray;
+    font-weight: bold;
+    font-size: 14px;
+
   }
 `
 const ResipeListItem = styled.div`
@@ -77,33 +88,39 @@ export default function ResipeButton(props) {
                   <Link to="/">
                     <img src="../images/food1.jpg" alt=""/>
                   </Link>
-                  <p>햄버거 레시피</p>
+                  <p># 햄버거 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
                   <Link to="/">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
-                  <p>고기 레시피</p>
+                  <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
                   <Link to="/">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
-                  <p>고기 레시피</p>
+                  <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
                   <Link to="/">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
-                  <p>고기 레시피</p>
+                  <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
                   <Link to="/">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
-                  <p>고기 레시피</p>
+                  <p># 고기 레시피</p>
                 </ResipeListItem>
-               
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p># 고기 레시피</p>
+                </ResipeListItem>
+       
               </ResipeListBox> 
             : ""
           }
