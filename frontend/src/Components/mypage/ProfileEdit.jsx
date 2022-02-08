@@ -48,8 +48,6 @@ const EditBtn = styled.button`
   background-color: #FCAD2C;
   border-radius: 5px;
   border:none;
-  position: relative;
-  top: 151px;
   width: 360px;
   height: 50px;
   color: white;
@@ -90,7 +88,7 @@ const EditMyPage = () => {
                 <p style={{ marginTop: "40px", fontSize: "14px", color: "gray"}}>변경할 닉네임을 입력해주세요</p>
               <EditInput placeholder="요리조리1234"/>
 
-              <div>  
+              <div style={{position: "relative", top: "151px"}}>  
                 <Link to="/users/mypage">
                   <EditBtn>
                     완료
