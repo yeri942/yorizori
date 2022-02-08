@@ -16,7 +16,21 @@ router.post(
     { name: "doneImage" },
   ]),
   async (req, res, next) => {
-    const { recipeName } = req.body;
+    const {
+      recipeName,
+      desc,
+      ingregient,
+      seasoning,
+      process,
+      processTime,
+      category,
+      condition,
+      material,
+      cook,
+      servings,
+      time,
+      diffic,
+    } = req.body;
     const { id: userId } = req.user;
     try {
       //thumbnail 이미지 location DB에 넣기
@@ -54,12 +68,24 @@ router.post(
       await Post.create({
         userId,
         recipeName,
+        desc,
+        ingregient,
+        seasoning,
+        process,
+        processTime,
         thumbnail,
         thumbnail_key,
         processImage,
         processImage_key,
         doneImage,
         doneImage_key,
+        category,
+        condition,
+        material,
+        cook,
+        servings,
+        time,
+        diffic,
       });
 
       res.status(201).json({ message: "레시피등록이 완료되었습니다." });
