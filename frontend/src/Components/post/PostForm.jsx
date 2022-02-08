@@ -116,11 +116,15 @@ const PostForm = () => {
     // Invalidation(submitData, setPostpostPageState);
     Invalidation(submitData, setPostpostPageState, mainImage);
 
-    try {
-      const postData = await axios.post("/post", submitData);
-    } catch (e) {
-      console.error(e);
-    }
+
+
+    
+    // 
+    // try {
+    //   const postData = await axios.post("/post", submitData);
+    // } catch (e) {
+    //   console.error(e);
+    // }
 
     console.log(submitData);
     // console.log(formData.get("subImg_1"));
