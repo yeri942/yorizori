@@ -16,13 +16,13 @@ export const Invalidation = (data, setPostpostPageState, mainImage) => {
     return;
   }
 
-  if (!data.ingredient[0] || !(data.ingredient[0].ingre_name && data.ingredient[0].ingre_count)) {
+  if (!data.ingredient[0] || !(data.ingredient[0].ingreName && data.ingredient[0].ingreCount)) {
     setPostpostPageState(2);
     alert("재료를 입력해주세요.");
     return;
   }
 
-  if (!data.process[0] || !(data.process[0].process_time && data.process[0].txt)) {
+  if (!data.process[0] || !(data.process[0].processTime && data.process[0].explain)) {
     setPostpostPageState(3);
     alert("요리순서 및 시간을 입력해주세요.");
     return;

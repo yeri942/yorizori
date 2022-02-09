@@ -28,6 +28,29 @@ document.addEventListener(
   true
 );
 
+function setFormData(formData, data, parentKey) {
+  if (!(formData instanceof FormData)) return;
+  if (!(data instanceof Object)) return;
+  Object.keys(data).forEach((key) => {
+    const val = data[key];
+    if (parentKey) key = `${parentKey}[${key}]`;
+    if (val instanceof Object && !Array.isArray(val)) {
+      return setFormData(formData, val, key);
+    }
+    if (Array.isArray(val)) {
+      val.forEach((v, idx) => {
+        if (v instanceof Object) {
+          setFormData(formData, v, `${key}[${idx}]`);
+        } else {
+          formData.append(`${key}[${idx}]`, v);
+        }
+      });
+    } else {
+      formData.append(key, val);
+    }
+  });
+}
+
 const PostForm = () => {
   const [postPageState, setPostpostPageState] = useRecoilState(postPageStateAtom);
   const mainImage = useRecoilValue(MainImageStateAtom);
@@ -36,65 +59,75 @@ const PostForm = () => {
   const subImage = useRecoilValue(SubImageStateAtom);
 
   const methods = useForm();
-  const formData = new FormData();
 
   const onSubmit = async (data) => {
-    mainImage.file.map((el) => {
-      formData.append("mainImg", el);
-    });
-    subImage.file.map((el, idx) => {
-      if (el) {
-        return formData.append(`subImg_${idx}`, el);
-      }
-    });
+    console.log(subImage.file[1]);
     let ingredient = [];
     let seasoning = [];
     let process = [];
     let process_el;
     let ingre_el;
     let seasoning_el;
-    let time;
+    let time = {
+      min: 0,
+      sec: 0,
+    };
+    let processImage = [];
+    let ImageIndex = 1;
     for (let [key, value] of Object.entries(data)) {
       // ingredient
       if (key.indexOf("ingredient_") > -1) {
         ingre_el = new Object({
-          ingre_name: "",
-          ingre_count: "",
+          ingreName: "",
+          ingreCount: "",
         });
-        ingre_el.ingre_name = value;
+        ingre_el.ingreName = value;
       }
       if (key.indexOf("ingredientVolume_") > -1) {
-        ingre_el.ingre_count = value;
+        ingre_el.ingreCount = value;
         ingredient.push(ingre_el);
       }
 
       // seasoning
       if (key.indexOf("source_") > -1) {
         seasoning_el = new Object({
-          ingre_name: "",
-          ingre_count: "",
+          ingreName: "",
+          ingreCount: "",
         });
-        seasoning_el.ingre_name = value;
+        seasoning_el.ingreName = value;
       }
       if (key.indexOf("sourceVolume_") > -1) {
-        seasoning_el.ingre_count = value;
+        seasoning_el.ingreCount = value;
         seasoning.push(seasoning_el);
       }
 
       // process
       if (key.indexOf("order_") > -1) {
         process_el = new Object({
-          txt: "",
-          process_time: "",
+          explain: "",
+          processTime: "",
         });
-        process_el.txt = value;
+        process_el.explain = value;
+        if (subImage.file[ImageIndex]) {
+          processImage.push(subImage.file[ImageIndex]);
+          ImageIndex++;
+        } else {
+          setPostpostPageState(3);
+          alert("서브이미지 필수임");
+        }
       }
       if (key.indexOf("orderTimeMin_") > -1) {
-        time = value;
+        time = {
+          ...time,
+          min: value,
+        };
       }
       if (key.indexOf("orderTimeSec_") > -1) {
-        time = `${time}:${value}`;
-        process_el.process_time = time;
+        time = {
+          ...time,
+          sec: value,
+        };
+        process_el.processTime = time;
         process.push(process_el);
       }
     }
@@ -112,21 +145,75 @@ const PostForm = () => {
       ...cookInfo,
       ...category,
     };
+    console.log(submitData);
+    console.log(processImage);
+
+    // for (let key in submitData) {
+    //   const value = submitData[key];
+    //   formData.append(key, JSON.stringify(value));
+    // }
+    const formData = new FormData();
+    setFormData(formData, submitData);
+    formData.append("thumbnail", mainImage);
+    formData.append("processImage", processImage);
+
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    // for (let i = 0; i < processImage.length; i++) {
+    //   formData.append("process[" + i + "].processImage", process[i].processImage);
+    // }
+    await axios.post("/post", submitData);
+
+    await axios
+      .post("/post", submitData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log("성공");
+      })
+      .catch((err) => {
+        console.log("error");
+      });
+
+    await axios
+      .post("/post", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log("성공");
+      })
+      .catch((err) => {
+        console.log("error");
+      });
 
     // Invalidation(submitData, setPostpostPageState);
-    Invalidation(submitData, setPostpostPageState, mainImage);
+    // Invalidation(submitData, setPostpostPageState, mainImage);
 
+    // mainImage.file.map((el) => {
+    //   formData.append("thumbnail", el);
+    // });
+    // subImage.file.map((el, idx) => {
+    //   if (el) {
+    //     return formData.append(`subImg_${idx}`, el);
+    //   }
+    // });
 
-
-    
-    // 
-    // try {
-    //   const postData = await axios.post("/post", submitData);
-    // } catch (e) {
-    //   console.error(e);
+    // formData.append(JSON.stringify(submitData));
+    // for (let key of formData.keys()) {
+    //   console.log(key);
     // }
 
-    console.log(submitData);
+    // /* value 확인하기 */
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
+
     // console.log(formData.get("subImg_1"));
     // console.log(formData.get("subImg_2"));
     // console.log(formData.get("subImg_3"));

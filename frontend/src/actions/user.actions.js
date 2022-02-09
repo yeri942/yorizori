@@ -20,7 +20,8 @@ function useUserActions() {
   async function login(email, password) {
     try {
       const user = await axios.post(`${baseUrl}/login`, { email, password });
-      localStorage.setItem("user", JSON.stringify(user));
+      // localStorage.setItem("user", JSON.stringify(user));
+      setAuth(true);
       navigate("/");
     } catch (e) {
       console.error(e);
@@ -48,7 +49,7 @@ function useUserActions() {
   async function logout() {
     try {
       await axios.get(`${baseUrl}/logout`);
-      localStorage.removeItem("user");
+      // localStorage.removeItem("user");
       setAuth(null);
       navigate("/");
     } catch (e) {
