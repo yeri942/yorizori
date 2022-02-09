@@ -42,4 +42,16 @@ router.get("/:postId", async (req, res, next) => {
   }
 });
 
+router.get("/:postId/count", async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    const count = await Comment.find({ postId }).count();
+    console.log(count);
+    return res.status(200).json({ count });
+  } catch (err) {
+    console.error(err);
+    return next(err);
+  }
+});
+
 module.exports = router;
