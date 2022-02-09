@@ -5,7 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { Theme } from "./theme";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -60,8 +61,10 @@ table {
 ReactDOM.render(
   <BrowserRouter>
     <ScrollToTop />
-    <GlobalStyle />
-    <App />
+    <ThemeProvider theme={Theme}>
+      <GlobalStyle />
+      <App />
+    </ThemeProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

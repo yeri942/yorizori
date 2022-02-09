@@ -7,12 +7,21 @@ const CommentsWrapper = styled.div`
   margin: 0 20px;
 `;
 
+const Title = styled.h1`
+  font-weight: bold;
+  background-color: ${(props) => props.theme.mainColor};
+  margin: 0 -20px;
+  padding: 10px 20px;
+  color: #fff
+`;
+
 const CommentInputForm = styled.form`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 17px 0;
 `;
+
 const Input = styled.input`
   padding: 10px 18px;
   width: 210px;
@@ -33,6 +42,7 @@ const InputButton = styled.button`
   border-radius: 13px;
   color: white;
 `;
+
 const ProfileImg = styled.img.attrs((props) => ({
   src: props.isImage ? props.isImage : "../images/onlylogo.png",
 }))`
@@ -55,7 +65,7 @@ const Comment = styled.div`
 
 const CommentWrapper = styled.div`
   flex-grow: 1;
-`
+`;
 
 const Nickname = styled.div`
   font-size: 14px;
@@ -72,16 +82,19 @@ const Time = styled.p`
   font-size: 12px;
   color: #a5a8b1;
 `;
+
 const MoreComments = styled.div`
   font-size: 14px;
   text-align: center;
   padding: 15px 0;
   border-top: 1px solid lightgray;
 `;
+
 const Comments = () => {
   const [openReply, setOpenReply] = useState(false);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+  const isLogin = false;
 
   useEffect(() => {
     // 원래 useEffect안에는 async-await을 사용하지 못하지만
@@ -141,16 +154,19 @@ const Comments = () => {
 
   return (
     <CommentsWrapper>
-      <CommentInputForm onSubmit={commentSubmit} isLogin={false}>
-        <ProfileImg isImage={false} />
-        <Input
-          type="text"
-          placeholder="댓글을 작성해주세요 :3"
-          onChange={commentChange}
-          value={comment}
-        />
-        <InputButton type="submit">작성</InputButton>
-      </CommentInputForm>
+      <Title>댓글 (5)</Title>
+      {isLogin && (
+        <CommentInputForm onSubmit={commentSubmit}>
+          <ProfileImg isImage={false} />
+          <Input
+            type="text"
+            placeholder="댓글을 작성해주세요 :3"
+            onChange={commentChange}
+            value={comment}
+          />
+          <InputButton type="submit">작성</InputButton>
+        </CommentInputForm>
+      )}
       {comments.map((comm) => {
         return (
           <Comment key={comm._id}>
