@@ -1,14 +1,13 @@
-// import { useRecoilValue } from "recoil";
 // import { MainImageStateAtom } from "../PostAtom/PostAtom";
+import { InvalidationAtom } from "../PostAtom/PostAtom";
+import { useRecoilState } from "recoil";
 
-export const Invalidation = (data, setPostpostPageState, mainImage) => {
+export const Invalidation = (data, setPostpostPageState, mainImage, setInvalidationState) => {
   if (!data.recipeName) {
     setPostpostPageState(1);
     alert("레시피제목을 입력해주세요.");
     return;
   }
-
-  console.log(mainImage.state);
 
   if (!mainImage.state) {
     setPostpostPageState(1);
@@ -38,4 +37,5 @@ export const Invalidation = (data, setPostpostPageState, mainImage) => {
   //   alert("카테고리를 모두 선택해주세요.");
   //   return;
   // }
+  setInvalidationState(true);
 };

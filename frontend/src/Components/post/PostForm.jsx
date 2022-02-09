@@ -8,6 +8,7 @@ import {
   SubImageStateAtom,
   categoryAtom,
   cookInfoAtom,
+  InvalidationAtom,
 } from "./PostAtom/PostAtom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import PostStepOne from "./PostStepOne/PostStepOne";
@@ -57,11 +58,13 @@ const PostForm = () => {
   const cookInfo = useRecoilValue(cookInfoAtom);
   const category = useRecoilValue(categoryAtom);
   const subImage = useRecoilValue(SubImageStateAtom);
+  const [invalidationState, setInvalidationState] = useRecoilState(InvalidationAtom);
 
   const methods = useForm();
 
   const onSubmit = async (data) => {
-    console.log(subImage.file[1]);
+    console.log(invalidationState);
+
     let ingredient = [];
     let seasoning = [];
     let process = [];
@@ -145,86 +148,47 @@ const PostForm = () => {
       ...cookInfo,
       ...category,
     };
-    console.log(submitData);
-    console.log(processImage);
 
-    // for (let key in submitData) {
-    //   const value = submitData[key];
-    //   formData.append(key, JSON.stringify(value));
-    // }
-    const formData = new FormData();
-    setFormData(formData, submitData);
-    formData.append("thumbnail", mainImage);
-    formData.append("processImage", processImage);
+    Invalidation(submitData, setPostpostPageState, mainImage, setInvalidationState);
 
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
+    if (invalidationState === true) {
+      console.log(mainImage);
+      const formData = new FormData();
+      setFormData(formData, submitData);
+      formData.append("thumbnail", mainImage.file);
+      formData.append("processImage", processImage);
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+
+      // for (let i = 0; i < processImage.length; i++) {
+      //   formData.append("process[" + i + "].processImage", process[i].processImage);
+      // }
+
+      await axios
+        .post("/post", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log("성공");
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+
+      // Invalidation(submitData, setPostpostPageState);
+
+      // 데이터 누수를 방지하기위해 미리보기를 위해 생성한 URL 삭제.
+      // subImage.preview.map((el, idx) => {
+      //   if (el) {
+      //     return window.URL.revokeObjectURL(el);
+      //   }
+      // });
+      // window.URL.revokeObjectURL(mainImage.preview);
     }
-
-    // for (let i = 0; i < processImage.length; i++) {
-    //   formData.append("process[" + i + "].processImage", process[i].processImage);
-    // }
-    await axios.post("/post", submitData);
-
-    await axios
-      .post("/post", submitData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log("성공");
-      })
-      .catch((err) => {
-        console.log("error");
-      });
-
-    await axios
-      .post("/post", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log("성공");
-      })
-      .catch((err) => {
-        console.log("error");
-      });
-
-    // Invalidation(submitData, setPostpostPageState);
-    // Invalidation(submitData, setPostpostPageState, mainImage);
-
-    // mainImage.file.map((el) => {
-    //   formData.append("thumbnail", el);
-    // });
-    // subImage.file.map((el, idx) => {
-    //   if (el) {
-    //     return formData.append(`subImg_${idx}`, el);
-    //   }
-    // });
-
-    // formData.append(JSON.stringify(submitData));
-    // for (let key of formData.keys()) {
-    //   console.log(key);
-    // }
-
-    // /* value 확인하기 */
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
-
-    // console.log(formData.get("subImg_1"));
-    // console.log(formData.get("subImg_2"));
-    // console.log(formData.get("subImg_3"));
-
-    // 데이터 누수를 방지하기위해 미리보기를 위해 생성한 URL 삭제.
-    // subImage.preview.map((el, idx) => {
-    //   if (el) {
-    //     return window.URL.revokeObjectURL(el);
-    //   }
-    // });
-    // window.URL.revokeObjectURL(mainImage.preview);
   };
 
   return (
