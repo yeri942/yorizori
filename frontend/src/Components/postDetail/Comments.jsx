@@ -6,6 +6,7 @@ import moment from "moment";
 const CommentsWrapper = styled.div`
   margin: 0 20px;
 `;
+
 const CommentInputForm = styled.form`
   display: flex;
   align-items: center;
@@ -32,12 +33,6 @@ const InputButton = styled.button`
   border-radius: 13px;
   color: white;
 `;
-const Comment = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 18px 0;
-`;
-
 const ProfileImg = styled.img.attrs((props) => ({
   src: props.isImage ? props.isImage : "../images/onlylogo.png",
 }))`
@@ -48,15 +43,34 @@ const ProfileImg = styled.img.attrs((props) => ({
   object-fit: cover;
 `;
 
+const Comment = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 18px 0;
+  ${ProfileImg} {
+    align-self: baseline;
+    flex-shrink: 0;
+  }
+`;
+
+const CommentWrapper = styled.div`
+  flex-grow: 1;
+`
+
 const Nickname = styled.div`
   font-size: 14px;
   font-weight: 900;
 `;
+
 const CommenContent = styled.div`
+  margin-top: 4px;
   font-size: 13px;
 `;
-const Time = styled.div`
+
+const Time = styled.p`
+  margin-top: 4px;
   font-size: 12px;
+  color: #a5a8b1;
 `;
 const MoreComments = styled.div`
   font-size: 14px;
@@ -89,6 +103,10 @@ const Comments = () => {
   };
   const commentSubmit = (e) => {
     e.preventDefault();
+    if (comment === "") {
+      // 빈댓글이면 바로 끝내버렴
+      return;
+    }
     // const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
     // name -> user의 nickName으로 변경해야함
     const newComment = { name: "두부", comment };
@@ -123,26 +141,25 @@ const Comments = () => {
 
   return (
     <CommentsWrapper>
-      <CommentInputForm onSubmit={commentSubmit}>
+      <CommentInputForm onSubmit={commentSubmit} isLogin={false}>
         <ProfileImg isImage={false} />
         <Input
           type="text"
-          placeholder="로그인 후 댓글을 작성 해주세요."
+          placeholder="댓글을 작성해주세요 :3"
           onChange={commentChange}
           value={comment}
         />
         <InputButton type="submit">작성</InputButton>
       </CommentInputForm>
       {comments.map((comm) => {
-        console.log(comm.userId.profileImage);
         return (
           <Comment key={comm._id}>
             <ProfileImg isImage={comm.userId.profileImage ? comm.userId.profileImage : ""} />
-            <div>
+            <CommentWrapper>
               <Nickname>{comm.userId.nickName}</Nickname>
               <CommenContent>{comm.comment}</CommenContent>
               <Time>{displayedAt(comm.createdAt)}</Time>
-            </div>
+            </CommentWrapper>
           </Comment>
         );
       })}
