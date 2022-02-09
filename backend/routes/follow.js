@@ -1,6 +1,5 @@
 const express = require("express");
-const { Follow } = require("../models/");
-const User = require("../models/User");
+const { Follow, User } = require("../models/");
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
 const asyncHandler = require("../utils/asyncHandler");

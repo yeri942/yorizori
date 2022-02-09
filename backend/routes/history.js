@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
-const { History } = require("../models/");
-const User = require("../models/User");
+const { History, User } = require("../models/");
 const asyncHandler = require("../utils/asyncHandler");
 
 //게시글 상세페이지 들어갔을 때 history post

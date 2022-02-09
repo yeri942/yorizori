@@ -2,10 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
 const asyncHandler = require("../utils/asyncHandler");
-const { Like, History, Follow } = require("../models/");
-const User = require("../models/User");
-const Post = require("../models/schemas/post");
-const Comment = require("../models/schemas/comment");
+const { Like, History, Follow, User, Post, Comment } = require("../models/");
 
 const { profileUpload, s3 } = require("../middlewares/upload");
 
