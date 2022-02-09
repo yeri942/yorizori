@@ -4,15 +4,18 @@ const bcrypt = require("bcrypt");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares"); // 내가 만든 사용자 미들웨어
 const { User } = require("../models/");
 const axios = require("axios");
+const asyncHandler = require("../utils/asyncHandler");
 
 const router = express.Router();
 
 //* 회원 가입
 // 사용자 미들웨어 isNotLoggedIn을 통과해야 async (req, res, next) => 미들웨어 실행
-router.post("/join", isNotLoggedIn, async (req, res, next) => {
-  const { email, nickName, password } = req.body; // 프론트에서 보낸 폼데이터를 받는다.
+router.post(
+  "/join",
+  isNotLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { email, nickName, password } = req.body; // 프론트에서 보낸 폼데이터를 받는다.
 
-  try {
     // 기존에 이메일로 가입한 사람이 있나 검사 (중복 가입 방지)
     const isUser = await User.findOne({ email });
     if (isUser) {
@@ -30,11 +33,8 @@ router.post("/join", isNotLoggedIn, async (req, res, next) => {
     });
 
     return res.status(201).json({ message: "회원가입이 완료되었습니다." });
-  } catch (error) {
-    console.error(error);
-    return next(error);
-  }
-});
+  })
+);
 
 //* 로그인 요청
 // 사용자 미들웨어 isNotLoggedIn 통과해야 async (req, res, next) => 미들웨어 실행
@@ -70,9 +70,12 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
 });
 
 //* 로그아웃 (isLoggedIn 상태일 경우)
-router.get("/logout", isLoggedIn, async (req, res, next) => {
-  // req.user (사용자 정보가 안에 들어있다. 당연히 로그인되어있으니 로그아웃하려는 거니까)
-  try {
+router.get(
+  "/logout",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    // req.user (사용자 정보가 안에 들어있다. 당연히 로그인되어있으니 로그아웃하려는 거니까)
+
     const { accessToken } = req.user;
     if (accessToken) {
       const logout = await axios({
@@ -84,14 +87,11 @@ router.get("/logout", isLoggedIn, async (req, res, next) => {
       });
       console.log("카카오 로그아웃 완료");
     }
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-  req.logout();
-  req.session.destroy(); // 로그인인증 수단으로 사용한 세션쿠키를 지우고 파괴한다. 세션쿠키가 없다는 말은 즉 로그아웃 인 말.
-  res.status(200).json({ message: "로그아웃 성공" });
-});
+    req.logout();
+    req.session.destroy(); // 로그인인증 수단으로 사용한 세션쿠키를 지우고 파괴한다. 세션쿠키가 없다는 말은 즉 로그아웃 인 말.
+    res.status(200).json({ message: "로그아웃 성공" });
+  })
+);
 
 router.get("/kakao", passport.authenticate("kakao"));
 
