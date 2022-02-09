@@ -38,19 +38,13 @@ const Comment = styled.div`
   margin: 18px 0;
 `;
 
-const ProfileWrapper = styled.div`
+const ProfileImg = styled.img.attrs((props) => ({
+  src: props.isImage ? props.isImage : "../images/onlylogo.png",
+}))`
   width: 42px;
   height: 42px;
-  /* border-radius: 50%; */
-  border: 1px solid #000;
   margin-right: 12px;
-  overflow: hidden;
-`;
-
-const ProfileImg = styled.img`
-  width: 100%;
-  height: 100%;
-  background-color: ${(props) => (props.isLogin ? "" : "#000")};
+  border-radius: 50%;
   object-fit: cover;
 `;
 
@@ -130,9 +124,7 @@ const Comments = () => {
   return (
     <CommentsWrapper>
       <CommentInputForm onSubmit={commentSubmit}>
-        <ProfileWrapper>
-          <ProfileImg isLogin={false} />
-        </ProfileWrapper>
+        <ProfileImg isImage={false} />
         <Input
           type="text"
           placeholder="로그인 후 댓글을 작성 해주세요."
@@ -142,9 +134,10 @@ const Comments = () => {
         <InputButton type="submit">작성</InputButton>
       </CommentInputForm>
       {comments.map((comm) => {
+        console.log(comm.userId.profileImage);
         return (
           <Comment key={comm._id}>
-            <ProfileImg src={comm.userId.profileImage ? comm.userId.profileImage : ""} />
+            <ProfileImg isImage={comm.userId.profileImage ? comm.userId.profileImage : ""} />
             <div>
               <Nickname>{comm.userId.nickName}</Nickname>
               <CommenContent>{comm.comment}</CommenContent>
