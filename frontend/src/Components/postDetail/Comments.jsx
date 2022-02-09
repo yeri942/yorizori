@@ -37,13 +37,23 @@ const Comment = styled.div`
   align-items: center;
   margin: 18px 0;
 `;
-const ProfileImg = styled.img`
+
+const ProfileWrapper = styled.div`
   width: 42px;
   height: 42px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
+  border: 1px solid #000;
   margin-right: 12px;
+  overflow: hidden;
+`;
+
+const ProfileImg = styled.img`
+  width: 100%;
+  height: 100%;
+  background-color: ${(props) => (props.isLogin ? "" : "#000")};
   object-fit: cover;
 `;
+
 const Nickname = styled.div`
   font-size: 14px;
   font-weight: 900;
@@ -120,7 +130,9 @@ const Comments = () => {
   return (
     <CommentsWrapper>
       <CommentInputForm onSubmit={commentSubmit}>
-        <ProfileImg src="../images/gam.jpg" />
+        <ProfileWrapper>
+          <ProfileImg isLogin={false} />
+        </ProfileWrapper>
         <Input
           type="text"
           placeholder="로그인 후 댓글을 작성 해주세요."
