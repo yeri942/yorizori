@@ -9,9 +9,21 @@ const ResipeMenus = styled.div`
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     margin-top: 4px;
-    margin-left: 30px;
+    margin-left: 20px;
     font-weight: bold;
-    color: gray;
+    color: ${(props) => { 
+
+    switch (props.type) {
+      case true:
+        return "#FEAE11"
+      
+      case false:
+        return "gray"
+
+      default:
+        break;
+    }
+  }}
   }
 `
 
@@ -50,8 +62,8 @@ const ResipeListBox = styled.div`
     color: gray;
     font-weight: bold;
     font-size: 14px;
-
   }
+
 `
 const ResipeListItem = styled.div`
 `
@@ -79,7 +91,7 @@ export default function ResipeButton(props) {
         changeResipe()
         moveButton()
       }}>
-          <ResipeMenus>
+          <ResipeMenus type={onResipe}>
             <span>{ resipeMenu[props.nums]}</span>
           </ResipeMenus>
             <img className={`buttont${props.nums}`} src={resipeMenuButton[props.nums]} alt=""/>

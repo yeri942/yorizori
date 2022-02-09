@@ -43,5 +43,4 @@ export const MypageResipeBox = styled.button`
     transform: scaleY(-1);
     transition: .5s;
   }
-  
 `
