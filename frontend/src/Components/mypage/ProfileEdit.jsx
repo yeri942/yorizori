@@ -6,6 +6,7 @@ import NavTop from "../nav/TopNav"
 import { MyPageImage } from "./Profile"
 import { MyPageMainBox, MyPageMainImgBox} from "./ProfileStyle"
 import { MyPageEditInputBox } from "./ProfileEditStyle"
+import { MyPagePasswordEditBox } from "./ProfileEditStyle";
 
 const EditMainBox = styled.div`
   
@@ -65,6 +66,7 @@ const EditImageUpload = styled.input`
 const EditMyPage = () => {
 
   const [Profileimage, setProfileImage] = useState("../images/profile.jpg");
+  const [ password, setPassword ] = useState("1234")
 
   const ClickUpload = (e) => {
     const imgBtn = document.querySelector("#file-upload")
@@ -75,6 +77,9 @@ const EditMyPage = () => {
     setProfileImage(URL.createObjectURL(e.target.files[0]));
   }
 
+  const pass1 = () => {
+    document.querySelector(".passbox").classList.toggle("passcheck")
+  }
 
   return (
       <EditMainBox>
@@ -87,8 +92,13 @@ const EditMyPage = () => {
               <EditImage id="imgs"  onClick={ClickUpload} src={Profileimage}/>
                 <p style={{ marginTop: "40px", fontSize: "14px", color: "gray"}}>변경할 닉네임을 입력해주세요</p>
               <EditInput placeholder="요리조리1234"/>
+              <MyPagePasswordEditBox className="passbox">
+                <span onClick={pass1}>ㆍ비밀번호 바꾸기</span>
+                <div className="showpass">
 
-              <div style={{position: "relative", top: "151px"}}>  
+                </div>
+              </MyPagePasswordEditBox>
+              <div style={{position: "relative", top: "134px"}}>  
                 <Link to="/users/mypage">
                   <EditBtn>
                     완료

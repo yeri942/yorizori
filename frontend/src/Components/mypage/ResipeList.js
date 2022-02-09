@@ -101,67 +101,67 @@ export default function ResipeButton(props) {
             onResipe 
             ?  <ResipeListBox>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food1.jpg" alt=""/>
                   </Link>
                   <p># 햄버거 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food1.jpg" alt=""/>
                   </Link>
                   <p># 햄버거 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
-                  <Link to="/">
+                  <Link to="/detail">
                     <img src="../images/food2.jpg" alt=""/>
                   </Link>
                   <p># 고기 레시피</p>
