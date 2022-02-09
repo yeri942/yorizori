@@ -10,8 +10,8 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Home from "./pages/Home";
-
 import PostPage from "./pages/PostPage";
+import MoreComments from "./Components/postDetail/MoreComments";
 
 function App() {
   return (
@@ -22,8 +22,11 @@ function App() {
         <Route element={<RegisterPage />} path="/register" />
         {/* <Route element={<OldPostPage />} path="/oldpost" /> */}
         <Route element={<ViewAllPage />} path="/view_all" />
-        <Route element={<PostDetailPage />} path="/detail" />
-
+        {/* <Route path="detail" element={<PostDetailPage />} >
+          <Route path="comments" element={<MoreComments />} />
+        </Route> */}
+        <Route path="detail" element={<PostDetailPage />} />
+        <Route path="detail/comments" element={<MoreComments />} />
         <Route element={<MyPage />} path="/users/mypage" />
         <Route element={<MyPageEdit />} path="/users/edit" />
         <Route element={<PostPage />} path="/post" />

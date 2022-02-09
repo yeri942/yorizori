@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const CommentsWrapper = styled.div`
   margin: 0 20px;
@@ -12,7 +13,7 @@ const Title = styled.h1`
   background-color: ${(props) => props.theme.mainColor};
   margin: 0 -20px;
   padding: 10px 20px;
-  color: #fff
+  color: #fff;
 `;
 
 const CommentInputForm = styled.form`
@@ -75,6 +76,12 @@ const Nickname = styled.div`
 const CommenContent = styled.div`
   margin-top: 4px;
   font-size: 13px;
+  line-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `;
 
 const Time = styled.p`
@@ -83,7 +90,7 @@ const Time = styled.p`
   color: #a5a8b1;
 `;
 
-const MoreComments = styled.div`
+const More = styled.div`
   font-size: 14px;
   text-align: center;
   padding: 15px 0;
@@ -129,10 +136,10 @@ const Comments = () => {
     setComment("");
   };
 
-  const onClickReplyOpen = () => {
-    setOpenReply(!openReply);
-    alert(openReply);
-  };
+  // const onClickReplyOpen = () => {
+  //   setOpenReply(!openReply);
+  //   alert(openReply);
+  // };
 
   const displayedAt = (createdAt) => {
     const milliSeconds = new Date().getTime() - new Date(createdAt).getTime();
@@ -179,7 +186,9 @@ const Comments = () => {
           </Comment>
         );
       })}
-      <MoreComments onClick={onClickReplyOpen}>댓글 더보기</MoreComments>
+      <Link to="./comments">
+        <More>댓글 더보기</More>
+      </Link>
     </CommentsWrapper>
   );
 };
