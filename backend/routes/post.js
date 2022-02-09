@@ -1,6 +1,5 @@
 const express = require("express");
-const Post = require("../models/schemas/post");
-const User = require("../models/User");
+const { Post } = require("../models/");
 const { isLoggedIn } = require("./middlewares");
 const { recipeUpload, s3 } = require("../middlewares/upload");
 

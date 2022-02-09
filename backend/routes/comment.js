@@ -1,5 +1,5 @@
 const express = require("express");
-const Comment = require("../models/schemas/comment");
+const { Comment } = require("../models/");
 const { isLoggedIn } = require("./middlewares");
 
 const router = express.Router();
@@ -19,7 +19,6 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       responseTo,
       comment,
     });
-
     return res.status(201).json({ message: "댓글 등록이 완료되었습니다." });
   } catch (err) {
     console.error(err);
@@ -31,7 +30,7 @@ router.get("/:postId", async (req, res, next) => {
   const { postId } = req.params;
   try {
     // Comments에서 정의한 userId프로퍼티를 populate해서 해당 userId의 user정보도 함께 나오돋록 한다.
-    const comments = await Comment.find({ postId }).sort({ "createdAt": -1 }).populate({
+    const comments = await Comment.find({ postId }).sort({ createdAt: -1 }).populate({
       path: "userId",
       select: "-password",
     });

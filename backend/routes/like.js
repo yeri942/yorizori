@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { isLoggedIn } = require("./middlewares");
-const { Like } = require("../models/");
-const User = require("../models/User");
+const { Like, User } = require("../models/");
 const asyncHandler = require("../utils/asyncHandler");
 
 //좋아요 눌렀을 때 post

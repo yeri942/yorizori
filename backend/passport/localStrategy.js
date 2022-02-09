@@ -2,7 +2,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 
-const User = require("../models/User");
+const { User } = require("../models/");
 
 module.exports = () => {
   //? auth 라우터에서 /login 요청이 오면 local설정대로 이쪽이 실행되게 된다.
@@ -29,10 +29,10 @@ module.exports = () => {
             // 해시비번을 비교
             const checkPassword = await bcrypt.compare(password, isUser.password);
             if (checkPassword) {
-                const tokenUser = {
-                    user: isUser,
-                    acessToken: null,
-                }
+              const tokenUser = {
+                user: isUser,
+                acessToken: null,
+              };
               done(null, tokenUser); //? 성공이면 done()의 2번째 인수에 선언
             } else {
               done(null, false, { message: "비밀번호가 일치하지 않습니다." }); //? 실패면 done()의 2번째 인수는 false로 주고 3번째 인수에 선언
