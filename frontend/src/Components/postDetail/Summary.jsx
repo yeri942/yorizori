@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import dummy from "./PostDummyData.json";
+
 const SummaryWrapper = styled.div`
   width: 360px;
   .sprite {
@@ -91,6 +93,27 @@ const ProfileImg = styled.img`
   object-fit: cover;
 `;
 const Nickname = styled.span``;
+const SummaryInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0px 25px 0px;
+  color: gray;
+  font-size: 15px;
+  & > span:not(:first-child) {
+    margin-left: 20px;
+    &::before {
+      margin-right: 20px;
+
+      content: "|";
+      width: 10px;
+      height: 10px;
+    }
+  }
+`;
+const Servings = styled.span``;
+const Time = styled.span``;
+const Diffic = styled.span``;
 
 const Summary = () => {
   const [heart, SetHeart] = useState(false);
@@ -99,7 +122,7 @@ const Summary = () => {
   };
   return (
     <SummaryWrapper heartstate={heart}>
-      <Thumbnail src="../images/gam.jpg" />
+      <Thumbnail src={dummy.post[0].postinfo.thumbnail} />
       <LCVS>
         <Likes>
           <span className="sprite heart" onClick={HeartState} />
@@ -116,13 +139,18 @@ const Summary = () => {
         <Share className="sprite share" />
       </LCVS>
       <div>
-        <Title>구운계란카레</Title>
-        <Content>카레의 깊은맛을 느껴보세요 ~</Content>
+        <Title>{dummy.post[0].postinfo.recipeName}</Title>
+        <Content>{dummy.post[0].postinfo.desc}</Content>
       </div>
       <Author>
         <ProfileImg src="../images/gam.jpg" />
         <Nickname>스누피</Nickname>
       </Author>
+      <SummaryInfo>
+        <Servings>{dummy.post[0].postinfo.servings}</Servings>
+        <Time>{dummy.post[0].postinfo.time}</Time>
+        <Diffic>{dummy.post[0].postinfo.diffic}</Diffic>
+      </SummaryInfo>
     </SummaryWrapper>
   );
 };
