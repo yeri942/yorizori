@@ -21,7 +21,9 @@
     "react-loading": "^2.0.3",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^3.0.1",
+    "react-slick": "^0.28.1",
     "recoil": "^0.5.2",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.3",
     "update": "^0.4.2",
     "web-vitals": "^2.1.4"
@@ -49,5 +51,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:8080"
 }
