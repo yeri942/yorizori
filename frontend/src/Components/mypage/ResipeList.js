@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react'
 import {MypageResipeBox} from "./ProfileStyle"
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
+import { StyledScroll } from '../post/commonStyle';
 
 const ResipeMenus = styled.div`
   span {
@@ -15,13 +16,16 @@ const ResipeMenus = styled.div`
 `
 
 const ResipeListBox = styled.div`
-  width: 300px;
-  height: 100%;
+  width: 310px;
+  height: 260px;
   left: 32px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   text-align: center;
+  overflow:scroll;
+  overflow-x: hidden;
+  ${StyledScroll}
 
   img {
     position: relative;
@@ -89,6 +93,36 @@ export default function ResipeButton(props) {
                     <img src="../images/food1.jpg" alt=""/>
                   </Link>
                   <p># 햄버거 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food1.jpg" alt=""/>
+                  </Link>
+                  <p># 햄버거 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p># 고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p># 고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p># 고기 레시피</p>
+                </ResipeListItem>
+                <ResipeListItem>
+                  <Link to="/">
+                    <img src="../images/food2.jpg" alt=""/>
+                  </Link>
+                  <p># 고기 레시피</p>
                 </ResipeListItem>
                 <ResipeListItem>
                   <Link to="/">
