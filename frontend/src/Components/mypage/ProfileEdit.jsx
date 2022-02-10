@@ -76,13 +76,18 @@ const EditInput = styled.input`
 
       padding: 0;
       margins: 0;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: bold;
     }
 
-    .test1 {
-      font-size: 16px;
+    .checkError {
+      font-size: 14px;
     }
+
+    .checkSuccess {
+      font-size: 14px;
+    }
+
   }
 `
 
@@ -132,7 +137,6 @@ const EditMyPage = () => {
     let pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ]/; // 한글체크
     const data = document.querySelector("#nickNameCheckText")
 
-    console.log(value.length)
     if(pattern_spc.test(value)){
       data.innerText = "특수 문자가 포함되어 있습니다."
       setNickCheck("type2")
@@ -171,7 +175,7 @@ const EditMyPage = () => {
                 setMyNickName(e.target.value)
                 nickNameCheck(e.target.value)
               }}/>
-              <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="test1"/> : <FontAwesomeIcon icon={faCircleCheck} /> } <span id="nickNameCheckText"></span></p>
+              <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
               
               <MyPagePasswordEditBox className="passbox">
                 <span onClick={pass1}>ㆍ비밀번호 바꾸기</span>  
