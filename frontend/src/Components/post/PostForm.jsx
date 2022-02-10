@@ -17,6 +17,8 @@ import PostStepThree from "./PostStepThree/PostStepThree";
 import PostStepFour from "./PostStepFour/PostStepFour";
 import { Invalidation } from "./util/Invalidation.jsx";
 import axios from "axios";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const PostFormBlock = styled.form``;
 document.addEventListener(
@@ -59,12 +61,12 @@ const PostForm = () => {
   const category = useRecoilValue(categoryAtom);
   const subImage = useRecoilValue(SubImageStateAtom);
   const [invalidationState, setInvalidationState] = useRecoilState(InvalidationAtom);
-
+  const navigate = useNavigate();
   const methods = useForm();
 
   const onSubmit = async (data) => {
     console.log(invalidationState);
-
+    console.log(data);
     let ingredient = [];
     let seasoning = [];
     let process = [];
@@ -117,6 +119,7 @@ const PostForm = () => {
         } else {
           setPostpostPageState(3);
           alert("서브이미지 필수임");
+          return;
         }
       }
       if (key.indexOf("orderTimeMin_") > -1) {
@@ -152,11 +155,15 @@ const PostForm = () => {
     Invalidation(submitData, setPostpostPageState, mainImage, setInvalidationState);
 
     if (invalidationState === true) {
-      console.log(mainImage);
       const formData = new FormData();
       setFormData(formData, submitData);
-      formData.append("thumbnail", mainImage.file);
-      formData.append("processImage", processImage);
+      formData.append("thumbnail", mainImage.file[0]);
+      processImage.map((eachfile) => {
+        formData.append("copyImage", eachfile);
+      });
+
+      console.log(formData.getAll("copyImage"));
+      console.log(formData.getAll("thumbnail"));
 
       for (var pair of formData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
@@ -173,21 +180,20 @@ const PostForm = () => {
           },
         })
         .then((res) => {
-          console.log("성공");
+          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => navigate("/"));
         })
         .catch((err) => {
-          console.log("error");
+          swal("등록 실패", "누락된 부분이 있는지 확인해주세요.", "error");
+          console.log(err);
         });
 
-      // Invalidation(submitData, setPostpostPageState);
-
       // 데이터 누수를 방지하기위해 미리보기를 위해 생성한 URL 삭제.
-      // subImage.preview.map((el, idx) => {
-      //   if (el) {
-      //     return window.URL.revokeObjectURL(el);
-      //   }
-      // });
-      // window.URL.revokeObjectURL(mainImage.preview);
+      subImage.preview.map((el, idx) => {
+        if (el) {
+          return window.URL.revokeObjectURL(el);
+        }
+      });
+      window.URL.revokeObjectURL(mainImage.preview);
     }
   };
 
