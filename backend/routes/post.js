@@ -193,10 +193,8 @@ router.patch(
       arrCopyImage.push(CopyImageContents[i].location);
     }
 
-    //processIamge의 url주소가 이전과 다르다면 변경 되었을 경우
-    if (posts.copyImage != arrCopyImage) {
-      //processImage 이미지 location DB에 넣기
-
+    //processIamge의 url주소가 이전과 다를경우
+    if (posts.processImage != arrCopyImage) {
       //s3에서 삭제
       for (i = 0; i < posts.copyImage.length; i++) {
         const params = {
@@ -209,7 +207,7 @@ router.patch(
           return;
         });
       }
-      posts.processImage = arrCopyImage;
+      posts.copyImage = arrCopyImage;
 
       //copyImage 의 key 값 찾기
       let arrCopyImageKey = [];
