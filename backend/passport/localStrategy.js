@@ -22,14 +22,14 @@ module.exports = () => {
       //* 콜백함수의  email과 password는 위에서 설정한 필드이다. 위에서 객체가 전송되면 콜백이 실행된다.
       asyncHandler(async (email, password, done) => {
         // 가입된 회원인지 아닌지 확인
-        const isUser = await User.findOne({ email });
+        const isUserExist = await User.findOne({ email });
         // 만일 가입된 회원이면
-        if (isUser) {
+        if (isUserExist) {
           // 해시비번을 비교
-          const checkPassword = await bcrypt.compare(password, isUser.password);
+          const checkPassword = await bcrypt.compare(password, isUserExist.password);
           if (checkPassword) {
             const tokenUser = {
-              user: isUser,
+              user: isUserExist,
               acessToken: null,
             };
             done(null, tokenUser); //? 성공이면 done()의 2번째 인수에 선언

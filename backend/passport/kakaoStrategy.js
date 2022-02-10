@@ -28,6 +28,7 @@ module.exports = () => {
             accessToken,
           };
           done(null, tokenUser);
+          return
         }
         // else문으로는 예상치 못한 에러를 처리하지 못할 수 있으니 되도록이면 사용하지 않도록 한다.
         const newUser = await User.create({
@@ -40,6 +41,7 @@ module.exports = () => {
           accessToken,
         };
         done(null, tokenUser);
+        return
       })
     )
   );
