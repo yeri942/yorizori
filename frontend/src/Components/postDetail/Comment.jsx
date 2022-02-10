@@ -16,7 +16,7 @@ const ProfileImg = styled.img.attrs((props) => ({
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 14px;
+  padding-top: 4px;
   ${ProfileImg} {
     align-self: baseline;
     flex-shrink: 0;
@@ -49,6 +49,7 @@ const CommenContent = styled.div`
 const Time = styled.p`
   margin-top: 4px;
   font-size: 12px;
+  margin-bottom: 0;
   color: #a5a8b1;
 `;
 

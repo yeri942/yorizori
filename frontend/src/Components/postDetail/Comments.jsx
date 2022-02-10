@@ -11,6 +11,7 @@ const CommentsWrapper = styled.div`
 `;
 
 const Title = styled.h1`
+  font-size: 18px;
   font-weight: bold;
   background-color: ${(props) => props.theme.mainColor};
   margin: 0 -20px;
@@ -46,11 +47,15 @@ const InputButton = styled.button`
   color: white;
 `;
 
-const More = styled.div`
+const More = styled(Link)`
+  display: block;
+  color: inherit;
+  text-decoration: none;
   font-size: 14px;
   text-align: center;
   padding: 15px 0;
   border-top: 1px solid lightgray;
+  margin-top: 4px;
 `;
 
 const Comments = () => {
@@ -100,9 +105,7 @@ const Comments = () => {
             <Comment key={comment._id} comment={comment} isMore={false} />
           </>
         ))}
-      <Link to="./comments">
-        <More>댓글 더보기</More>
-      </Link>
+      <More to="./comments">댓글 더보기</More>
     </CommentsWrapper>
   );
 };

@@ -31,8 +31,7 @@ const MyForm = styled.form`
 `;
 
 function MoreComments() {
-    const url = "http://localhost:8080/comment"
-  const [page, setPage] = useState(1);
+  const url = "http://localhost:8080/comment";
   const [myComments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
@@ -59,21 +58,29 @@ function MoreComments() {
       return;
     }
     fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            postId: "61f61970198538e03c2b75a9",
-            userId: "61f619dec8eb6ca33d73bbc2",
-            comment: newComment
-        })
-    }).then((res) => console.log(res))
-
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        postId: "61f61970198538e03c2b75a9",
+        userId: "61f619dec8eb6ca33d73bbc2",
+        comment: newComment,
+      }),
+    }).then((res) => {
+      console.log(res);
+    });
+    setNewComment("");
   };
 
   const changeHandler = ({ target: { value } }) => {
     setNewComment(value);
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key == "Enter") {
+      submitHandler(e);
+    }
   };
 
   return (
@@ -87,7 +94,7 @@ function MoreComments() {
                 <>
                   <Comment key={comment._id} comment={{ ...comment }} isMore={true} />
                   <ReplyComment
-                    key={index}
+                    key={comment._id + index}
                     commentList={myComments}
                     parentCommentId={comment._id}
                   />
@@ -96,8 +103,14 @@ function MoreComments() {
           )}
       </Wrapper>
       <MyForm onSubmit={submitHandler}>
-        <input onChange={changeHandler} placeholder="댓글을 남겨주세요 😊" type="text" />
-        <button type="submit">등록</button>
+        <input
+          onKeyDown={onKeyPress}
+          onChange={changeHandler}
+          value={newComment}
+          placeholder="댓글을 남겨주세요 😊"
+          type="text"
+        />
+        <button>등록</button>
       </MyForm>
     </>
   );

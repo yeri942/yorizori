@@ -21,8 +21,8 @@ const TopBackBox = styled.img`
 `;
 
 const Title = styled.h1`
+  font-size: 18px;
   margin-left: 24px;
-  font-weight: bold;
   color: ${(props) => props.theme.mainColor};
 `;
 
