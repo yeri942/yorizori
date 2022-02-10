@@ -4,10 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import ScrollToTop from "./ScrollToTop";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { Theme } from "./theme";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ScrollToTop />
+    <ThemeProvider theme={Theme}>
+      <App />
+    </ThemeProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
