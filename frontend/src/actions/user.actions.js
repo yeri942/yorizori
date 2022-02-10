@@ -16,6 +16,7 @@ function useUserActions() {
     login,
     logout,
     register,
+    kakaoLogin,
   };
 
   async function login(email, password) {
@@ -44,6 +45,15 @@ function useUserActions() {
       if (e.response.status === 404) {
         alert("경로오류");
       }
+    }
+  }
+
+  async function kakaoLogin() {
+    try {
+      console.log("test");
+      await axios.get(`${baseUrl}/kakao`);
+    } catch (e) {
+      console.log(e);
     }
   }
 
