@@ -65,8 +65,6 @@ const PostForm = () => {
   const methods = useForm();
 
   const onSubmit = async (data) => {
-    console.log(invalidationState);
-    console.log(data);
     let ingredient = [];
     let seasoning = [];
     let process = [];
@@ -161,9 +159,6 @@ const PostForm = () => {
       processImage.map((eachfile) => {
         formData.append("copyImage", eachfile);
       });
-
-      console.log(formData.getAll("copyImage"));
-      console.log(formData.getAll("thumbnail"));
 
       for (var pair of formData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
