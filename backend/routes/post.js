@@ -50,7 +50,7 @@ router.post(
       doneImage = arr_done;
 
       //이미지의 key값 입력
-      thumbnail_key = req.files.thumbnail[0].key;
+      thumbnailKey = req.files.thumbnail[0].key;
 
       //copyImage 의 key 값 찾기
       let arr_process_key = [];
@@ -58,13 +58,13 @@ router.post(
       process_contents_key.forEach((process_contents_key) =>
         arr_process_key.push(process_contents_key.key)
       );
-      copyImage_key = arr_process_key;
+      copyImageKey = arr_process_key;
 
       //doneImage의 key값 찾기
       let arr_done_key = [];
       let done_contents_key = req.files.doneImage;
       done_contents_key.forEach((done_contents) => arr_done_key.push(done_contents.key));
-      doneImage_key = arr_done_key;
+      doneImageKey = arr_done_key;
 
       const posts = await Post.create({
         userId,
@@ -74,11 +74,11 @@ router.post(
         seasoning,
         process,
         thumbnail,
-        thumbnail_key,
+        thumbnailKey,
         copyImage,
-        copyImage_key,
+        copyImageKey,
         doneImage,
-        doneImage_key,
+        doneImageKey,
         category,
         condition,
         material,
@@ -91,7 +91,7 @@ router.post(
       //process내부 processImage의 location , key값 부여
       for (i = 0; i < process.length; i++) {
         posts.process[i].processImage = copyImage[i];
-        posts.process[i].processImage_key = copyImage_key[i];
+        posts.process[i].processImageKey = copyImageKey[i];
       }
 
       await posts.save();
