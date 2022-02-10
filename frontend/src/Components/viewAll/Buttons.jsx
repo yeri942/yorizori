@@ -29,6 +29,9 @@ const ButtonWrapper = styled.div`
 
 const RandomButtonWapper = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   right: 15px;
   top: 89px;
   & > div {
@@ -40,9 +43,6 @@ const RandomButtonWapper = styled.div`
     height: 38px;
   }
   & > p {
-    position: absolute;
-    top: 25px;
-    left: -10px;
     width: 44px;
     color: #feae11;
     font-size: 11px;
@@ -65,12 +65,12 @@ const DropdownWrapper = styled.div`
     border: 2px solid #feae11;
     border-radius: 50px;
     line-height: 36px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 900;
     color: #feae11;
 
     &:not(:last-child) {
-      margin-right: 11px;
+      margin-right: 8px;
     }
     & > div:not(:first-child) {
       background-color: white;
@@ -89,6 +89,7 @@ const DropdownWrapper = styled.div`
     }
   }
 `;
+
 const Buttons = () => {
   // const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
