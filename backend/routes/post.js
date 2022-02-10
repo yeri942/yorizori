@@ -38,33 +38,37 @@ router.post(
       //copyImage DB에 넣기
       let arrCopyImage = [];
       let CopyImageContents = req.files.copyImage;
-      CopyImageContents.forEach((CopyImageContents) =>
-        arrCopyImage.push(CopyImageContents.location)
-      );
+      for (i = 0; i < CopyImageContents.length; i++) {
+        arrCopyImage.push(CopyImageContents[i].location);
+      }
       copyImage = arrCopyImage;
 
       //doneImage DB에 넣기
-      let arr_done = [];
-      let done_contents = req.files.doneImage;
-      done_contents.forEach((done_contents) => arr_done.push(done_contents.location));
-      doneImage = arr_done;
+      let arrDone = [];
+      let doneContents = req.files.doneImage;
+      for (i = 0; i < doneContents.length; i++) {
+        arrDone.push(doneContents[i].location);
+      }
+      doneImage = arrDone;
 
       //이미지의 key값 입력
       thumbnailKey = req.files.thumbnail[0].key;
 
       //copyImage 의 key 값 찾기
-      let arr_process_key = [];
-      let process_contents_key = req.files.copyImage;
-      process_contents_key.forEach((process_contents_key) =>
-        arr_process_key.push(process_contents_key.key)
-      );
-      copyImageKey = arr_process_key;
+      let arrCopyImageKey = [];
+      let CopyImageContentsKey = req.files.copyImage;
+      for (i = 0; i < CopyImageContentsKey.length; i++) {
+        arrCopyImageKey.push(CopyImageContentsKey[i].key);
+      }
+      copyImageKey = arrCopyImageKey;
 
       //doneImage의 key값 찾기
-      let arr_done_key = [];
-      let done_contents_key = req.files.doneImage;
-      done_contents_key.forEach((done_contents) => arr_done_key.push(done_contents.key));
-      doneImageKey = arr_done_key;
+      let arrDoneKey = [];
+      let doneContentsKey = req.files.doneImage;
+      for (i = 0; i < doneContentsKey.length; i++) {
+        arrDoneKey.push(doneContentsKey[i].key);
+      }
+      doneImageKey = arrDoneKey;
 
       const posts = await Post.create({
         userId,
@@ -132,7 +136,7 @@ router.patch(
   isLoggedIn,
   recipeUpload.fields([
     { name: "thumbnail", maxCount: 1 },
-    { name: "processImage" },
+    { name: "copyImage" },
     { name: "doneImage" },
   ]),
   async (req, res, next) => {
@@ -146,7 +150,7 @@ router.patch(
         //기존의 이미지는 s3에서 삭제
         const params = {
           Bucket: "yorijori-recipes",
-          Key: posts.thumbnail_key,
+          Key: posts.thumbnailKey,
         };
         s3.deleteObject(params, function (error, data) {
           if (error) console.log(error);
@@ -156,24 +160,26 @@ router.patch(
 
         //thumbnail 이미지 location DB에 넣기
         posts.thumbnail = req.files.thumbnail[0].location;
-        posts.thumbnail_key = req.files.thumbnail[0].key;
+        posts.thumbnailKey = req.files.thumbnail[0].key;
       }
 
       //-------------------------------------------------------
-      //현재 수정하려고 하는 이미지(processImage)의 location값을 받아오기
-      let arr_process = [];
-      let process_contents = req.files.processImage;
-      process_contents.forEach((process_contents) => arr_process.push(process_contents.location));
+      //현재 수정하려고 하는 이미지(copyImage)의 location값을 받아오기
+      let arrCopyImage = [];
+      let CopyImageContents = req.files.copyImage;
+      for (i = 0; i < CopyImageContents.length; i++) {
+        arrCopyImage.push(CopyImageContents[i].location);
+      }
 
       //processIamge의 url주소가 이전과 다르다면 변경 되었을 경우
-      if (posts.processImage != arr_process) {
+      if (posts.copyImage != arrCopyImage) {
         //processImage 이미지 location DB에 넣기
 
         //s3에서 삭제
-        for (i = 0; i < posts.processImage_key.length; i++) {
+        for (i = 0; i < posts.copyImage.length; i++) {
           const params = {
             Bucket: "yorijori-recipes",
-            Key: posts.processImage_key[i],
+            Key: posts.copyImageKey[i],
           };
           s3.deleteObject(params, function (error, data) {
             if (error) console.log(error);
@@ -181,29 +187,33 @@ router.patch(
             return;
           });
         }
+        posts.processImage = arrCopyImage;
 
-        posts.processImage = arr_process;
-        //processImage 의 key 값 찾기
-        let arr_process_key = [];
-        let process_contents_key = req.files.processImage;
-        process_contents_key.forEach((process_contents) =>
-          arr_process_key.push(process_contents.key)
-        );
-        posts.processImage_key = arr_process_key;
+        //copyImage 의 key 값 찾기
+        let arrCopyImageKey = [];
+        let CopyImageContentsKey = req.files.copyImage;
+        for (i = 0; i < CopyImageContentsKey.length; i++) {
+          arrCopyImageKey.push(CopyImageContentsKey[i].key);
+        }
+        posts.copyImageKey = arrCopyImageKey;
       }
 
       //-------------------------------------------------------
       //현재 수정하려고 하는 이미지(doneImage)의 location값을 받아오기
-      let arr_done = [];
-      let done_contents = req.files.doneImage;
-      done_contents.forEach((done_contents) => arr_done.push(done_contents.location));
+      //doneImage DB에 넣기
+      let arrDone = [];
+      let doneContents = req.files.doneImage;
+      for (i = 0; i < doneContents.length; i++) {
+        arrDone.push(doneContents[i].location);
+      }
+
       //processIamge의 url주소가 이전과 다르다면 변경 되었을 경우
-      if (posts.doneImage != arr_done) {
+      if (posts.doneImage != arrDone) {
         //s3에서 삭제
-        for (i = 0; i < posts.doneImage_key.length; i++) {
+        for (i = 0; i < posts.doneImageKey.length; i++) {
           const params = {
             Bucket: "yorijori-recipes",
-            Key: posts.doneImage_key[i],
+            Key: posts.doneImageKey[i],
           };
           s3.deleteObject(params, function (error, data) {
             if (error) console.log(error);
@@ -211,19 +221,27 @@ router.patch(
             return;
           });
         }
-
-        posts.doneImage = arr_done;
+        posts.doneImage = arrDone;
 
         //doneImage의 key값 찾기
-        let arr_done_key = [];
-        let done_contents_key = req.files.doneImage;
-        done_contents_key.forEach((done_contents) => arr_done_key.push(done_contents.key));
-        posts.doneImage_key = arr_done_key;
+        let arrDoneKey = [];
+        let doneContentsKey = req.files.doneImage;
+        for (i = 0; i < doneContentsKey.length; i++) {
+          arrDoneKey.push(doneContentsKey[i].key);
+        }
+        posts.doneImageKey = arrDoneKey;
+      }
+      //process내부 processImage의 location , key값 부여
+      for (i = 0; i < posts.process.length; i++) {
+        posts.process[i].processImage = posts.copyImage[i];
+        posts.process[i].processImageKey = posts.copyImageKey[i];
       }
 
       await posts.save();
 
-      res.status(200).json({ message: req.body });
+      res.status(200).json({
+        message: "레시피 수정이 완료되었습니다.",
+      });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
