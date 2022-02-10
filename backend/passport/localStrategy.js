@@ -33,13 +33,15 @@ module.exports = () => {
               acessToken: null,
             };
             done(null, tokenUser); //? 성공이면 done()의 2번째 인수에 선언
+            return
           }
           done(null, false, { message: "비밀번호가 일치하지 않습니다." }); //? 실패면 done()의 2번째 인수는 false로 주고 3번째 인수에 선언
-
+          return
           //? done()을 호출하면, /login 요청온 auth 라우터로 다시 돌아가서 미들웨어 콜백을 실행하게 된다.
         }
         // DB에 해당 이메일이 없다면, 회원 가입 한적이 없다.
         done(null, false, { message: "가입되지 않은 회원입니다." });
+        return
       })
     )
   );
