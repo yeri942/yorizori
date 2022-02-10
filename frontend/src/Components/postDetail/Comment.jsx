@@ -1,6 +1,7 @@
 import React from "react";
 import { useMatch } from "react-router";
 import styled from "styled-components";
+import ReplyComment from "./ReplyComment";
 
 const ProfileImg = styled.img.attrs((props) => ({
   src: props.isImage ? props.isImage : "../images/onlylogo.png",
@@ -15,7 +16,7 @@ const ProfileImg = styled.img.attrs((props) => ({
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 18px 0;
+  margin-top: 14px;
   ${ProfileImg} {
     align-self: baseline;
     flex-shrink: 0;
@@ -69,14 +70,14 @@ const displayedAt = (createdAt) => {
   return `${Math.floor(years)}년 전`;
 };
 
-function Comment({ comm, isMore }) {
+function Comment({ comment, isMore }) {
   return (
     <Wrapper>
-      <ProfileImg isImage={comm.userId.profileImage ? comm.userId.profileImage : ""} />
+      <ProfileImg isImage={comment.userId.profileImage ? comment.userId.profileImage : ""} />
       <CommentWrapper>
-        <Nickname>{comm.userId.nickName}</Nickname>
-        <CommenContent isMore={isMore}>{comm.comment}</CommenContent>
-        <Time>{displayedAt(comm.createdAt)}</Time>
+        <Nickname>{comment.userId.nickName}</Nickname>
+        <CommenContent isMore={isMore}>{comment.comment}</CommenContent>
+        <Time>{displayedAt(comment.createdAt)}</Time>
       </CommentWrapper>
     </Wrapper>
   );
