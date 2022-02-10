@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 const RecommendWrapper = styled.div`
   margin: 20px;
@@ -43,22 +44,16 @@ const Recommend = () => {
       <Button>일식</Button>
       <Button>중식</Button>
       <RecommendedPostWrapper>
-        <RecommendedPost>
-          <PostImg src="../images/gam.jpg" />
-          <PostTitle>요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오</PostTitle>
-        </RecommendedPost>
-        <RecommendedPost>
-          <PostImg src="../images/gam.jpg" />
-          <PostTitle>요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오</PostTitle>
-        </RecommendedPost>
-        <RecommendedPost>
-          <PostImg src="../images/gam.jpg" />
-          <PostTitle>요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오</PostTitle>
-        </RecommendedPost>
-        <RecommendedPost>
-          <PostImg src="../images/gam.jpg" />
-          <PostTitle>요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오</PostTitle>
-        </RecommendedPost>
+        {[...Array(4)].map((n, index) => {
+          return (
+            <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
+              <RecommendedPost>
+                <PostImg src="../images/gam.jpg" />
+                <PostTitle>요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오</PostTitle>
+              </RecommendedPost>
+            </Link>
+          );
+        })}
       </RecommendedPostWrapper>
     </RecommendWrapper>
   );

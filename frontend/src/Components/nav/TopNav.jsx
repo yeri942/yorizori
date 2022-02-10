@@ -7,21 +7,26 @@ const TopNavBox = styled.div`
   width: 100%;
   position: fixed;
   display: flex;
+  align-items: center;
   top: 0;
   background-color: white;
   border-bottom: 5px solid rgba(255, 210, 136, 0.46);
   z-index: 900;
+  padding: 0 12px;
 `;
 
 const TopBackBox = styled.img`
-  color: #fcad2c;
+  color: ${(props) => props.theme.mainColor};
   font-size: 24px;
-  position: absolute;
-  left: 12px;
-  top: 14px;
 `;
 
-const TopNav = () => {
+const Title = styled.h1`
+  margin-left: 24px;
+  font-weight: bold;
+  color: ${(props) => props.theme.mainColor};
+`;
+
+const TopNav = ({ title }) => {
   let navigate = useNavigate();
   return (
     <TopNavBox>
@@ -30,6 +35,7 @@ const TopNav = () => {
         alt="arrow.png"
         onClick={() => navigate(-1)}
       ></TopBackBox>
+      <Title>{title}</Title>
     </TopNavBox>
   );
 };
