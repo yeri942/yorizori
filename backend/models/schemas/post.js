@@ -35,19 +35,19 @@ const PostSchema = new mongoose.Schema(
           sec: { type: Number },
         },
         processImage: { type: String, default: null },
-        processImage_key: { type: String, default: null },
+        processImageKey: { type: String, default: null },
       },
     ],
 
     //조리과정 받는 곳
     copyImage: [{ type: String, required: true }],
-    copyImage_key: [{ type: String, required: true }],
+    copyImageKey: [{ type: String, required: true }],
     // // 썸네일
     thumbnail: { type: String, required: true },
-    thumbnail_key: { type: String, default: null },
+    thumbnailKey: { type: String, default: null },
     //완성 사진을 받는 부분입니다.
     doneImage: [{ type: String }],
-    doneImage_key: [{ type: String, default: null }],
+    doneImageKey: [{ type: String, default: null }],
     //종류별
     category: {
       type: String,
