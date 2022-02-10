@@ -169,9 +169,27 @@ router.get(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
+    let { startIndex, limit } = req.query;
+    if (!startIndex && !limit) {
+      const lastViewedPosts = await History.find({ userId, isLastViewed: true })
+        .sort({ createdAt: -1 })
+        .populate("postId");
+      res.status(200).json({ lastViewedPosts });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
     const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
-      .populate("postId");
+      .populate("postId")
+      .skip(startIndex - 1)
+      .limit(limit);
     res.status(200).json({ lastViewedPosts });
   })
 );
