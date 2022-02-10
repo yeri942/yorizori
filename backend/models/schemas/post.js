@@ -46,7 +46,7 @@ const PostSchema = new mongoose.Schema(
     thumbnail: { type: String, required: true },
     thumbnailKey: { type: String, default: null },
     //완성 사진을 받는 부분입니다.
-    doneImage: [{ type: String }],
+    doneImage: [{ type: String, default: null }],
     doneImageKey: [{ type: String, default: null }],
     //종류별
     category: {
