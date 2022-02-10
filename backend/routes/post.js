@@ -42,13 +42,22 @@ router.post(
     }
     copyImage = arrCopyImage;
 
-    //doneImage DB에 넣기
-    let arrDone = [];
-    let doneContents = req.files.doneImage;
-    for (i = 0; i < doneContents.length; i++) {
-      arrDone.push(doneContents[i].location);
+    if (req.files.doneImage) {
+      //doneImage DB에 넣기
+      let arrDone = [];
+      let doneContents = req.files.doneImage;
+      for (i = 0; i < doneContents.length; i++) {
+        arrDone.push(doneContents[i].location);
+      }
+      doneImage = arrDone;
+      //doneImage의 key값 찾기
+      let arrDoneKey = [];
+      let doneContentsKey = req.files.doneImage;
+      for (i = 0; i < doneContentsKey.length; i++) {
+        arrDoneKey.push(doneContentsKey[i].key);
+      }
+      doneImageKey = arrDoneKey;
     }
-    doneImage = arrDone;
 
     //이미지의 key값 입력
     thumbnailKey = req.files.thumbnail[0].key;
@@ -60,44 +69,63 @@ router.post(
       arrCopyImageKey.push(CopyImageContentsKey[i].key);
     }
     copyImageKey = arrCopyImageKey;
-
-    //doneImage의 key값 찾기
-    let arrDoneKey = [];
-    let doneContentsKey = req.files.doneImage;
-    for (i = 0; i < doneContentsKey.length; i++) {
-      arrDoneKey.push(doneContentsKey[i].key);
+    if (!req.files.doneImage) {
+      const posts = await Post.create({
+        userId,
+        recipeName,
+        desc,
+        ingredient,
+        seasoning,
+        process,
+        thumbnail,
+        thumbnailKey,
+        copyImage,
+        copyImageKey,
+        category,
+        condition,
+        material,
+        cook,
+        servings,
+        time,
+        diffic,
+      });
+      //process내부 processImage의 location , key값 부여
+      for (i = 0; i < process.length; i++) {
+        posts.process[i].processImage = copyImage[i];
+        posts.process[i].processImageKey = copyImageKey[i];
+      }
+      await posts.save();
     }
-    doneImageKey = arrDoneKey;
-
-    const posts = await Post.create({
-      userId,
-      recipeName,
-      desc,
-      ingredient,
-      seasoning,
-      process,
-      thumbnail,
-      thumbnailKey,
-      copyImage,
-      copyImageKey,
-      doneImage,
-      doneImageKey,
-      category,
-      condition,
-      material,
-      cook,
-      servings,
-      time,
-      diffic,
-    });
-
-    //process내부 processImage의 location , key값 부여
-    for (i = 0; i < process.length; i++) {
-      posts.process[i].processImage = copyImage[i];
-      posts.process[i].processImageKey = copyImageKey[i];
+    if (req.files.doneImage) {
+      const posts = await Post.create({
+        userId,
+        recipeName,
+        desc,
+        ingredient,
+        seasoning,
+        process,
+        thumbnail,
+        thumbnailKey,
+        copyImage,
+        copyImageKey,
+        doneImage,
+        doneImageKey,
+        category,
+        condition,
+        material,
+        cook,
+        servings,
+        time,
+        diffic,
+      });
+      //process내부 processImage의 location , key값 부여
+      for (i = 0; i < process.length; i++) {
+        posts.process[i].processImage = copyImage[i];
+        posts.process[i].processImageKey = copyImageKey[i];
+        await posts.save();
+      }
     }
 
-    await posts.save();
     res.status(201).json({ message: "레시피등록이 완료되었습니다." });
   })
 );
@@ -106,7 +134,13 @@ router.post(
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const posts = await Post.find({});
+    const page = Number(req.query.page || 1);
+    const perPage = Number(req.query.perPage || 16);
+
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 }) //최근 순으로 정렬
+      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+      .limit(perPage);
     res.status(200).json(posts);
   })
 );
@@ -165,10 +199,8 @@ router.patch(
       arrCopyImage.push(CopyImageContents[i].location);
     }
 
-    //processIamge의 url주소가 이전과 다르다면 변경 되었을 경우
-    if (posts.copyImage != arrCopyImage) {
-      //processImage 이미지 location DB에 넣기
-
+    //processIamge의 url주소가 이전과 다를경우
+    if (posts.processImage != arrCopyImage) {
       //s3에서 삭제
       for (i = 0; i < posts.copyImage.length; i++) {
         const params = {
@@ -181,7 +213,7 @@ router.patch(
           return;
         });
       }
-      posts.processImage = arrCopyImage;
+      posts.copyImage = arrCopyImage;
 
       //copyImage 의 key 값 찾기
       let arrCopyImageKey = [];
