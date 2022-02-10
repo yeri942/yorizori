@@ -17,6 +17,7 @@ const PostDetailBlock = styled.div`
 `;
 
 const Content = styled.div`
+  width: 360px;
   margin-top: 50px;
   margin-bottom: 90px;
 `;
