@@ -1,22 +1,32 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import Comment from "./Comment";
+import Comment, { ProfileImg } from "./Comment";
 import ReplyComment from "./ReplyComment";
+import axios from "axios";
+import { authAtom } from "../../states";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { commentAtom } from "../../states/comment";
 
 const CommentsWrapper = styled.div`
-  margin: 0 20px;
+  padding: 10px 12px 0;
 `;
 
 const Title = styled.h1`
+  margin: 0;
   font-size: 18px;
   font-weight: bold;
   background-color: ${(props) => props.theme.mainColor};
-  margin: 0 -20px;
   padding: 10px 20px;
   color: #fff;
+`;
+
+const Count = styled.span`
+  margin-left: 4px;
+  font-size: 16px;
+  font-weight: normal;
 `;
 
 const CommentInputForm = styled.form`
@@ -58,10 +68,19 @@ const More = styled(Link)`
   margin-top: 4px;
 `;
 
+const EmptyComment = styled.div`
+  padding: 10px 0;
+  color: #7f8fa6;
+`;
+
 const Comments = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useRecoilState(commentAtom);
+  const commentLength = useMemo(() => comments.length, [comments]);
   const { postId } = useParams();
+  const isLogin = useRecoilValue(authAtom);
+  console.log(isLogin);
+
   // const [comment, setComment] = useState("");
 
   useEffect(() => {
@@ -70,55 +89,43 @@ const Comments = () => {
     // async를 useEffect에 그대로 전달하면 구조상 프로미스를 반환할 수 밖에 없고, 이펙트 함수에는 클린업 함수를 리턴해야한다는데
     // 리액트가 받는건 덜렁 프라미스로 대체된다고 합니다.
     (async () => {
-      const url = "http://localhost:8080";
-      const data = await fetch(`${url}/comment/${postId}`).then((res) => res.json());
+      const url = `/comment/${postId}/detail`;
+      const { data } = await axios(`${url}`);
       setComments(data.comments);
       setIsLoading(false);
     })();
   }, []);
 
-  // const commentChange = (event) => {
-  //   setComment(event.target.value);
-  // };
-  // const commentSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (comment === "") {
-  //     // 빈댓글이면 바로 끝내버렴
-  //     return;
-  //   }
-  //   // const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  //   // name -> user의 nickName으로 변경해야함
-  //   const newComment = { name: "두부", comment };
-  //   setComments(comments.concat(newComment));
-  //   // 바로 변경된 배열이 안나오는건 setState자체가 비동기로 동작하기때문
-  //   console.log(comments);
-  //   setComment("");
-  // };
-  console.log(comments.length, "haha")
-
+  console.log(commentLength)
   return (
-    <CommentsWrapper>
+    <>
       {!isLoading && (
         <>
-          <Title>댓글 ({comments.length})</Title>
-          {comments.map((comment) => <Comment key={comment._id} comment={comment} isMore={false} />)}
-          {(comments.length > 3) ? null : <More to="./comments">댓글 더보기</More>}
+          <Title>
+            댓글 <Count>{commentLength}</Count>
+          </Title>
+          <form >
+          {/* <ProfileImg isImage={isLogin ? comment.userId.profileImage : ""} /> */}
+          </form>
+          <CommentsWrapper>
+            {comments.slice(0,3).map((comment) => (
+              <Comment key={comment._id} comment={comment} isMore={false} />
+            ))}
+            {isLogin && (
+              <form>
+                <input type="text" placeholder="댓글을 작성해주세요 :3" />
+                <button type="submit">작성</button>
+              </form>
+            )}
+            {commentLength === 0 ? (
+              <EmptyComment>아직 작성된 댓글이 없어요</EmptyComment>
+            ) : commentLength > 3 ? (
+              <More to="./comments">댓글 더보기</More>
+            ) : null}
+          </CommentsWrapper>
         </>
       )}
-    </CommentsWrapper>
+    </>
   );
 };
 export default Comments;
-
-// {/* {isLogin && (
-//   <CommentInputForm onSubmit={commentSubmit}>
-//     <ProfileImg isImage={false} />
-//     <Input
-//       type="text"
-//       placeholder="댓글을 작성해주세요 :3"
-//       onChange={commentChange}
-//       value={comment}
-//     />
-//     <InputButton type="submit">작성</InputButton>
-//   </CommentInputForm>
-// )} */}

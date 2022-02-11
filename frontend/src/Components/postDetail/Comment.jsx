@@ -3,7 +3,7 @@ import { useMatch } from "react-router";
 import styled from "styled-components";
 import ReplyComment from "./ReplyComment";
 
-const ProfileImg = styled.img.attrs((props) => ({
+export const ProfileImg = styled.img.attrs((props) => ({
   src: props.isImage ? props.isImage : process.env.PUBLIC_URL + "/images/onlylogo.png",
 }))`
   width: 42px;

@@ -6,4 +6,9 @@ const authAtom = atom({
   default: JSON.parse(localStorage.getItem("user")),
 });
 
+export const userIdAtom = atom({
+  key: "uid",
+  default: ""
+})
+
 export { authAtom };
