@@ -29,6 +29,10 @@ const ResipeMenus = styled.div`
 `
 
 const ResipeListBox = styled.div`
+  background-color: #FDFDFD;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 5px #FAFAF7;
+  padding: 20px 0 0 0 ;
   width: 310px;
   height: 270px;
   left: 32px;
@@ -57,7 +61,8 @@ const ResipeListBox = styled.div`
     font-family: sans-serif;
     position: relative;
     bottom: 15px;
-    margin: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
     overflow: hidden; 
     text-overflow: ellipsis;
     white-space: wrap; 
