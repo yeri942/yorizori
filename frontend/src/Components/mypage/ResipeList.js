@@ -3,6 +3,7 @@ import {MypageResipeBox} from "./ProfileStyle"
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 import { StyledScroll } from '../post/commonStyle';
+import dummy from "../../posts.json";
 
 const ResipeMenus = styled.div`
   span {
@@ -29,7 +30,7 @@ const ResipeMenus = styled.div`
 
 const ResipeListBox = styled.div`
   width: 310px;
-  height: 260px;
+  height: 270px;
   left: 32px;
   display: flex;
   flex-wrap: wrap;
@@ -37,12 +38,13 @@ const ResipeListBox = styled.div`
   text-align: center;
   overflow:scroll;
   overflow-x: hidden;
+  margin-bottom: 16px;
   ${StyledScroll}
 
   img {
     position: relative;
     bottom: 15px;
-    margin: 10px 25px 5px 25px;
+    margin: 15px 25px 5px 25px;
     width: 100px;
     height: 100px;
     border-radius: 15px;
@@ -58,10 +60,14 @@ const ResipeListBox = styled.div`
     margin: 0px;
     overflow: hidden; 
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: wrap; 
     color: gray;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
+    display: -webkit-box;
+    margin-bottom: 10px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
 `
@@ -99,75 +105,19 @@ export default function ResipeButton(props) {
       </MypageResipeBox>
           {
             onResipe 
-            ?  <ResipeListBox>
+            ? 
+            <ResipeListBox>
+              { dummy.map((item) => {
+              return (
                 <ResipeListItem>
                   <Link to="/detail">
-                    <img src="../images/food1.jpg" alt=""/>
+                    <img src={item.thumbnail} alt=""/>
                   </Link>
-                  <p># 햄버거 레시피</p>
+                  <p> {item.recipeName}</p>
                 </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food1.jpg" alt=""/>
-                  </Link>
-                  <p># 햄버거 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-                <ResipeListItem>
-                  <Link to="/detail">
-                    <img src="../images/food2.jpg" alt=""/>
-                  </Link>
-                  <p># 고기 레시피</p>
-                </ResipeListItem>
-       
-              </ResipeListBox> 
+                )
+              })}
+            </ResipeListBox> 
             : ""
           }
     </>
