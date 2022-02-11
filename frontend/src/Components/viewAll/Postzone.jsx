@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 const WrapperPost = styled.div`
   display: grid;
   margin-top: 15px;
-  grid: auto-flow 241px / repeat(2, 175px);
+  grid: auto-flow 250px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
   justify-items: center;
@@ -128,8 +128,8 @@ const Postzone = () => {
                   <Title>{recipeName}</Title>
                   <Author>{author}</Author>
                   <WrapperHeartComment>
-                    <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+                    <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
+                    <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
                   </WrapperHeartComment>
                 </TextBox>
               </div>

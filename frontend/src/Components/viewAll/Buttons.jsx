@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState } from "./ViewAllAtom";
+import { buttonState, randomPostState } from "./ViewAllAtom";
+import dummy from "../../posts.json";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -93,18 +94,29 @@ const DropdownWrapper = styled.div`
 const Buttons = () => {
   // const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
+  const randomPost = useRecoilValue(randomPostState);
+  const setRandomPost = useSetRecoilState(randomPostState);
 
   const randompost = () => {
     setRandomButton(true);
   };
-
+  const getRandomIndex = () => {
+    let random = parseInt(Math.random() * dummy.length);
+    setRandomPost(dummy[random]);
+    console.log(randomPost);
+  };
   return (
     <>
       <Wrapper>
         <ButtonWrapper>
           <button>인기순</button>
           <button>최신순</button>
-          <RandomButtonWapper onClick={randompost}>
+          <RandomButtonWapper
+            onClick={() => {
+              randompost();
+              getRandomIndex();
+            }}
+          >
             <div />
             <p>랜덤메뉴</p>
           </RandomButtonWapper>
