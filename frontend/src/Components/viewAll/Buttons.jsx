@@ -48,6 +48,7 @@ const RandomButtonWapper = styled.div`
     color: #feae11;
     font-size: 11px;
     font-weight: 900;
+    margin: 0;
   }
 `;
 
@@ -103,7 +104,6 @@ const Buttons = () => {
   const getRandomIndex = () => {
     let random = parseInt(Math.random() * dummy.length);
     setRandomPost(dummy[random]);
-    console.log(randomPost);
   };
   return (
     <>

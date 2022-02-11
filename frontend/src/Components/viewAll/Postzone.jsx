@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 const WrapperPost = styled.div`
   display: grid;
   margin-top: 15px;
-  grid: auto-flow 250px / repeat(2, 175px);
+  grid: auto-flow 270px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
   justify-items: center;
