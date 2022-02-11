@@ -144,10 +144,10 @@ const Modal = () => {
     setRandomButton(false);
     console.log(randomButton);
   };
-  const getRandomIndex = async () => {
+  const getRandomIndex = () => {
     if (randomButton) {
-      let random = await parseInt(Math.random() * dummy.length);
-      await setRandomPost(dummy[random]);
+      let random = parseInt(Math.random() * dummy.length);
+      setRandomPost(dummy[random]);
     }
   };
   return (

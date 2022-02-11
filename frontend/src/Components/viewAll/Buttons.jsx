@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { buttonState, randomPostState } from "./ViewAllAtom";
 import dummy from "../../posts.json";
 
@@ -93,9 +93,7 @@ const DropdownWrapper = styled.div`
 `;
 
 const Buttons = () => {
-  // const randomButton = useRecoilValue(buttonState);
   const setRandomButton = useSetRecoilState(buttonState);
-  const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
 
   const randompost = () => {
