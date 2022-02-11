@@ -69,14 +69,14 @@ const Recommendtext = styled.div`
   margin-bottom: 10px;
 `;
 const Img = styled.img`
-  margin: 10px;
+  margin-top: 10px;
   width: 256px;
   height: 242px;
   border-radius: 10px;
   object-fit: cover;
 `;
 const TextBox = styled.div`
-  width: 207px;
+  width: 256px;
   height: auto;
   margin-top: 8px;
   font-weight: 900;
