@@ -117,7 +117,7 @@ const Postzone = () => {
           }
           return (
             <Link
-              to={`/detail/${data._id.$oid}}`}
+              to={`/detail/${data._id.$oid}`}
               style={{ textDecoration: "none", color: "inherit" }}
               author={data.userId.$oid}
               title={data.recipeName}
