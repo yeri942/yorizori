@@ -1,9 +1,9 @@
 import React, { userRef, useState, useCallback, useMemo, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { FamousPostsAtom } from "./homeAtom";
+import { datailedPostAtom, FamousPostsSelector } from "./homeAtom";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -30,26 +30,26 @@ import {
 const FamoustViewRapper = styled.div``;
 
 const FamousViewWithSlider = () => {
-  const baseURL = "http://localhost:8080";
+  // const baseURL = "http://localhost:8080";
   const navigatge = useNavigate();
-  const [famousLists, setFamousLists] = useRecoilState(FamousPostsAtom);
-  const getFamousList = async (startIndex, limit) => {
-    await axios({
-      baseURL,
-      method: "get",
-      url: "/like/sortByLike",
-      responseType: "json",
-      params: {
-        startIndex: startIndex,
-        limit: limit,
-      },
-    }).then((res) => setFamousLists(res.data.limitedSortedPosts));
-  };
+  // const [famousLists, setFamousLists] = useRecoilState(datailedPostAtom);
+  // const getFamousList = async (startIndex, limit) => {
+  //   await axios({
+  //     baseURL,
+  //     method: "get",
+  //     url: "/like/sortByLike",
+  //     responseType: "json",
+  //     params: {
+  //       startIndex: startIndex,
+  //       limit: limit,
+  //     },
+  //   }).then((res) => setFamousLists(res.data.limitedSortedPosts));
+  // };
 
-  useEffect(() => {
-    getFamousList(1, 4);
-  }, []);
-
+  // useEffect(() => {
+  //   getFamousList(1, 4);
+  // }, []);
+  const famousLists = useRecoilValueLoadable(FamousPostsSelector);
   const settings = {
     dots: true,
     infinite: true,
@@ -62,6 +62,10 @@ const FamousViewWithSlider = () => {
     arrows: false,
   };
 
+  if (famousLists.state === "loading") {
+    return <div>...loading</div>;
+  }
+  console.log("famousLists", famousLists);
   return (
     <ArticleWrapper>
       <TextWrapper>
@@ -77,27 +81,25 @@ const FamousViewWithSlider = () => {
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
       <StyledSlider className="sliderrr" {...settings}>
-        {famousLists.map((item) => {
+        {famousLists.contents.map((item) => {
           return (
-            <div>
-              <ImageWithTag className="doosan" key={item._id}>
-                <StyledImage
-                  src={item.thumbnail}
-                  onClick={() => {
-                    navigatge("/detail");
-                  }}
-                ></StyledImage>
-                <TextBox>
-                  <Title>{item.recipeName}</Title>
-                  <Author>{item.userId.nickName}</Author>
-                  <WrapperHeartComment>
-                    <Heart className="sprite heart" clicked={false} onClick={() => alert("ds")} />{" "}
-                    <HeartCommentCount>311</HeartCommentCount>
-                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-                  </WrapperHeartComment>
-                </TextBox>
-              </ImageWithTag>
-            </div>
+            <ImageWithTag className="doosan" key={item._id}>
+              <StyledImage
+                src={item.thumbnail}
+                onClick={() => {
+                  navigatge("/detail");
+                }}
+              ></StyledImage>
+              <TextBox>
+                <Title>{item.recipeName}</Title>
+                <Author>{item.userId.nickName}</Author>
+                <WrapperHeartComment>
+                  <Heart className="sprite heart" clicked={false} onClick={() => alert("ds")} />{" "}
+                  <HeartCommentCount>311</HeartCommentCount>
+                  <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+                </WrapperHeartComment>
+              </TextBox>
+            </ImageWithTag>
           );
         })}
       </StyledSlider>
