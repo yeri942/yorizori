@@ -20,9 +20,10 @@ const ModalBackground = styled.div`
 
 const ModalBox = styled.div`
   position: fixed;
-  top: 171px;
+  top: 100px;
   width: 346px;
-  height: 473px;
+  height: auto;
+  padding: 30px;
   background-color: white;
   border-radius: 11px;
   font-weight: 900;
@@ -68,6 +69,7 @@ const Recommendtext = styled.div`
   margin-bottom: 10px;
 `;
 const Img = styled.img`
+  margin: 10px;
   width: 256px;
   height: 242px;
   border-radius: 10px;
@@ -75,7 +77,7 @@ const Img = styled.img`
 `;
 const TextBox = styled.div`
   width: 207px;
-  height: 73px;
+  height: auto;
   margin-top: 8px;
   font-weight: 900;
   text-align: left;
@@ -136,26 +138,18 @@ const Modal = () => {
   const setRandomButton = useSetRecoilState(buttonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
+  let recipeNameValue = randomPost.recipeName;
+  let author = randomPost.diffic;
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
   };
-  const getRandomIndex = () => {
+  const getRandomIndex = async () => {
     if (randomButton) {
-      let random = parseInt(Math.random() * dummy.length);
-      setRandomPost(dummy[random]);
-      console.log(randomPost);
+      let random = await parseInt(Math.random() * dummy.length);
+      await setRandomPost(dummy[random]);
     }
   };
-  let recipeNameValue = randomPost.recipeName;
-  let author = randomPost.recipeName;
-  console.log(recipeNameValue);
-  // if (recipeName.length > 20) {
-  //   recipeName = recipeName.substring(0, 19) + "…";
-  // }
-  // if (author.recipeName.length > 12) {
-  //   author = author.substring(0, 11) + "…";
-  // }
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
       <ModalBackground onClick={closeModal} />
