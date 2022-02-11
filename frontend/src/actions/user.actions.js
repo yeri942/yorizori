@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { authAtom, userIdAtom, usersAtom } from "../states";
+import { authAtom, userIdAtom, userImage, usersAtom } from "../states";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import React, { useState } from "react";
@@ -10,6 +10,7 @@ function useUserActions() {
   const baseUrl = `/auth`;
   const setAuth = useSetRecoilState(authAtom);
   const setUid = useSetRecoilState(userIdAtom);
+  const setUimg = useSetRecoilState(userImage);
   const setUsers = useSetRecoilState(usersAtom);
   const navigate = useNavigate();
   return {
@@ -22,10 +23,11 @@ function useUserActions() {
   async function login(email, password) {
     try {
       const user = await axios.post(`${baseUrl}/login`, { email, password });
-      console.log(user.data.uid);
+      console.log(user.data);
       localStorage.setItem("user", JSON.stringify(user));
       setAuth(true);
       setUid(user.data.uid);
+      setUimg(user.data.uimg);
       swal("로그인 성공", "로그인되었습니다.", "success").then(() => navigate("/"));
     } catch (e) {
       console.error(e);

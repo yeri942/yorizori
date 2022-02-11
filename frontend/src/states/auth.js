@@ -11,4 +11,9 @@ export const userIdAtom = atom({
   default: ""
 })
 
+export const userImage = atom({
+  key: "uImg",
+  default: "",
+})
+
 export { authAtom };

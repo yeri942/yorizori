@@ -6,12 +6,48 @@ import { Link, useParams } from "react-router-dom";
 import Comment, { ProfileImg } from "./Comment";
 import ReplyComment from "./ReplyComment";
 import axios from "axios";
-import { authAtom } from "../../states";
+import { authAtom, userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 
 const CommentsWrapper = styled.div`
   padding: 10px 12px 0;
+  & > form {
+    display: flex;
+    margin-bottom: 10px;
+  }
+`;
+
+const AuthInput = styled.input`
+  position: relative;
+  flex: 1;
+  border: none;
+  height: 29px;
+  align-self: center;
+  border-bottom: 1px solid #a5a8b126;
+  animation: border-bottom 1.5s linear;
+  &:focus {
+    outline: none;
+    border-bottom-color: #a5a8b1;
+  }
+`;
+
+const CommentLink = styled(Link)`
+  flex: 1;
+  position: relative;
+  color: #a5a8b1;
+  text-decoration: none;
+  align-self: center;
+  font-size: 13px;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 2px;
+    background-color: #a5a8b126;
+  }
 `;
 
 const Title = styled.h1`
@@ -70,7 +106,7 @@ const More = styled(Link)`
 
 const EmptyComment = styled.div`
   padding: 10px 0;
-  color: #7f8fa6;
+  color: #a5a8b1;
 `;
 
 const Comments = () => {
@@ -78,10 +114,10 @@ const Comments = () => {
   const [comments, setComments] = useRecoilState(commentAtom);
   const commentLength = useMemo(() => comments.length, [comments]);
   const { postId } = useParams();
-  const isLogin = useRecoilValue(authAtom);
-  console.log(isLogin);
-
-  // const [comment, setComment] = useState("");
+  const isLogin = useRecoilValue(userIdAtom);
+  const userImg = useRecoilValue(userImage);
+  const url = `/comment/${postId}/detail`;
+  const [write, setWrite] = useState("");
 
   useEffect(() => {
     // 원래 useEffect안에는 async-await을 사용하지 못하지만
@@ -89,14 +125,22 @@ const Comments = () => {
     // async를 useEffect에 그대로 전달하면 구조상 프로미스를 반환할 수 밖에 없고, 이펙트 함수에는 클린업 함수를 리턴해야한다는데
     // 리액트가 받는건 덜렁 프라미스로 대체된다고 합니다.
     (async () => {
-      const url = `/comment/${postId}/detail`;
       const { data } = await axios(`${url}`);
       setComments(data.comments);
       setIsLoading(false);
     })();
   }, []);
 
-  console.log(commentLength)
+  const onChangeHandler = (e) => {
+    e.preventDefault();
+    const {
+      target: { value },
+    } = e;
+    setWrite(value);
+  };
+  console.log(write);
+  console.log(!isLogin, isLogin);
+
   return (
     <>
       {!isLoading && (
@@ -104,19 +148,23 @@ const Comments = () => {
           <Title>
             댓글 <Count>{commentLength}</Count>
           </Title>
-          <form >
-          {/* <ProfileImg isImage={isLogin ? comment.userId.profileImage : ""} /> */}
-          </form>
           <CommentsWrapper>
-            {comments.slice(0,3).map((comment) => (
+            <form>
+              <ProfileImg isImage={userImg} />
+              {!isLogin ? (
+                <CommentLink to="/login">공개 댓글 추가...</CommentLink>
+              ) : (
+                <AuthInput
+                  value={write}
+                  onChange={onChangeHandler}
+                  placeholder="공개 댓글 추가..."
+                  type="text"
+                />
+              )}
+            </form>
+            {comments.slice(0, 3).map((comment) => (
               <Comment key={comment._id} comment={comment} isMore={false} />
             ))}
-            {isLogin && (
-              <form>
-                <input type="text" placeholder="댓글을 작성해주세요 :3" />
-                <button type="submit">작성</button>
-              </form>
-            )}
             {commentLength === 0 ? (
               <EmptyComment>아직 작성된 댓글이 없어요</EmptyComment>
             ) : commentLength > 3 ? (
