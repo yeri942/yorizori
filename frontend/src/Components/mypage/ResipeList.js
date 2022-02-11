@@ -15,10 +15,10 @@ const ResipeMenus = styled.div`
     color: ${(props) => { 
 
     switch (props.type) {
-      case true:
+      case "true":
         return "#FEAE11"
       
-      case false:
+      case "false":
         return "gray"
 
       default:
@@ -97,7 +97,7 @@ export default function ResipeButton(props) {
         changeResipe()
         moveButton()
       }}>
-          <ResipeMenus type={onResipe}>
+          <ResipeMenus type={String(onResipe)}>
             <span>{ resipeMenu[props.nums]}</span>
           </ResipeMenus>
             <img className={`buttont${props.nums}`} src={resipeMenuButton[props.nums]} alt=""/>
@@ -107,9 +107,9 @@ export default function ResipeButton(props) {
             onResipe 
             ? 
             <ResipeListBox>
-              { dummy.map((item) => {
+              { dummy.map((item, index) => {
               return (
-                <ResipeListItem>
+                <ResipeListItem key={index}>
                   <Link to="/detail">
                     <img src={item.thumbnail} alt=""/>
                   </Link>
