@@ -32,6 +32,7 @@ const Home = () => {
   const authCheck = useRecoilValue(authAtom);
 
   const userActions = useUserActions();
+  console.log("home 렌더링");
 
   return (
     <HomeBlock>

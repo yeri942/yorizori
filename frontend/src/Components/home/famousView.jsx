@@ -39,7 +39,7 @@ import {
 const FamoustViewRapper = styled.div``;
 
 const FamousView = () => {
-  const navigatge = useNavigate();
+  const navigate = useNavigate();
   const setFamousPost = useSetRecoilState(datailedPostAtom);
   const setFamousPostLikeUser = useSetRecoilState(detailedPostsLikeUserAtom);
   const famousListsLoadable = useRecoilValueLoadable(FamousPostsSelector);
@@ -47,9 +47,10 @@ const FamousView = () => {
   const commentUserCountLoadable = useRecoilValueLoadable(FamousPostCommentUserSelector);
 
   const clickFamousPostHandler = (item, idx) => {
+    const postId = item._id;
     setFamousPost(item);
     setFamousPostLikeUser(likeUserLoadble.contents[idx].likeUserList);
-    Navigate("/detail");
+    navigate(`/detail/${postId}`);
   };
   if (
     famousListsLoadable.state === "loading" ||
