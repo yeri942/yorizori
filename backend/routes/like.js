@@ -29,7 +29,10 @@ router.get(
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit } = req.query;
     //virtual populate 로 가져온 count option 으로는 sort가 안됩니다..ㅜ
-    const posts = await Post.find().populate({ path: "numLikes" }).sort({ createdAt: -1 });
+    const posts = await Post.find()
+      .populate("userId")
+      .populate({ path: "numLikes" })
+      .sort({ createdAt: -1 });
     const sortedPosts = posts.sort((a, b) => b.numLikes - a.numLikes);
     if (!startIndex && !limit) {
       res.status(200).json({ sortedPosts });
