@@ -52,6 +52,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
     // done(null, false, { message: '비밀번호가 일치하지 않습니다.' }) 가 처리된 경우
     if (!user) {
       // done()의 3번째 인자 { message: '비밀번호가 일치하지 않습니다.' }가 실행
+      console.log(info.message);
       return res.status(400).json({ message: info.message });
     }
 
@@ -64,7 +65,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
         return next(loginError);
       }
       // done(null, user)로 로직이 성공적이라면, 세션에 사용자 정보를 저장해놔서 로그인 상태가 된다.
-      return res.status(200).json({ message: "로그인 성공" });
+      return res.status(200).json({ message: "로그인 성공", uid: user.user._id, uimg: user.user.profileImage });
     });
   })(req, res, next); //! 미들웨어 내의 미들웨어에는 콜백을 실행시키기위해 (req, res, next)를 붙인다.
 });
