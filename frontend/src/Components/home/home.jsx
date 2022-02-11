@@ -37,9 +37,9 @@ const Home = () => {
     <HomeBlock>
       <TopNav_main />
       <Slogan></Slogan>
-      <FamousView></FamousView>
-      <FamousViewWithOneSlider></FamousViewWithOneSlider>
-      <FamousViewWithSlider></FamousViewWithSlider>
+      {/* <FamousView></FamousView> */}
+      {/* <FamousViewWithOneSlider></FamousViewWithOneSlider> */}
+      {/* <FamousViewWithSlider></FamousViewWithSlider> */}
       {/* <FamousView></FamousView> */}
       {/* <ButtonWrapper>
         {!authCheck && <StyledBtn onClick={() => navigate("/login")}>login</StyledBtn>}
