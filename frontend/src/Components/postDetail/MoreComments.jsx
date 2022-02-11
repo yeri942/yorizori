@@ -5,7 +5,7 @@ import Comment from "./Comment";
 import ReplyComment from "./ReplyComment";
 
 const Wrapper = styled.div`
-  padding: 55px 12px 0;
+  padding: 55px 12px 53px;
 `;
 
 const MyForm = styled.form`
