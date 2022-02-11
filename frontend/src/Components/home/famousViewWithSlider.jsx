@@ -5,6 +5,9 @@ import { FamousPostsAtom } from "./homeAtom";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 // import { getFamousList } from "./homeAction";
 import {
   ArticleWrapper,
@@ -22,11 +25,11 @@ import {
   HeartCommentCount,
   Heart,
   Comment,
-} from "./articleTemplate";
+} from "./articleTemplateWIthSlider";
 
 const FamoustViewRapper = styled.div``;
 
-const FamousView = () => {
+const FamousViewWithSlider = () => {
   const baseURL = "http://localhost:8080";
   const navigatge = useNavigate();
   const [famousLists, setFamousLists] = useRecoilState(FamousPostsAtom);
@@ -50,12 +53,13 @@ const FamousView = () => {
   const settings = {
     dots: true,
     infinite: true,
-    slidesToShow: 3,
+    slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 2000,
+    speed: 3000,
     autoplaySpeed: 2000,
     cssEase: "linear",
+    arrows: false,
   };
 
   return (
@@ -71,10 +75,11 @@ const FamousView = () => {
           <LinkedText>구경할래요</LinkedText>
         </Link>
       </TextWrapper>
-      <ImageWarpper className="iamge">
+      {/* <ImageWarpper className="iamge"> */}
+      <StyledSlider className="sliderrr" {...settings}>
         {famousLists.map((item) => {
           return (
-            <>
+            <div>
               <ImageWithTag className="doosan" key={item._id}>
                 <StyledImage
                   src={item.thumbnail}
@@ -92,12 +97,25 @@ const FamousView = () => {
                   </WrapperHeartComment>
                 </TextBox>
               </ImageWithTag>
-            </>
+            </div>
           );
         })}
-      </ImageWarpper>
+      </StyledSlider>
+      {/* </ImageWarpper> */}
     </ArticleWrapper>
   );
 };
 
-export default FamousView;
+const StyledSlider = styled(Slider)`
+  //   margin: 0 15px 0 15px;
+  .slick-prev:before,
+  .slick-next:before {
+    color: #feae11;
+    font-size: 20px;
+  }
+  .slick-dots li.slick-active button:before {
+    color: #feae11;
+  }
+`;
+
+export default FamousViewWithSlider;
