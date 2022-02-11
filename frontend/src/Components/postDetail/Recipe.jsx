@@ -52,37 +52,37 @@ const StyledSlider = styled(Slider)`
     color: #feae11;
   }
 `;
-const Recipe = () => {
-  // const [timerState, setTimerState] = useState(true);
-  // const tempMin = props.min ? parseInt(props.min) : 0;
-  // const tempSec = props.sec ? parseInt(props.sec) : 2;
-  // // 타이머를 초단위로 변환한 initialTime과 setInterval을 저장할 interval ref
-  // const initialTime = useRef(tempMin * 60 + tempSec);
-  // const interval = useRef(null);
+const Recipe = (props) => {
+  const [timerState, setTimerState] = useState(true);
+  const tempMin = props.min ? parseInt(props.min) : 10;
+  const tempSec = props.sec ? parseInt(props.sec) : 2;
+  // 타이머를 초단위로 변환한 initialTime과 setInterval을 저장할 interval ref
+  const initialTime = useRef(tempMin * 60 + tempSec);
+  const interval = useRef(null);
 
-  // const [min, setMin] = useState(padNumber(tempMin, 2));
-  // const [sec, setSec] = useState(padNumber(tempSec, 2));
+  const [min, setMin] = useState(padNumber(tempMin, 2));
+  const [sec, setSec] = useState(padNumber(tempSec, 2));
 
-  // const TimerStateToggle = () => {
-  //   setTimerState(!timerState);
-  //   console.log(timerState);
-  //   if (timerState && initialTime.current > 0) {
-  //     interval.current = setInterval(() => {
-  //       initialTime.current -= 1;
-  //       setSec(padNumber(initialTime.current % 60, 2));
-  //       setMin(padNumber(parseInt(initialTime.current / 60), 2));
-  //     }, 1000);
-  //     return () => clearInterval(interval.current);
-  //   }
-  // };
+  const TimerStateToggle = () => {
+    setTimerState(!timerState);
+    console.log(timerState);
+    if (timerState && initialTime.current > 0) {
+      interval.current = setInterval(() => {
+        initialTime.current -= 1;
+        setSec(padNumber(initialTime.current % 60, 2));
+        setMin(padNumber(parseInt(initialTime.current / 60), 2));
+      }, 1000);
+      return () => clearInterval(interval.current);
+    }
+  };
 
-  // // 초가 변할 때만 실행되는 useEffect
-  // // initialTime을 검사해서 0이 되면 interval을 멈춘다.
-  // useEffect(() => {
-  //   if (initialTime.current <= 0) {
-  //     clearInterval(interval.current);
-  //   }
-  // }, [sec]);
+  // 초가 변할 때만 실행되는 useEffect
+  // initialTime을 검사해서 0이 되면 interval을 멈춘다.
+  useEffect(() => {
+    if (initialTime.current <= 0) {
+      clearInterval(interval.current);
+    }
+  }, [sec]);
   const settings = {
     dots: true,
     infinite: true,
@@ -100,10 +100,10 @@ const Recipe = () => {
             <StepNumber>1</StepNumber>
             <div>
               <Content>{process.explain}</Content>
-              {/* <Timer onClick={TimerStateToggle}>
+              <Timer onClick={TimerStateToggle}>
                 <ClockImg src="../images/clock.png" />
                 {min}:{sec}
-              </Timer> */}
+              </Timer>
             </div>
             <Img src={process.processImage} />
           </Step>
