@@ -13,6 +13,7 @@ import RandomView from "./randomView";
 import FamousView from "./famousView";
 import FamousViewWithSlider from "./famousViewWithSlider";
 import FamousViewWithOneSlider from "./famousViewWithOneSlide";
+import SloganBottom from "./sloganBottom";
 
 const HomeBlock = styled.div`
   box-sizing: border-box;
@@ -48,6 +49,7 @@ const Home = () => {
         <StyledBtn onClick={() => navigate("post")}>post</StyledBtn>
         <StyledBtn onClick={() => navigate("/view_all")}>전체글 보기</StyledBtn>
       </ButtonWrapper> */}
+      <SloganBottom></SloganBottom>
       <BottomNav />
     </HomeBlock>
   );
