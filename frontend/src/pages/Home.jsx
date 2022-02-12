@@ -6,7 +6,7 @@ import BottomNav from "../Components/nav/BottomNav";
 import TopNav_main from "../Components/nav/TopNav_main";
 import FileUpload from "@mimoid-prog/react-file-upload";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { authAtom } from "../states";
+import { authAtom, userIdAtom } from "../states";
 import { pageStateAtom } from "../states";
 
 const Home = () => {
