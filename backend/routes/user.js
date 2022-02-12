@@ -15,7 +15,7 @@ router.post(
   // formData 로 요청을 하는 경우엔 formData의 key를 "profileImage" 로 설정해주면 됨
   asyncHandler(async (req, res, next) => {
     console.log(req.file);
-    const { id: userId } = req.user || req.cookies;; //로그인한 유저를 찾아서
+    const { id: userId } = req.user || req.cookies; //로그인한 유저를 찾아서
     const { nickName } = req.body; //formData key='nickName' 으로 변경할 닉네임을 받음
     if (!req.file && !nickName) {
       throw new Error("변경된 내용이 없습니다.");
@@ -62,6 +62,8 @@ router.get(
 );
 
 //작성한 레시피 조회
+//유저 한명이 작성한 데이터를 가져오는 경우에 user를 populate해야 하나 고민을 해봤는데
+//프론트에서 주로 map을 이용해서 데이터를 사용하는 것 같아서 populate하면 사용하기 더 쉬울 것 같다는 판단으로 populate 했습니다.
 router.get(
   "/:userId/post",
   // isLoggedIn,
@@ -76,6 +78,16 @@ router.get(
     limit = parseInt(limit);
     const userPosts = await Post.find({ userId, useYN: true })
       .sort({ createdAt: -1 })
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } })
       .skip(startIndex - 1)
@@ -98,6 +110,16 @@ router.get(
     limit = parseInt(limit);
     const likePosts = await Like.find({ userId, isUnliked: false })
       .sort({ createdAt: -1 })
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
       .populate({
         path: "postId",
         populate: [
@@ -125,6 +147,16 @@ router.get(
     // 예) a,b,a,b,c,a,b  => a,a,a,b,b,c
     const allCommentPosts = await Comment.find({ userId, isDeleted: false })
       .sort({ postId: 1, createdAt: -1 })
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
       .populate({
         path: "postId",
         populate: [
@@ -181,6 +213,16 @@ router.get(
     limit = parseInt(limit);
     const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
       .populate({
         path: "postId",
         populate: [
@@ -239,7 +281,7 @@ router.get(
     const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
       .sort({ createdAt: -1 })
       .populate({
-        path: "followerId",
+        path: "followeeId",
         select: "-password",
         populate: [
           { path: "numFollowees", match: { isUnfollowed: false } },
