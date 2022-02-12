@@ -130,6 +130,9 @@ router.post(
   })
 );
 
+//게시글들을 좋아요 받은 순으로 내림차순 정렬해서 값을 전달.
+// populate virtual 기능으로 가져온 count값으로 바로 정렬하는 방법을 찾지 못해서
+//일단 데이터배열을 가져온 후에 sort를 한번 더 적용했습니다.
 router.get(
   "/sortByLike",
   asyncHandler(async (req, res, next) => {
@@ -137,6 +140,7 @@ router.get(
     //virtual populate 로 가져온 count option 으로는 sort가 안됩니다..ㅜ
     const posts = await Post.find({ useYN: true })
       .populate({ path: "userId", select: "-password" })
+      //게시글이 받은 좋아요 수와 댓글 수를 populate 해옴
       .populate({
         path: "numLikes",
         match: { isUnliked: false },
