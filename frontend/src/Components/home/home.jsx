@@ -16,6 +16,7 @@ import RandomView from "./randomView";
 import { userIdAtom } from "../../states/auth";
 import { loginUserSelector } from "../../states/homeAtom";
 import FamousPost from "./famousPost";
+import FamousUserPost from "./famousUserPost";
 import SloganBottom from "./sloganBottom";
 
 const HomeBlock = styled.div`
@@ -39,7 +40,7 @@ const Home = () => {
       <TopNav_main />
       <Slogan></Slogan>
       <FamousPost></FamousPost>
-      <FamousPost></FamousPost>
+      <FamousUserPost></FamousUserPost>
       <FamousPost></FamousPost>
       <SloganBottom></SloganBottom>
       <BottomNav></BottomNav>
