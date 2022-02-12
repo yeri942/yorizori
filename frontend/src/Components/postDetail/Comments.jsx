@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
-
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 import Comment, { ProfileImg } from "./Comment";
@@ -9,6 +8,7 @@ import axios from "axios";
 import { authAtom, userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
+import Toast from "./Toast";
 
 const CommentsWrapper = styled.div`
   padding: 10px 12px 0;
@@ -18,18 +18,27 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-const AuthInput = styled.input`
+const AuthInput = styled.textarea`
   position: relative;
   flex: 1;
   border: none;
+  resize: none;
+  overflow: hidden;
   height: 29px;
   align-self: center;
   border-bottom: 1px solid #a5a8b126;
-  animation: border-bottom 1.5s linear;
   &:focus {
     outline: none;
     border-bottom-color: #a5a8b1;
   }
+`;
+
+const SubmitButton = styled.button`
+  border-radius: 12px;
+  display: ${(props) => (props.comment ? "inline" : "none")};
+  height: 37px;
+  background-color: ${(props) => props.theme.mainColor};
+  border: none;
 `;
 
 const CommentLink = styled(Link)`
@@ -118,7 +127,8 @@ const Comments = () => {
   const userImg = useRecoilValue(userImage);
   const url = `/comment/${postId}/detail`;
   const [write, setWrite] = useState("");
-
+  const [toastStatus, setToastStatus] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   useEffect(() => {
     // 원래 useEffect안에는 async-await을 사용하지 못하지만
     // 즉시실행함수로 함수를 만든 후 실행함으로써 해결할 수 있음
@@ -129,17 +139,37 @@ const Comments = () => {
       setComments(data.comments);
       setIsLoading(false);
     })();
-  }, []);
+    if (toastStatus) {
+      setTimeout(() => setToastStatus(false), 1000);
+    }
+  }, [toastStatus]);
 
   const onChangeHandler = (e) => {
-    e.preventDefault();
     const {
       target: { value },
     } = e;
     setWrite(value);
   };
-  console.log(write);
-  console.log(!isLogin, isLogin);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/comment", { postId, comment: write });
+      setWrite("");
+      setToastStatus(true);
+      setToastMessage("댓글이 등록되었습니다.");
+    } catch (err) {
+      console.error(err);
+      setToastStatus(true);
+      setToastMessage(err);
+    }
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key == "Enter") {
+      onSubmitHandler(e);
+    }
+  };
 
   return (
     <>
@@ -149,17 +179,21 @@ const Comments = () => {
             댓글 <Count>{commentLength}</Count>
           </Title>
           <CommentsWrapper>
-            <form>
+            <form onSubmit={onSubmitHandler}>
               <ProfileImg isImage={userImg} />
               {!isLogin ? (
                 <CommentLink to="/login">공개 댓글 추가...</CommentLink>
               ) : (
-                <AuthInput
-                  value={write}
-                  onChange={onChangeHandler}
-                  placeholder="공개 댓글 추가..."
-                  type="text"
-                />
+                <>
+                  <AuthInput
+                    value={write}
+                    onChange={onChangeHandler}
+                    onKeyDown={onKeyPress}
+                    placeholder="공개 댓글 추가..."
+                    type="text"
+                  />
+                  <SubmitButton comment={write}>{write ? "등록" : ""}</SubmitButton>
+                </>
               )}
             </form>
             {comments.slice(0, 3).map((comment) => (
@@ -173,6 +207,7 @@ const Comments = () => {
           </CommentsWrapper>
         </>
       )}
+      {toastStatus && <Toast msg={toastMessage} />}
     </>
   );
 };

@@ -23,8 +23,7 @@ function useUserActions() {
   async function login(email, password) {
     try {
       const user = await axios.post(`${baseUrl}/login`, { email, password });
-      console.log(user.data);
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user.data));
       setAuth(true);
       setUid(user.data.uid);
       setUimg(user.data.uimg);
