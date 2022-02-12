@@ -42,13 +42,13 @@ const Home = () => {
       <FamousViewWithOneSlider></FamousViewWithOneSlider>
       <FamousViewWithSlider></FamousViewWithSlider>
       {/* <FamousView></FamousView> */}
-      {/* <ButtonWrapper>
+      <ButtonWrapper>
         {!authCheck && <StyledBtn onClick={() => navigate("/login")}>login</StyledBtn>}
         {authCheck && <StyledBtn onClick={userActions.logout}>logout</StyledBtn>}
         <StyledBtn onClick={() => navigate("/users/mypage")}>mypage</StyledBtn>
         <StyledBtn onClick={() => navigate("post")}>post</StyledBtn>
         <StyledBtn onClick={() => navigate("/view_all")}>전체글 보기</StyledBtn>
-      </ButtonWrapper> */}
+      </ButtonWrapper>
       <BottomNav />
     </HomeBlock>
   );

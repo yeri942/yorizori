@@ -1,11 +1,13 @@
 import { atom, selector } from "recoil";
 import { getFamousPosts, getFamousPostLikeUser, getFamousPostCommentUserCount } from "./homeAction";
 
+//post shcema에 유저 populate 한 데이터 들어갑니다
 export const datailedPostAtom = atom({
   key: "datailedPostAtom",
   default: null,
 });
 
+//해당 포스트를 좋아요한 유저들 데이터가 들어가요
 export const detailedPostsLikeUserAtom = atom({
   key: "FamousPostsAtom",
   default: null,
