@@ -47,7 +47,7 @@ router.post(
 // 특정 유저 프로필 조회
 router.get(
   "/:userId/profile",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params; //body에서 유저아이디를 받고
     const user = await User.findOne({ _id: userId }).select("-password"); //_id가 일치하는 유저를 찾음
@@ -265,6 +265,29 @@ router.get(
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ followees });
+  })
+);
+
+router.get(
+  "/sortByFollowees",
+  asyncHandler(async (req, res, next) => {
+    let { startIndex, limit } = req.query;
+    const users = await User.find().populate({ path: "numFollowees" }).sort({ createdAt: -1 });
+    const sortedUsers = users.sort((a, b) => b.numLikes - a.numLikes);
+    if (!startIndex && !limit) {
+      res.status(200).json({ sortedUsers });
+      return;
+    }
+    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
+    if (!startIndex || !limit) {
+      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
+      return;
+    }
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    const limitedSortedUsers = sortedUsers.slice(startIndex - 1, startIndex - 1 + limit);
+    res.status(200).json({ limitedSortedUsers });
   })
 );
 module.exports = router;
