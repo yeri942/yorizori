@@ -13,6 +13,7 @@ import RandomView from "./randomView";
 import FamousView from "./famousView";
 import FamousViewWithSlider from "./famousViewWithSlider";
 import FamousViewWithOneSlider from "./famousViewWithOneSlide";
+import FamousPost from "./famousPost";
 
 const HomeBlock = styled.div`
   box-sizing: border-box;
@@ -38,9 +39,11 @@ const Home = () => {
     <HomeBlock>
       <TopNav_main />
       <Slogan></Slogan>
-      <FamousView></FamousView>
-      <FamousViewWithOneSlider></FamousViewWithOneSlider>
-      <FamousViewWithSlider></FamousViewWithSlider>
+      {/* <FamousView></FamousView> */}
+      {/* <FamousViewWithOneSlider></FamousViewWithOneSlider> */}
+      <FamousPost></FamousPost>
+      <FamousPost></FamousPost>
+      {/* <FamousViewWithSlider></FamousViewWithSlider> */}
       {/* <FamousView></FamousView> */}
       <ButtonWrapper>
         {!authCheck && <StyledBtn onClick={() => navigate("/login")}>login</StyledBtn>}
