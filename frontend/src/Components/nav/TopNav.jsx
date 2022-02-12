@@ -21,8 +21,8 @@ const TopBackBox = styled.img`
 `;
 
 const Title = styled.h1`
+  font-size: 18px;
   margin-left: 24px;
-  font-weight: bold;
   color: ${(props) => props.theme.mainColor};
 `;
 
@@ -31,7 +31,7 @@ const TopNav = ({ title }) => {
   return (
     <TopNavBox>
       <TopBackBox
-        src="../images/arrow.png"
+        src={process.env.PUBLIC_URL + "/images/arrow.png"}
         alt="arrow.png"
         onClick={() => navigate(-1)}
       ></TopBackBox>

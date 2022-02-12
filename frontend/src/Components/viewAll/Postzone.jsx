@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactLoading from "react-loading";
+import dummy from "../../posts.json";
+import { dropDownOptionsState } from "./ViewAllAtom";
+import { useRecoilValue } from "recoil";
 const Wrapper = styled.div`
   text-align: center;
   display: flex;
@@ -29,7 +32,7 @@ const Wrapper = styled.div`
 const WrapperPost = styled.div`
   display: grid;
   margin-top: 15px;
-  grid: auto-flow 241px / repeat(2, 175px);
+  grid: auto-flow 270px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
   justify-items: center;
@@ -39,12 +42,11 @@ const WrapperPost = styled.div`
     height: 228px;
   }
 `;
-const Img = styled.div`
-  background-image: url("./images/gam.jpg");
-  background-size: cover;
+const Img = styled.img`
   width: 160px;
   height: 147px;
   border-radius: 10px;
+  object-fit: cover;
 `;
 const TextBox = styled.div`
   width: 160px;
@@ -72,9 +74,17 @@ const Postzone = () => {
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [countPost, setCountPost] = useState(4);
+  // const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
+  const dropDownOptions = useRecoilValue(dropDownOptionsState);
 
   useEffect(() => {
-    console.log(countPost);
+    // console.log(countPost);
+    // setDropDownOptions(() => ({
+    //   category: "",
+    //   material: "",
+    //   condition: "",
+    //   cook: "",
+    // }));
   }, [countPost]);
 
   const getMoreItem = async () => {
@@ -101,28 +111,66 @@ const Postzone = () => {
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target]);
+  });
 
   return (
     <Wrapper>
       <WrapperPost>
-        {[...Array(countPost)].map((n, index) => {
-          return (
-            <Link to="/detail/" style={{ textDecoration: "none", color: "inherit" }}>
-              <div>
-                <Img />
-                <TextBox>
-                  <Title>바스바스감바스</Title>
-                  <Author>고래</Author>
-                  <WrapperHeartComment>
-                    <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-                    <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
-                  </WrapperHeartComment>
-                </TextBox>
-              </div>
-            </Link>
-          );
-        })}
+        {dummy
+          .filter((data) => {
+            if (dropDownOptions.category == "") {
+              return data.category;
+            }
+            return data.category == dropDownOptions.category;
+          })
+          .filter((data) => {
+            if (dropDownOptions.material == "") {
+              return data.material;
+            }
+            return data.material == dropDownOptions.material;
+          })
+          .filter((data) => {
+            if (dropDownOptions.condition == "") {
+              return data.condition;
+            }
+            return data.condition == dropDownOptions.condition;
+          })
+          .filter((data) => {
+            if (dropDownOptions.cook == "") {
+              return data.cook;
+            }
+            return data.cook == dropDownOptions.cook;
+          })
+          .map((data) => {
+            let recipeName = data.recipeName;
+            let author = data.userId.$oid;
+            if (recipeName.length > 20) {
+              recipeName = recipeName.substring(0, 19) + "…";
+            }
+            if (data.userId.$oid.length > 12) {
+              author = author.substring(0, 11) + "…";
+            }
+            return (
+              <Link
+                to="/detail/"
+                style={{ textDecoration: "none", color: "inherit" }}
+                author={data.userId.$oid}
+                title={data.recipeName}
+              >
+                <div>
+                  <Img src={data.thumbnail} />
+                  <TextBox>
+                    <Title>{recipeName}</Title>
+                    <Author>{author}</Author>
+                    <WrapperHeartComment>
+                      <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
+                      <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
+                    </WrapperHeartComment>
+                  </TextBox>
+                </div>
+              </Link>
+            );
+          })}
       </WrapperPost>
 
       <div ref={setTarget} className="Target-Element">

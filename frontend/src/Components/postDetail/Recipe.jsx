@@ -147,6 +147,7 @@ const Recipe = (props) => {
       };
       return newList;
     });
+    clearInterval(interval.current[index]);
   };
 
   const settings = {

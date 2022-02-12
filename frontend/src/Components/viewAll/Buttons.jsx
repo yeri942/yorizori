@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { buttonState } from "./ViewAllAtom";
+import { buttonState, randomPostState, dropDownOptionsState } from "./ViewAllAtom";
+import dummy from "../../posts.json";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -29,6 +30,9 @@ const ButtonWrapper = styled.div`
 
 const RandomButtonWapper = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   right: 15px;
   top: 89px;
   & > div {
@@ -40,13 +44,11 @@ const RandomButtonWapper = styled.div`
     height: 38px;
   }
   & > p {
-    position: absolute;
-    top: 25px;
-    left: -10px;
     width: 44px;
     color: #feae11;
     font-size: 11px;
     font-weight: 900;
+    margin: 0;
   }
 `;
 
@@ -65,12 +67,12 @@ const DropdownWrapper = styled.div`
     border: 2px solid #feae11;
     border-radius: 50px;
     line-height: 36px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 900;
     color: #feae11;
 
     &:not(:last-child) {
-      margin-right: 11px;
+      margin-right: 8px;
     }
     & > div:not(:first-child) {
       background-color: white;
@@ -89,21 +91,44 @@ const DropdownWrapper = styled.div`
     }
   }
 `;
-const Buttons = () => {
-  // const randomButton = useRecoilValue(buttonState);
-  const setRandomButton = useSetRecoilState(buttonState);
 
+const Buttons = () => {
+  const setRandomButton = useSetRecoilState(buttonState);
+  const setRandomPost = useSetRecoilState(randomPostState);
+  const dropDownOptions = useRecoilValue(dropDownOptionsState);
+  const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
   const randompost = () => {
     setRandomButton(true);
   };
 
+  const getRandomIndex = () => {
+    let random = parseInt(Math.random() * dummy.length);
+    setRandomPost(dummy[random]);
+  };
+
+  const clearDropDownOptions = () => {
+    setDropDownOptions(() => ({
+      category: "",
+      material: "",
+      condition: "",
+      cook: "",
+    }));
+  };
+  useEffect(() => {
+    console.log(dropDownOptions);
+  });
   return (
     <>
       <Wrapper>
         <ButtonWrapper>
-          <button>인기순</button>
-          <button>최신순</button>
-          <RandomButtonWapper onClick={randompost}>
+          <button onClick={clearDropDownOptions}>인기순</button>
+          <button onClick={clearDropDownOptions}>최신순</button>
+          <RandomButtonWapper
+            onClick={() => {
+              randompost();
+              getRandomIndex();
+            }}
+          >
             <div />
             <p>랜덤메뉴</p>
           </RandomButtonWapper>
@@ -116,10 +141,11 @@ const Buttons = () => {
             value="one"
             onChange={(value) => console.log("change!", value)}
             onSelect={(value) => {
-              console.log("selected!", value);
+              setDropDownOptions((dropDownValues) => ({
+                ...dropDownValues,
+                category: value.value,
+              }));
             }} // always fires once a selection happens even if there is no change
-            onClose={console.log("close")}
-            onOpen={console.log("open")}
           />
 
           <Dropdown
@@ -127,9 +153,12 @@ const Buttons = () => {
             options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
             value="one"
             onChange={(value) => console.log("change!", value)}
-            onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={console.log("close")}
-            onOpen={console.log("open")}
+            onSelect={(value) => {
+              setDropDownOptions((dropDownValues) => ({
+                ...dropDownValues,
+                material: value.value,
+              }));
+            }} // always fires once a selection happens even if there is no change
           />
           <Dropdown
             placeholder="상황"
@@ -146,9 +175,12 @@ const Buttons = () => {
             ]}
             value="one"
             onChange={(value) => console.log("change!", value)}
-            onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={console.log("close")}
-            onOpen={console.log("open")}
+            onSelect={(value) => {
+              setDropDownOptions((dropDownValues) => ({
+                ...dropDownValues,
+                condition: value.value,
+              }));
+            }} // always fires once a selection happens even if there is no change
           />
           <Dropdown
             placeholder="방법"
@@ -156,9 +188,12 @@ const Buttons = () => {
             className="last"
             value="one"
             onChange={(value) => console.log("change!", value)}
-            onSelect={(value) => console.log("selected!", value)} // always fires once a selection happens even if there is no change
-            onClose={console.log("close")}
-            onOpen={console.log("open")}
+            onSelect={(value) => {
+              setDropDownOptions((dropDownValues) => ({
+                ...dropDownValues,
+                cook: value.value,
+              }));
+            }} // always fires once a selection happens even if there is no change
           />
         </DropdownWrapper>
         <Line />

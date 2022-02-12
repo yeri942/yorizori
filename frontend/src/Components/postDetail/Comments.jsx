@@ -2,14 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Comment from "./Comment";
+import ReplyComment from "./ReplyComment";
 
 const CommentsWrapper = styled.div`
   margin: 0 20px;
 `;
 
 const Title = styled.h1`
+  font-size: 18px;
   font-weight: bold;
   background-color: ${(props) => props.theme.mainColor};
   margin: 0 -20px;
@@ -45,18 +47,22 @@ const InputButton = styled.button`
   color: white;
 `;
 
-const More = styled.div`
+const More = styled(Link)`
+  display: block;
+  color: inherit;
+  text-decoration: none;
   font-size: 14px;
   text-align: center;
   padding: 15px 0;
   border-top: 1px solid lightgray;
+  margin-top: 4px;
 `;
 
 const Comments = () => {
-  const [openReply, setOpenReply] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState("");
-  const isLogin = false;
+  const { postId } = useParams();
+  // const [comment, setComment] = useState("");
 
   useEffect(() => {
     // 원래 useEffect안에는 async-await을 사용하지 못하지만
@@ -65,54 +71,54 @@ const Comments = () => {
     // 리액트가 받는건 덜렁 프라미스로 대체된다고 합니다.
     (async () => {
       const url = "http://localhost:8080";
-      const postId = "6200bb84ced083a6577874c0";
-      // ✔️추후에 삭제해야 될 postId
       const data = await fetch(`${url}/comment/${postId}`).then((res) => res.json());
       setComments(data.comments);
-      console.log(data);
+      setIsLoading(false);
     })();
   }, []);
 
-  const commentChange = (event) => {
-    setComment(event.target.value);
-  };
-  const commentSubmit = (e) => {
-    e.preventDefault();
-    if (comment === "") {
-      // 빈댓글이면 바로 끝내버렴
-      return;
-    }
-    // const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
-    // name -> user의 nickName으로 변경해야함
-    const newComment = { name: "두부", comment };
-    setComments(comments.concat(newComment));
-    // 바로 변경된 배열이 안나오는건 setState자체가 비동기로 동작하기때문
-    console.log(comments);
-    setComment("");
-  };
+  // const commentChange = (event) => {
+  //   setComment(event.target.value);
+  // };
+  // const commentSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (comment === "") {
+  //     // 빈댓글이면 바로 끝내버렴
+  //     return;
+  //   }
+  //   // const nowTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  //   // name -> user의 nickName으로 변경해야함
+  //   const newComment = { name: "두부", comment };
+  //   setComments(comments.concat(newComment));
+  //   // 바로 변경된 배열이 안나오는건 setState자체가 비동기로 동작하기때문
+  //   console.log(comments);
+  //   setComment("");
+  // };
+  console.log(comments.length, "haha")
 
   return (
     <CommentsWrapper>
-      <Title>댓글 (5)</Title>
-      {/* {isLogin && (
-        <CommentInputForm onSubmit={commentSubmit}>
-          <ProfileImg isImage={false} />
-          <Input
-            type="text"
-            placeholder="댓글을 작성해주세요 :3"
-            onChange={commentChange}
-            value={comment}
-          />
-          <InputButton type="submit">작성</InputButton>
-        </CommentInputForm>
-      )} */}
-      {comments.map((comm) => (
-        <Comment key={comm._id} comm={{ ...comm }} isMore={false} />
-      ))}
-      <Link to="./comments">
-        <More>댓글 더보기</More>
-      </Link>
+      {!isLoading && (
+        <>
+          <Title>댓글 ({comments.length})</Title>
+          {comments.map((comment) => <Comment key={comment._id} comment={comment} isMore={false} />)}
+          {(comments.length > 3) ? null : <More to="./comments">댓글 더보기</More>}
+        </>
+      )}
     </CommentsWrapper>
   );
 };
 export default Comments;
+
+// {/* {isLogin && (
+//   <CommentInputForm onSubmit={commentSubmit}>
+//     <ProfileImg isImage={false} />
+//     <Input
+//       type="text"
+//       placeholder="댓글을 작성해주세요 :3"
+//       onChange={commentChange}
+//       value={comment}
+//     />
+//     <InputButton type="submit">작성</InputButton>
+//   </CommentInputForm>
+// )} */}
