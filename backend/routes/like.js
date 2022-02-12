@@ -23,6 +23,59 @@ router.post(
   })
 );
 
+//게시글에 눌린 좋아요를 조회하는 경우 좋아요를 누른 유저들을 배열로 보내줍니다.
+router.get(
+  "/:postId",
+  // isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { postId } = req.params;
+    let { startIndex, limit } = req.query;
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    //isUnliked : false로 취소되지 않은 좋아요만 필터링
+    const likeUserList = await Like.find({ postId, isUnliked: false })
+      .sort({ createdAt: -1 })
+      // 좋아요 누른 유저를 populate 하고 추가적으로 부가적인 카운팅값들도 populate해옴
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
+      .skip(startIndex - 1)
+      .limit(limit);
+    res.status(200).json({ likeUserList });
+  })
+);
+
+//좋아요 삭제 delete isUnliked = true 로 바꿔서 관리
+router.delete(
+  "/",
+  isLoggedIn,
+  asyncHandler(async (req, res, next) => {
+    const { postId } = req.body;
+    const { id: userId } = req.user;
+    const currentLike = await Like.findOne({ postId, userId, isUnliked: false }); //
+    if (!currentLike) {
+      throw new Error("좋아요 한 게시글이 아닙니다."); // 종아요한 게시글이 아니면 에러 던짐
+      return;
+    }
+    currentLike.isUnliked = true;
+    await currentLike.save();
+    res.status(200).json({ message: "좋아요 한 목록에서 삭제되었습니다." });
+  })
+);
+
+module.exports = router;
+
+//post Router로 이동.. 일단 남겨둠
 // router.get(
 //   "/sortByLike",
 //   asyncHandler(async (req, res, next) => {
@@ -55,47 +108,3 @@ router.post(
 //     res.status(200).json({ limitedSortedPosts });
 //   })
 // );
-
-//게시글에 눌린 좋아요를 조회하는 경우 좋아요를 누른 유저들을 배열로 보내줍니다.
-router.get(
-  "/:postId",
-  // isLoggedIn,
-  asyncHandler(async (req, res, next) => {
-    const { postId } = req.params;
-    let { startIndex, limit } = req.query;
-    if (!startIndex) startIndex = 1;
-    if (!limit) limit = 0;
-    //startIndex와 limit으로 정제된 데이터를 보내줌
-    startIndex = parseInt(startIndex);
-    limit = parseInt(limit);
-    const likeUserList = await Like.find({ postId, isUnliked: false })
-      .sort({ createdAt: -1 })
-      .populate({
-        path: "userId",
-        select: "-password",
-      })
-      .skip(startIndex - 1)
-      .limit(limit);
-    res.status(200).json({ likeUserList }); //좋아요를 누른 유저 정보가 담긴 배열을 응답
-  })
-);
-
-//좋아요 삭제 delete isUnliked = true 로 바꿔서 관리
-router.delete(
-  "/",
-  isLoggedIn,
-  asyncHandler(async (req, res, next) => {
-    const { postId } = req.body;
-    const { id: userId } = req.user;
-    const currentLike = await Like.findOne({ postId, userId, isUnliked: false }); //
-    if (!currentLike) {
-      throw new Error("좋아요 한 게시글이 아닙니다."); // 종아요한 게시글이 아니면 에러 던짐
-      return;
-    }
-    currentLike.isUnliked = true;
-    await currentLike.save();
-    res.status(200).json({ message: "좋아요 한 목록에서 삭제되었습니다." });
-  })
-);
-
-module.exports = router;
