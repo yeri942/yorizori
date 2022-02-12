@@ -25,32 +25,17 @@ const HomeBlock = styled.div`
   position: relative;
 `;
 const Home = () => {
-  // const user = localStorage.getItem("user");
-  const navigate = useNavigate();
-
-  //authCheck === true -> 로그인 상태
-  //authCheck === false -> 로그아웃 상태
-  const authCheck = useRecoilValue(authAtom);
-
-  const userActions = useUserActions();
-
   return (
     <HomeBlock>
       <TopNav_main />
       <Slogan></Slogan>
+
+      <FamousViewWithOneSlider></FamousViewWithOneSlider>
+      <FamousViewWithSlider></FamousViewWithSlider>
       {/* <FamousView></FamousView> */}
-      {/* <FamousViewWithOneSlider></FamousViewWithOneSlider> */}
-      {/* <FamousViewWithSlider></FamousViewWithSlider> */}
-      {/* <FamousView></FamousView> */}
-      {/* <ButtonWrapper>
-        {!authCheck && <StyledBtn onClick={() => navigate("/login")}>login</StyledBtn>}
-        {authCheck && <StyledBtn onClick={userActions.logout}>logout</StyledBtn>}
-        <StyledBtn onClick={() => navigate("/users/mypage")}>mypage</StyledBtn>
-        <StyledBtn onClick={() => navigate("post")}>post</StyledBtn>
-        <StyledBtn onClick={() => navigate("/view_all")}>전체글 보기</StyledBtn>
-      </ButtonWrapper> */}
+
       <SloganBottom></SloganBottom>
-      <BottomNav />
+      <BottomNav></BottomNav>
     </HomeBlock>
   );
 };
