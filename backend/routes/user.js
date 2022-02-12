@@ -75,9 +75,9 @@ router.get(
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const userPosts = await Post.find({ userId, useYN: true })
+      .sort({ createdAt: -1 })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } })
-      .sort({ createdAt: -1 })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ userPosts });
@@ -122,6 +122,7 @@ router.get(
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
     //유저가 작성한 댓글을 게시글 순으로 정렬한 후 그 안에서 최신글 순서로 정렬합니다.
+    // 예) a,b,a,b,c,a,b  => a,a,a,b,b,c
     const allCommentPosts = await Comment.find({ userId, isDeleted: false })
       .sort({ postId: 1, createdAt: -1 })
       .populate({
@@ -132,14 +133,17 @@ router.get(
         ],
       });
     //겹치는 게시글들을 제거하기 위해 각 게시글마다 최신 글을 하나씩 모아 commentPosts 배열을 만듭니다.
+    //예) A,a,a,B,b,C => A,B,C
     const commentPosts = allCommentPosts
       .reduce((acc, post) => {
         if (!post.postId) {
           return acc;
         }
+        //첫 데이터는 그냥 넣어주고
         acc.length === 0
           ? acc.push(post)
-          : acc[acc.length - 1].postId._id != post.postId._id
+          : //그 이후의 데이터는 마지막 데이터와 게시글의 _id 값이 다르면 즉 새로운 게시글이면 acc에 넣어줍니다
+          acc[acc.length - 1].postId._id != post.postId._id
           ? acc.push(post)
           : acc;
         return acc;
@@ -250,6 +254,9 @@ router.get(
   })
 );
 
+//유저들을 followee 순으로 내림차순 정렬한 후 데이터를 보냅니다.
+// 인기많은 순으로 데이터 보내는겁니다.
+//여기서도 numFolowees 라는 populate virtual 로 가져온 값으로 정렬하는 방법을 못 찾아서 일단 데이터를 db에서 가져온 후 따로 sort 했습니다.
 router.get(
   "/sortByFollowees",
   asyncHandler(async (req, res, next) => {
