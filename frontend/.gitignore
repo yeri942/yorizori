@@ -24,3 +24,4 @@ yarn-error.log*
 
 /public/images/gam.jpg
 /src/UseScrollMove.js
+.env
