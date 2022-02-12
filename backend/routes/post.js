@@ -30,7 +30,7 @@ router.post(
       time,
       diffic,
     } = req.body;
-    const { id: userId } = req.user;
+    const { id: userId } = req.user || req.cookies;;
     //thumbnail 이미지 location DB에 넣기
     thumbnail = req.files.thumbnail[0].location;
 

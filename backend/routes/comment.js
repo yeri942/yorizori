@@ -15,7 +15,7 @@ router.post(
     // case1. userId는 클라이언트의 쿠키에서 받아오도록한다.
     // case2. userId를 저장한 클라이언테에서 body에 내용을 함께 담아서 보낸다.
     // 두 방법중 어떤걸로 해야할까요?
-    const { id: userId } = req.user;
+    const { id: userId } = req.user || req.cookies;
     // req.user에는 { id: "... " } 형식으로 user의 id값이 저장되어있습니다.
 
     await Comment.create({

@@ -9,7 +9,7 @@ router.post(
   "/",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
-    const { id: followeeId } = req.user;
+    const { id: followeeId } = req.user || req.cookies;;
     const { followerId } = req.body;
 
     const currentFollow = await Follow.findOne({ followeeId, followerId, isUnfollowed: false }); //기존에 존재하는 팔로우 정보를 찾아보고
@@ -31,7 +31,7 @@ router.delete(
   "/",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
-    const { id: followeeId } = req.user;
+    const { id: followeeId } = req.user || req.cookies;;
     const { followerId } = req.body;
     const currentFollow = await Follow.findOne({ followeeId, followerId, isUnfollowed: false });
     if (!currentFollow) {

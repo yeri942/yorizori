@@ -1,10 +1,10 @@
 //* 사용자 미들웨어를 직접 구현
 
 exports.isLoggedIn = (req, res, next) => {
-  const { isLogin } = req.session
-  console.log(isLogin,"로긍인 됐잖아!!")
+  const { id } = req.cookies
+  console.log(id)
   // isAuthenticated()로 검사해 로그인이 되어있으면
-  if (req.isAuthenticated() || isLogin) {
+  if (req.isAuthenticated() || id) {
     next(); // 다음 미들웨어
   } else {
     console.log("로그인 하고와")

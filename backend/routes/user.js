@@ -15,7 +15,7 @@ router.post(
   // formData 로 요청을 하는 경우엔 formData의 key를 "profileImage" 로 설정해주면 됨
   asyncHandler(async (req, res, next) => {
     console.log(req.file);
-    const { id: userId } = req.user; //로그인한 유저를 찾아서
+    const { id: userId } = req.user || req.cookies;; //로그인한 유저를 찾아서
     const { nickName } = req.body; //formData key='nickName' 으로 변경할 닉네임을 받음
     if (!req.file && !nickName) {
       throw new Error("변경된 내용이 없습니다.");

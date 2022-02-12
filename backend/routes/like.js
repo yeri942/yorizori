@@ -10,7 +10,7 @@ router.post(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.body; // body에서 postId 받고 ,
-    const { id: userId } = req.user; //req.user 에서 userId 꺼내고
+    const { id: userId } = req.user || req.cookies; //req.user 에서 userId 꺼내고
 
     //만약 이미 좋아요를 누른 게시물이라면 에러를 던짐
     const currentLike = await Like.findOne({ postId, userId, isUnliked: false });
@@ -61,7 +61,7 @@ router.delete(
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.body;
-    const { id: userId } = req.user;
+    const { id: userId } = req.user || req.cookies;;
     const currentLike = await Like.findOne({ postId, userId, isUnliked: false }); //
     if (!currentLike) {
       throw new Error("좋아요 한 게시글이 아닙니다."); // 종아요한 게시글이 아니면 에러 던짐
