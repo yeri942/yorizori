@@ -54,7 +54,7 @@ router.get(
 //게시글에 눌린 좋아요를 조회하는 경우 좋아요를 누른 유저들을 배열로 보내줍니다.
 router.get(
   "/:postId",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
     let { startIndex, limit } = req.query;

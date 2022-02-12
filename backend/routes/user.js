@@ -59,7 +59,7 @@ router.get(
 //작성한 레시피 조회
 router.get(
   "/:userId/post",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
@@ -87,7 +87,7 @@ router.get(
 //특정 유저가 좋아요한 레시피 조회
 router.get(
   "/:userId/like",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
@@ -123,7 +123,7 @@ router.get(
 //아니면 comment 스키마에 isNewest 이런 토글값을 추가하는건 어떨까요?
 router.get(
   "/:userId/comment",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
@@ -166,7 +166,7 @@ router.get(
 //특정 유저가 최근 확인한 게시글 조회
 router.get(
   "/:userId/history",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
@@ -197,7 +197,7 @@ router.get(
 //특정 유저가 팔로우한 follower 목록 get
 router.get(
   "/:userId/follower",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
@@ -234,7 +234,7 @@ router.get(
 //특정 유저를 팔로우하고 있는 followee 목록 get
 router.get(
   "/:userId/followee",
-  isLoggedIn,
+  // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
