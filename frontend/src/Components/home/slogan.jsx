@@ -13,8 +13,7 @@ const SloganWrapper = styled.div`
 const SloganBackground = styled.div`
   position: relative;
   border-radius: 10px 0 0 10px;
-  margin-left : 15px;
-  height: 200px;
+  height: 220px;
   background-color: #fffcf4;
   display: flex;
   flex-direction: column;
@@ -25,26 +24,32 @@ const SloganBackground = styled.div`
 `;
 
 const SloganTitle = styled.div`
-  background-image: url("../images/logo.png");
+  background-image: url("../images/onlytitle.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 220px;
-  height: 80px;
+  width: 200px;
+  height: 60px;
   margin-right: 100px;
-  margin-top: 40px;
   border: 0;
-
   z-index: 1000;
 `;
 
 const SloganBody = styled.p`
-  height: 60px;
-  font-size: 1.5rem;
-  text-align: center;
-  line-height: 60px;
-  margin-botton: 40px;
-  margin-top: 0;
-  margin-left: 20px;
+  // font-size:1.5rem;
+  font-size: 2.5rem;
+  font-family: "Dongle", sans-serif;
+  font-weight: 400;
+  color: #ffbd73;
+  height:50px
+  line-height: 50px;
+  margin: 0 0 0 70px;
+`;
+const SloganContents = styled.p`
+  font-size: 0.8rem;
+  color: #646464;
+  line-height: 30px;
+  margin: 5px 0 0 0;
+  padding: 0;
 `;
 
 const Slogan = () => {
@@ -53,6 +58,7 @@ const Slogan = () => {
       <SloganBackground>
         <SloganTitle></SloganTitle>
         <SloganBody>직접 만드는 즐거움</SloganBody>
+        <SloganContents>다양한 레시피를 확인하고 여러분만의 레시피를 공유해보세요</SloganContents>
       </SloganBackground>
     </SloganWrapper>
   );
