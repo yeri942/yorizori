@@ -48,7 +48,7 @@ const ResipeListBox = styled.div`
   img {
     position: relative;
     bottom: 15px;
-    margin: 15px 25px 5px 25px;
+    margin: 15px 25px 0 25px;
     width: 100px;
     height: 100px;
     border-radius: 15px;
