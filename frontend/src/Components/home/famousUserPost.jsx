@@ -46,10 +46,25 @@ const FamousUserPost = () => {
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
   const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
 
+  const [changePosts, setChangePosts] = useState(0);
+
+  if (famousListsLoadable.state === "loading" || famousUsersPostsLoadable.state === "loading") {
+    return <div>loading...</div>;
+  }
+
   const clickFamousPostHandler = (item, idx) => {
     const postId = item._id;
     setFamousPost(item);
     navigate(`/detail/${postId}`);
+  };
+
+  const clickChangePostHandler = () => {
+    setChangePosts((prev) => {
+      console.log("prev", prev);
+      if (prev === famousUsersPostsLoadable.contents.length - 1) return 0;
+
+      return prev + 1;
+    });
   };
 
   const settings = {
@@ -64,26 +79,24 @@ const FamousUserPost = () => {
     arrows: false,
   };
 
-  if (famousListsLoadable.state === "loading") {
-    return <div>loading...</div>;
-  }
-  console.log("famousListsLoadable", famousListsLoadable.contents);
+  console.log("famousUsersPostsLoadable", famousUsersPostsLoadable.contents[0]);
+  //   console.log("222", famousUsersPostsLoadable.contents);
   return (
     <ArticleWrapper>
       <TextWrapper>
         <TextMainWrapper>
-          <TextMain>지금 ,</TextMain>
+          <TextMain>많은 사랑을 받은 ,</TextMain>
           <TextMain>
-            <span>인기</span> 있는 음식이에요.
+            <span>{famousUsersPostsLoadable.contents[changePosts][0]?.userId.nickName}</span> 님의
+            음식이에요.
           </TextMain>
         </TextMainWrapper>
-        <Link to="/view_all" style={{ textDecoration: "none" }}>
-          <LinkedText>구경할래요</LinkedText>
-        </Link>
+
+        <LinkedText onClick={clickChangePostHandler}>다른 인기유저</LinkedText>
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
       <StyledSlider className="sliderrr" {...settings}>
-        {famousListsLoadable.contents.map((item, idx) => {
+        {famousUsersPostsLoadable.contents[changePosts].map((item, idx) => {
           return (
             <ImageWithTag className="doosan" key={item._id}>
               <StyledImage
@@ -99,7 +112,7 @@ const FamousUserPost = () => {
                   <Heart
                     className="sprite heart"
                     clicked={false}
-                    onClick={() => console.log(famousUsersPostsLoadable)}
+                    onClick={() => alert("이제 하트해보자구")}
                   />{" "}
                   <HeartCommentCount>{item.numLikes}</HeartCommentCount>
                   <span className="sprite comment" />{" "}

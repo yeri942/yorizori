@@ -78,9 +78,10 @@ export const famousUsersPostsSelector = selector({
   key: "famousUsersPostsSelector",
   get: async ({ get }) => {
     try {
-      const famousUsers = get(famousUsersSelector);
-      const promises = famousUsers.map(async ({ _id }) => {
-        const posts = await getUserPosts(_id, 1, 6);
+      // const famousUsers = get(famousUsersSelector);
+      const famousUserList = await getFamousUsers(1, 4);
+      const promises = famousUserList.map(async ({ _id }) => {
+        const posts = await getUserPosts(_id, 1, 4);
         return posts;
       });
       const famousUserPosts = await Promise.all(promises);
