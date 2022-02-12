@@ -55,7 +55,7 @@ function useUserActions() {
     try {
       console.log("test why");
       console.log(`${baseUrl} kakao`);
-      const res = await axios.get(`${baseUrl}/kakao`);
+      const res = await fetch(`http://localhost:8080${baseUrl}/kakao`);
       console.log(res);
     } catch (e) {
       console.log(e);

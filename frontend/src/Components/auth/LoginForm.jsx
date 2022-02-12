@@ -16,13 +16,15 @@ import { useRecoilValue } from "recoil";
 import { authAtom } from "../../states";
 import swal from "sweetalert";
 
+const { Kakao } = window;
+
 const LoginFormBlock = styled.form`
   display: flex;
   flex-direction: column;
   position: relative;
 `;
-const KakaoImg = styled.img`
-  width: 38px;
+const KakaoImg = styled.a`
+  /* width: 38px; */
   margin: 10px auto 0px auto;
 `;
 
@@ -33,7 +35,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  
   // 로그인 상태 가져오기.
   const auth = useRecoilValue(authAtom);
   const userActions = useUserActions();
@@ -43,11 +45,12 @@ const LoginForm = () => {
     return userActions.login(email, password);
   };
 
-  const kakaoLogin = () => {};
-
   // 렌더링 횟수 및 에러확인
   console.log("랜더링");
   console.log(errors);
+  const REST_API_KEY = process.env.REACT_APP_KAKAKO_KEY;
+  const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback"
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (
     <LoginFormBlock onSubmit={handleSubmit(onSubmit)}>
@@ -76,7 +79,9 @@ const LoginForm = () => {
         <StyledDiv easyLogin>간편 로그인</StyledDiv>
         <StyledHr easyLogin />
       </DivWrapper>
-      <KakaoImg onClick={userActions.kakaoLogin} src="./images/kakao.png" />
+      <KakaoImg href={KAKAO_AUTH_URL}>
+        <img src={`${process.env.PUBLIC_URL}/images/kakao_login_medium_narrow.png`} />
+      </KakaoImg>
     </LoginFormBlock>
   );
 };
