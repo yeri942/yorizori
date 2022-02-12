@@ -104,6 +104,7 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+//게시글에 달린 좋아요 수를 받습니다.
 PostSchema.virtual("numLikes", {
   ref: "Like",
   localField: "_id",
@@ -111,6 +112,7 @@ PostSchema.virtual("numLikes", {
   count: true,
 });
 
+//게시글에 달린 댓글 수를 받습니다.
 PostSchema.virtual("numComments", {
   ref: "Comment",
   localField: "_id",
