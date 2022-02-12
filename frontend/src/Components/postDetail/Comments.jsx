@@ -158,6 +158,7 @@ const Comments = () => {
       setWrite("");
       setToastStatus(true);
       setToastMessage("댓글이 등록되었습니다.");
+      setIsLoading(true)
     } catch (err) {
       console.error(err);
       setToastStatus(true);

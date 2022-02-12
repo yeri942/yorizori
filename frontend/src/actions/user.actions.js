@@ -53,8 +53,10 @@ function useUserActions() {
 
   async function kakaoLogin() {
     try {
-      console.log("test");
-      await axios.get(`${baseUrl}/kakao`);
+      console.log("test why");
+      console.log(`${baseUrl} kakao`);
+      const res = await axios.get(`${baseUrl}/kakao`);
+      console.log(res);
     } catch (e) {
       console.log(e);
     }

@@ -8,12 +8,12 @@ const authAtom = atom({
 
 export const userIdAtom = atom({
   key: "uid",
-  default: JSON.parse(localStorage.getItem("user")).uid,
+  default: JSON.parse(localStorage.getItem("user"))?.uid,
 })
 
 export const userImage = atom({
   key: "uImg",
-  default: JSON.parse(localStorage.getItem("user")).uimg,
+  default: JSON.parse(localStorage.getItem("user"))?.uimg,
 })
 
 export { authAtom };
