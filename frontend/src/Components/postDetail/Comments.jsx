@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Comment from "./Comment";
 import ReplyComment from "./ReplyComment";
 
@@ -61,6 +61,7 @@ const More = styled(Link)`
 const Comments = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [comments, setComments] = useState([]);
+  const { postId } = useParams();
   // const [comment, setComment] = useState("");
 
   useEffect(() => {
@@ -70,8 +71,6 @@ const Comments = () => {
     // 리액트가 받는건 덜렁 프라미스로 대체된다고 합니다.
     (async () => {
       const url = "http://localhost:8080";
-      const postId = "61f61970198538e03c2b75a9";
-      // ✔️추후에 삭제해야 될 postId
       const data = await fetch(`${url}/comment/${postId}`).then((res) => res.json());
       setComments(data.comments);
       setIsLoading(false);
@@ -95,17 +94,17 @@ const Comments = () => {
   //   console.log(comments);
   //   setComment("");
   // };
+  console.log(comments.length, "haha")
 
   return (
     <CommentsWrapper>
-      <Title>댓글 (5)</Title>
-      {!isLoading &&
-        comments.map((comment) => (
-          <>
-            <Comment key={comment._id} comment={comment} isMore={false} />
-          </>
-        ))}
-      <More to="./comments">댓글 더보기</More>
+      {!isLoading && (
+        <>
+          <Title>댓글 ({comments.length})</Title>
+          {comments.map((comment) => <Comment key={comment._id} comment={comment} isMore={false} />)}
+          {(comments.length > 3) ? null : <More to="./comments">댓글 더보기</More>}
+        </>
+      )}
     </CommentsWrapper>
   );
 };
