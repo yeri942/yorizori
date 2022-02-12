@@ -31,10 +31,31 @@ router.post(
       nickName,
       password: hash, // 비밀번호에 해시문자를 넣어준다.
     });
-
     return res.status(201).json({ message: "회원가입이 완료되었습니다." });
   })
 );
+
+router.post("/find", isNotLoggedIn, asyncHandler( async (req, res) => {
+  const {email, nickName, kakaoId, profileImage } = req.body;
+  console.log(req.body)
+  console.log(typeof kakaoId)
+  const isUserExist = await User.findOne({ email });
+  if(!isUserExist) {
+    const user = await User.create({
+      email,
+      nickName,
+      profileImage,
+      kakaoId,
+    })
+  }
+  else if(!isUserExist.kakaoId) {
+    isUserExist.kakaoId = kakaoId;
+    isUserExist.save();
+  }
+  req.session.isLogin = true;
+  req.session.save()
+  res.status(200).json({ message: "업데이트 성공!", uid: isUserExist._id, uimg: isUserExist.profileImage })
+}))
 
 //* 로그인 요청
 // 사용자 미들웨어 isNotLoggedIn 통과해야 async (req, res, next) => 미들웨어 실행
@@ -79,22 +100,55 @@ router.get(
   asyncHandler(async (req, res, next) => {
     // req.user (사용자 정보가 안에 들어있다. 당연히 로그인되어있으니 로그아웃하려는 거니까)
 
-    const { accessToken } = req.user;
-    if (accessToken) {
-      const logout = await axios({
-        method: "POST",
-        url: "https://kapi.kakao.com/v1/user/logout",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      console.log("카카오 로그아웃 완료");
-    }
+    // const { accessToken } = req.user;
+    // if (accessToken) {
+    //   const logout = await axios({
+    //     method: "POST",
+    //     url: "https://kapi.kakao.com/v1/user/logout",
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   });
+    //   console.log("카카오 로그아웃 완료");
+    // }
     req.logout();
     req.session.destroy(); // 로그인인증 수단으로 사용한 세션쿠키를 지우고 파괴한다. 세션쿠키가 없다는 말은 즉 로그아웃 인 말.
     res.status(200).json({ message: "로그아웃 성공" });
   })
 );
+
+const KAKAO_OAUTH_TOKEN_API_URL = "https://kauth.kakao.com/oauth/token";
+const KAKAO_GRANT_TYPE = "authorization_code";
+const KAKAO_CLIENT_id = process.env.KAKAO_ID;
+const KAKAO_REDIRECT_URL = "http://localhost:8080/auth/oauth";
+
+router.get("/oauth", (req, res) => {
+  const { code } = req.query;
+  try {
+    axios
+      .post(
+        `${KAKAO_OAUTH_TOKEN_API_URL}?grant_type=${KAKAO_GRANT_TYPE}&client_id=${KAKAO_CLIENT_id}&redirect_uri=${KAKAO_REDIRECT_URL}&code=${code}`,
+        {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result.data["access_token"], "hahahahahahahaha");
+        // 토큰을 활용한 로직을 적어주면된다.
+        res.status(200)
+        return result;
+      })
+      .catch((e) => {
+        console.log(e);
+        res.send(e);
+      });
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
+});
 
 router.get("/kakao", passport.authenticate("kakao"));
 

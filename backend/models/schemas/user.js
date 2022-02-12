@@ -30,7 +30,8 @@ const UserSchema = new Schema(
       default: null,
     },
     kakaoId: {
-      type: String,
+      type: Number,
+      default: null,
     },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
