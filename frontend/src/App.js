@@ -25,8 +25,8 @@ function App() {
         {/* <Route path="detail" element={<PostDetailPage />} >
           <Route path="comments" element={<MoreComments />} />
         </Route> */}
-        <Route path="detail" element={<PostDetailPage />} />
-        <Route path="detail/comments" element={<MoreComments />} />
+        <Route path="detail/:postId" element={<PostDetailPage />} />
+        <Route path="detail/:postId/comments" element={<MoreComments />} />
         <Route element={<MyPage />} path="/users/mypage" />
         <Route element={<MyPageEdit />} path="/users/edit" />
         <Route element={<PostPage />} path="/post" />
