@@ -43,4 +43,25 @@ UserSchema.virtual("numFollowees", {
   count: true,
 });
 
+UserSchema.virtual("numFollowers", {
+  ref: "Follow",
+  localField: "_id",
+  foreignField: "followeeId",
+  count: true,
+});
+
+UserSchema.virtual("numPosts", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "userId",
+  count: true,
+});
+
+UserSchema.virtual("numLikes", {
+  ref: "Like",
+  localField: "_id",
+  foreignField: "userId",
+  count: true,
+});
+
 module.exports = UserSchema;

@@ -111,4 +111,11 @@ PostSchema.virtual("numLikes", {
   count: true,
 });
 
+PostSchema.virtual("numComments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "postId",
+  count: true,
+});
+
 module.exports = PostSchema;

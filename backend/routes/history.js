@@ -31,19 +31,9 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
     let { startIndex, limit } = req.query;
-    //시작인덱스와 limit(한번에 받을 데이터의 개수)를 지정하지 않으면 전체데이터 보내줌
-    if (!startIndex && !limit) {
-      const viewUserList = await History.find({ postId, isLastViewed: true })
-        .sort({ createdAt: -1 })
-        .populate({ path: "userId", select: "-password" });
-      res.status(200).json({ viewUserList });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
+
     //startIndex와 limit 데이터를 다 받으면 startindex부터 limit 개수의 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);

@@ -50,7 +50,12 @@ router.get(
   // isLoggedIn,
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params; //body에서 유저아이디를 받고
-    const user = await User.findOne({ _id: userId }).select("-password"); //_id가 일치하는 유저를 찾음
+    const user = await User.findOne({ _id: userId })
+      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
+      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
+      .populate({ path: "numPosts", match: { useYN: true } })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .select("-password"); //_id가 일치하는 유저를 찾음
     //password 제외한 정보를 보냄
     res.status(200).json({ user });
   })
@@ -63,20 +68,15 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const userPosts = await Post.find({ userId, useYN: true }).sort({ createdAt: -1 });
-      res.status(200).json({ userPosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
+
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const userPosts = await Post.find({ userId, useYN: true })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
+      .populate({ path: "numComments", match: { isDeleted: false } })
       .sort({ createdAt: -1 })
       .skip(startIndex - 1)
       .limit(limit);
@@ -91,26 +91,20 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    //qeury params 가 없으면 전체 데이터 return
-    if (!startIndex && !limit) {
-      //유저가 좋아요한 like documents 에서 postId만을 뽑아내고
-      const likePosts = await Like.find({ userId, isUnliked: false })
-        .sort({ createdAt: -1 })
-        .populate("postId");
-      res.status(200).json({ likePosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const likePosts = await Like.find({ userId, isUnliked: false })
       .sort({ createdAt: -1 })
-      .populate("postId")
+      .populate({
+        path: "postId",
+        populate: [
+          { path: "numLikes", match: { isUnliked: false } },
+          { path: "numComments", match: { isDeleted: false } },
+        ],
+      })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ likePosts });
@@ -130,7 +124,13 @@ router.get(
     //유저가 작성한 댓글을 게시글 순으로 정렬한 후 그 안에서 최신글 순서로 정렬합니다.
     const allCommentPosts = await Comment.find({ userId, isDeleted: false })
       .sort({ postId: 1, createdAt: -1 })
-      .populate("postId");
+      .populate({
+        path: "postId",
+        populate: [
+          { path: "numLikes", match: { isUnliked: false } },
+          { path: "numComments", match: { isDeleted: false } },
+        ],
+      });
     //겹치는 게시글들을 제거하기 위해 각 게시글마다 최신 글을 하나씩 모아 commentPosts 배열을 만듭니다.
     const commentPosts = allCommentPosts
       .reduce((acc, post) => {
@@ -170,24 +170,20 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const lastViewedPosts = await History.find({ userId, isLastViewed: true })
-        .sort({ createdAt: -1 })
-        .populate("postId");
-      res.status(200).json({ lastViewedPosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const lastViewedPosts = await History.find({ userId, isLastViewed: true })
       .sort({ createdAt: -1 })
-      .populate("postId")
+      .populate({
+        path: "postId",
+        populate: [
+          { path: "numLikes", match: { isUnliked: false } },
+          { path: "numComments", match: { isDeleted: false } },
+        ],
+      })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ lastViewedPosts });
@@ -201,21 +197,8 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const followers = await Follow.find({ followeeId: userId, isUnfollowed: false })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: "followerId",
-          select: "-password",
-        });
-      res.status(200).json({ followers });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
@@ -224,6 +207,12 @@ router.get(
       .populate({
         path: "followerId",
         select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
       })
       .skip(startIndex - 1)
       .limit(limit);
@@ -238,29 +227,22 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params;
     let { startIndex, limit } = req.query;
-    if (!startIndex && !limit) {
-      const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
-        .sort({ createdAt: -1 })
-        .populate({
-          path: "followeeId",
-          select: "-password",
-        });
-      res.status(200).json({ followees });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
     const followees = await Follow.find({ followerId: userId, isUnfollowed: false })
       .sort({ createdAt: -1 })
       .populate({
-        path: "followeeId",
+        path: "followerId",
         select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
       })
       .skip(startIndex - 1)
       .limit(limit);
@@ -274,6 +256,9 @@ router.get(
     let { startIndex, limit } = req.query;
     const users = await User.find()
       .populate({ path: "numFollowees", match: { isUnfollowed: false } })
+      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
+      .populate({ path: "numPosts", match: { useYN: true } })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
       .sort({ createdAt: -1 });
     const sortedUsers = users.sort((a, b) => b.numFollowees - a.numFollowees);
     if (!startIndex && !limit) {
