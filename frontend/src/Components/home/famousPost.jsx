@@ -10,7 +10,7 @@ import {
   famousPostLikeUserSelector,
   famousPostCommentUserSelector,
   detailedPostsLikeUserAtom,
-} from "./homeAtom";
+} from "../../states/homeAtom";
 import axios from "axios";
 import {
   useRecoilState,
@@ -42,15 +42,11 @@ const FamoustViewRapper = styled.div``;
 const FamousPost = () => {
   const navigate = useNavigate();
   const setFamousPost = useSetRecoilState(datailedPostAtom);
-  const setFamousPostLikeUser = useSetRecoilState(detailedPostsLikeUserAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
-  const likeUserLoadble = useRecoilValueLoadable(famousPostLikeUserSelector);
-  const commentUserCountLoadable = useRecoilValueLoadable(famousPostCommentUserSelector);
 
   const clickFamousPostHandler = (item, idx) => {
     const postId = item._id;
     setFamousPost(item);
-    setFamousPostLikeUser(likeUserLoadble.contents[idx].likeUserList);
     navigate(`/detail/${postId}`);
   };
 
@@ -66,11 +62,7 @@ const FamousPost = () => {
     arrows: false,
   };
 
-  if (
-    famousListsLoadable.state === "loading" ||
-    likeUserLoadble.state === "loading" ||
-    commentUserCountLoadable.state === "loading"
-  ) {
+  if (famousListsLoadable.state === "loading") {
     return <div>loading...</div>;
   }
   console.log("famousListsLoadable", famousListsLoadable.contents);
