@@ -24,11 +24,11 @@ function App() {
         <Route element={<RegisterPage />} path="/register" />
         {/* <Route element={<OldPostPage />} path="/oldpost" /> */}
         <Route element={<ViewAllPage />} path="/view_all" />
-        <Route path="detail" element={<PostDetailPage />}>
+        {/* <Route path="detail" element={<PostDetailPage />}>
           <Route path="comments" element={<MoreComments />} />
-        </Route>
-        {/* <Route path="detail/:postId" element={<PostDetailPage />} />
-        <Route path="detail/:postId/comments" element={<MoreComments />} /> */}
+        </Route> */}
+        <Route path="detail/:postId" element={<PostDetailPage />} />
+        <Route path="detail/:postId/comments" element={<MoreComments />} />
         <Route element={<MyPage />} path="/users/mypage" />
         <Route element={<MyPageEdit />} path="/users/edit" />
         <Route element={<PostPage />} path="/post" />
