@@ -41,7 +41,6 @@ UserSchema.virtual("numFollowees", {
   localField: "_id",
   foreignField: "followerId",
   count: true,
-  options: {},
 });
 
 module.exports = UserSchema;

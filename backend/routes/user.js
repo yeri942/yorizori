@@ -272,8 +272,10 @@ router.get(
   "/sortByFollowees",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit } = req.query;
-    const users = await User.find().populate({ path: "numFollowees" }).sort({ createdAt: -1 });
-    const sortedUsers = users.sort((a, b) => b.numLikes - a.numLikes);
+    const users = await User.find()
+      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
+      .sort({ createdAt: -1 });
+    const sortedUsers = users.sort((a, b) => b.numFollowees - a.numFollowees);
     if (!startIndex && !limit) {
       res.status(200).json({ sortedUsers });
       return;
