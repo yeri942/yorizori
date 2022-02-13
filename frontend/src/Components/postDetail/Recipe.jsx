@@ -11,82 +11,6 @@ const padNumber = (num, length) => {
   return String(num).padStart(length, "0");
 };
 
-const RecipeWrapper = styled.div`
-  margin: 20px;
-`;
-const Step = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-`;
-const StepNumber = styled.div``;
-const Content = styled.div`
-  font-size: 14px;
-  width: 150px;
-  margin-bottom: 6px;
-`;
-const Img = styled.img`
-  width: 100px;
-  height: 64px;
-  object-fit: cover;
-`;
-const ResultImg = styled.img`
-  height: 200px;
-  object-fit: cover;
-`;
-
-const ClockImg = styled.img`
-  margin-right: 10px;
-`;
-const StyledSlider = styled(Slider)`
-  margin: 15px 30px 50px 30px;
-  .slick-prev:before,
-  .slick-next:before {
-    color: #feae11;
-    font-size: 20px;
-  }
-  .slick-dots li.slick-active button:before {
-    color: #feae11;
-  }
-`;
-
-const Timer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const TimeInput = styled.input`
-  border: none;
-  width: 24px;
-  /* padding-top: 3px;
-  padding-right: 2px; */
-  text-align: right;
-  font-weight: 600;
-  font-size: 1.1rem;
-  :focus {
-    outline: none;
-  }
-`;
-
-const TimerWrapper = styled.div`
-  display: flex;
-  font-weight: 700;
-  font-size: 1.1rem;
-`;
-
-const StyledP = styled.p`
-  margin: 0;
-`;
-
-const ResetBtn = styled.div`
-  background-image: url("../images/reset.png");
-  margin: 7px 0px 0px 7px;
-  width: 15px;
-  height: 15px;
-  background-size: cover;
-`;
-
 const Recipe = (props) => {
   const { register, setValue, getValues } = useForm();
   const interval = useRef({});
@@ -214,3 +138,79 @@ const Recipe = (props) => {
   );
 };
 export default Recipe;
+
+const RecipeWrapper = styled.div`
+  margin: 20px;
+`;
+const Step = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+`;
+const StepNumber = styled.div``;
+const Content = styled.div`
+  font-size: 14px;
+  width: 150px;
+  margin-bottom: 6px;
+`;
+const Img = styled.img`
+  width: 100px;
+  height: 64px;
+  object-fit: cover;
+`;
+const ResultImg = styled.img`
+  height: 200px;
+  object-fit: cover;
+`;
+
+const ClockImg = styled.img`
+  margin-right: 10px;
+`;
+const StyledSlider = styled(Slider)`
+  margin: 15px 30px 50px 30px;
+  .slick-prev:before,
+  .slick-next:before {
+    color: #feae11;
+    font-size: 20px;
+  }
+  .slick-dots li.slick-active button:before {
+    color: #feae11;
+  }
+`;
+
+const Timer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const TimeInput = styled.input`
+  border: none;
+  width: 24px;
+  /* padding-top: 3px;
+  padding-right: 2px; */
+  text-align: right;
+  font-weight: 600;
+  font-size: 1.1rem;
+  :focus {
+    outline: none;
+  }
+`;
+
+const TimerWrapper = styled.div`
+  display: flex;
+  font-weight: 700;
+  font-size: 1.1rem;
+`;
+
+const StyledP = styled.p`
+  margin: 0;
+`;
+
+const ResetBtn = styled.div`
+  background-image: url("../images/reset.png");
+  margin: 7px 0px 0px 7px;
+  width: 15px;
+  height: 15px;
+  background-size: cover;
+`;
