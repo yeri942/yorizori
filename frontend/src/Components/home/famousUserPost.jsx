@@ -112,7 +112,7 @@ const FamousUserPost = () => {
           </TextMain>
         </TextMainWrapper>
 
-        <LinkedText onClick={() => clickChangePostHandler}>다른 인기유저</LinkedText>
+        <LinkedText onClick={clickChangePostHandler}>다른 인기유저</LinkedText>
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
       <StyledSlider className="sliderrr" {...settings}>
