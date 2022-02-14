@@ -10,8 +10,6 @@ const Modal = () => {
   const setRandomButton = useSetRecoilState(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
-  let recipeNameValue = randomPost.recipeName;
-  let author = randomPost.diffic;
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
@@ -32,12 +30,12 @@ const Modal = () => {
         <div>
           <CloseButton onClick={closeModal} />
           <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
-          <Link to={`/detail/${randomPost._id}`}>
+          <Link to={`/detail/${randomPost._id.$oid}`}>
             <Img src={randomPost.thumbnail} />
           </Link>
           <TextBox>
-            <Title>{recipeNameValue}</Title>
-            <Author>{author}</Author>
+            <Title>{randomPost.recipeName}</Title>
+            <Author>{randomPost.userId.$oid}</Author>
             <WrapperHeartComment>
               <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
               <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
@@ -84,7 +82,7 @@ const ModalBox = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("./images/icons.png");
+    background-image: url("../images/icons.png");
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }
@@ -107,7 +105,7 @@ const ModalBox = styled.div`
 
 const CloseButton = styled.div`
   position: absolute;
-  background-image: url("./images/closeButton.png");
+  background-image: url("../images/closeButton.png");
   background-size: cover;
   width: 28px;
   height: 28px;
@@ -156,7 +154,7 @@ const ButtonWrapper = styled.div`
   .sprite2 {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("./images/icons.png");
+    background-image: url("../images/icons.png");
     background-repeat: no-repeat;
     background-size: 106px 47.93px;
   }

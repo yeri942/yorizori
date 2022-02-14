@@ -115,7 +115,7 @@ const Wrapper = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url(${process.env.PUBLIC_URL + "./images/icons.png"});
+    background-image: url(${process.env.PUBLIC_URL + "../images/icons.png"});
     background-repeat: no-repeat;
     background-size: 66.34px 30px;
   }
