@@ -122,6 +122,7 @@ router.get(
       })
       .populate({
         path: "postId",
+        match: { useYN: true },
         populate: [
           { path: "numLikes", match: { isUnliked: false } },
           { path: "numComments", match: { isDeleted: false } },
@@ -159,6 +160,7 @@ router.get(
       })
       .populate({
         path: "postId",
+        match: { useYN: true },
         populate: [
           { path: "numLikes", match: { isUnliked: false } },
           { path: "numComments", match: { isDeleted: false } },
@@ -225,6 +227,7 @@ router.get(
       })
       .populate({
         path: "postId",
+        match: { useYN: true },
         populate: [
           { path: "numLikes", match: { isUnliked: false } },
           { path: "numComments", match: { isDeleted: false } },
@@ -302,7 +305,9 @@ router.get(
 router.get(
   "/sortByFollowees",
   asyncHandler(async (req, res, next) => {
-    let { startIndex, limit } = req.query;
+    let { startIndex, limit, hasPost } = req.query;
+    let filteringNum = 0;
+    if (hasPost) filteringNum = 1;
     const users = await User.find()
       .populate({ path: "numFollowees", match: { isUnfollowed: false } })
       .populate({ path: "numFollowers", match: { isUnfollowed: false } })
@@ -311,7 +316,7 @@ router.get(
       .sort({ createdAt: -1 });
     const sortedUsers = users
       //팔로워가 많은 유저중 게시글이 없는 유저는 필터링함
-      .filter((user) => user.numPosts > 0)
+      .filter((user) => user.numPosts >= filteringNum)
       .sort((a, b) => b.numFollowees - a.numFollowees);
     if (!startIndex && !limit) {
       res.status(200).json({ sortedUsers });
