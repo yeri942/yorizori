@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { datailedPostAtom, famousPostsSelector } from "../../states/homeAtom";
+import { detailedPostAtom, famousPostsSelector } from "../../states/homeAtom";
 import {
   useSetRecoilState,
   useRecoilValueLoadable,
@@ -34,7 +34,7 @@ import {
 
 const FamousPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(datailedPostAtom);
+  const setFamousPost = useSetRecoilState(detailedPostAtom);
   // const famousPost = useRecoilValue(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
 

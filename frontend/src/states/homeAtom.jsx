@@ -10,7 +10,7 @@ import {
 import { userIdAtom } from "./auth";
 
 //디테일 뷰로 들어갈 때 해당 게시물의 정보를 이 아톰에 넣습니다.
-export const datailedPostAtom = atom({
+export const detailedPostAtom = atom({
   key: "datailedPostAtom",
   default: null,
 });
@@ -18,6 +18,11 @@ export const datailedPostAtom = atom({
 //로그인한 유저 정보를 받습니다.
 export const loginUserAtom = atom({
   key: "loginUserAtom",
+  default: null,
+});
+
+export const detailedUserAtom = atom({
+  key: "detailedUserAtom",
   default: null,
 });
 

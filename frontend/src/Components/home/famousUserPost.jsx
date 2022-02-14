@@ -5,11 +5,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
-  datailedPostAtom,
+  detailedPostAtom,
   famousPostsSelector,
   famousUsersSelector,
   famousUsersPostsSelector,
   loginUserAtom,
+  detailedUserAtom,
 } from "../../states/homeAtom";
 import axios from "axios";
 import {
@@ -42,8 +43,11 @@ import {
 
 const FamousUserPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(datailedPostAtom);
+  const setFamousPost = useSetRecoilState(detailedPostAtom);
+  const [detailedUser, setDetailedUser] = useRecoilState(detailedUserAtom);
+
   const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
+
   //   const loginUser = useRecoilValue(loginUserAtom);
 
   const [changePosts, setChangePosts] = useState(0);
@@ -59,7 +63,6 @@ const FamousUserPost = () => {
   };
 
   const clickChangePostHandler = () => {
-    // console.log(loginUser);
     setChangePosts((prev) => {
       console.log("prev", prev);
       if (prev === famousUsersPostsLoadable.contents.length - 1) return 0;
@@ -67,6 +70,16 @@ const FamousUserPost = () => {
       return prev + 1;
     });
   };
+
+  const clickDetailedUserHandler = (user) => {
+    setDetailedUser(user);
+    console.log(detailedUser);
+    navigate(`/users/mypage/${user}`);
+  };
+
+  //   const clickChangeUserHandler = () => {
+  //       set
+  //   }
 
   const settings = {
     dots: true,
@@ -88,12 +101,18 @@ const FamousUserPost = () => {
         <TextMainWrapper>
           <TextMain>많은 사랑을 받은 ,</TextMain>
           <TextMain>
-            <span>{famousUsersPostsLoadable.contents[changePosts][0]?.userId.nickName}</span> 님의
-            음식이에요.
+            <span
+              onClick={() =>
+                clickDetailedUserHandler(famousUsersPostsLoadable.contents[changePosts][0]?.userId)
+              }
+            >
+              {famousUsersPostsLoadable.contents[changePosts][0]?.userId.nickName}
+            </span>{" "}
+            님의 음식이에요.
           </TextMain>
         </TextMainWrapper>
 
-        <LinkedText onClick={clickChangePostHandler}>다른 인기유저</LinkedText>
+        <LinkedText onClick={() => clickChangePostHandler}>다른 인기유저</LinkedText>
       </TextWrapper>
       {/* <ImageWarpper className="iamge"> */}
       <StyledSlider className="sliderrr" {...settings}>
