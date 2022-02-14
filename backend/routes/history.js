@@ -9,7 +9,7 @@ router.post(
   "/",
   isLoggedIn,
   asyncHandler(async (req, res, next) => {
-    const { id: userId } = req.user || req.cookies;;
+    const { id: userId } = req.user || req.cookies;
     const { postId } = req.body;
     //기존에 봤던 게시물이라면 islastviewed를 false로 바꿔줌
     const preLastView = await History.findOne({ userId, postId, isLastViewed: true });
@@ -40,7 +40,16 @@ router.get(
     const viewUserList = await History.find({ postId, isLastViewed: true })
       .sort({ createdAt: -1 })
       //password를 제외한 유저 정보를 populate
-      .populate({ path: "userId", select: "-password" })
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
       .skip(startIndex - 1)
       .limit(limit);
     res.status(200).json({ viewUserList });
