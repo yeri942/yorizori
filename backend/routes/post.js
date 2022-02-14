@@ -30,7 +30,7 @@ router.post(
       time,
       diffic,
     } = req.body;
-    const { id: userId } = req.user || req.cookies;;
+    const { id: userId } = req.user || req.cookies;
     //thumbnail 이미지 location DB에 넣기
     thumbnail = req.files.thumbnail[0].location;
 
@@ -137,17 +137,11 @@ router.get(
   "/sortByLike",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit } = req.query;
-    //virtual populate 로 가져온 count option 으로는 sort가 안됩니다..ㅜ
     const posts = await Post.find({ useYN: true })
       .populate({ path: "userId", select: "-password" })
       //게시글이 받은 좋아요 수와 댓글 수를 populate 해옴
-      .populate({
-        path: "numLikes",
-        match: { isUnliked: false },
-        // options: { sort: { numLikes: -1 } },
-      })
+      .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } })
-      //.sort({numLikes : -1})
       .sort({ createdAt: -1 });
     const sortedPosts = posts.sort((a, b) => b.numLikes - a.numLikes);
     if (!startIndex && !limit) {
@@ -175,7 +169,16 @@ router.get(
 
     const posts = await Post.findById(postId)
       .findOne({ useYN: true })
-      .populate({ path: "userId", select: "-password" })
+      .populate({
+        path: "userId",
+        select: "-password",
+        populate: [
+          { path: "numFollowees", match: { isUnfollowed: false } },
+          { path: "numFollowers", match: { isUnfollowed: false } },
+          { path: "numPosts", match: { useYN: true } },
+          { path: "numLikes", match: { isUnliked: false } },
+        ],
+      })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } });
     if (!posts) {
