@@ -309,7 +309,10 @@ router.get(
       .populate({ path: "numPosts", match: { useYN: true } })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .sort({ createdAt: -1 });
-    const sortedUsers = users.sort((a, b) => b.numFollowees - a.numFollowees);
+    const sortedUsers = users
+      //팔로워가 많은 유저중 게시글이 없는 유저는 필터링함
+      .filter((user) => user.numPosts > 0)
+      .sort((a, b) => b.numFollowees - a.numFollowees);
     if (!startIndex && !limit) {
       res.status(200).json({ sortedUsers });
       return;
