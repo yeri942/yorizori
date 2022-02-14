@@ -6,7 +6,11 @@ import dummy from "../../posts.json";
 import { dropDownOptionsState } from "./ViewAllAtom";
 import { useRecoilValue } from "recoil";
 
+const baseURL = "http://localhost:8080";
+
 const Postzone = () => {
+  const [recipes, setRecipes] = useState([]);
+
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [countPost, setCountPost] = useState(4);
@@ -28,20 +32,27 @@ const Postzone = () => {
     }
   };
   useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
+    fetch("http://localhost:8080/post")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setRecipes(data);
       });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
+    // let observer;
+    // if (target) {
+    //   observer = new IntersectionObserver(onIntersect, {
+    //     threshold: 0.4,
+    //   });
+    //   observer.observe(target);
+    // }
+    // return () => observer && observer.disconnect();
   });
 
   return (
     <Wrapper>
       <WrapperPost>
-        {dummy
+        {recipes
           .filter((data) => {
             if (dropDownOptions.category === "") {
               return data.category;
@@ -68,25 +79,23 @@ const Postzone = () => {
           })
           .map((data) => {
             let recipeName = data.recipeName;
-            let author = data.userId.$oid;
+            let nickName = data.userId.nickName;
             if (recipeName.length > 20) {
               recipeName = recipeName.substring(0, 19) + "…";
             }
-            if (data.userId.$oid.length > 12) {
-              author = author.substring(0, 11) + "…";
-            }
+
             return (
               <Link
                 to={`/detail/${data._id.$oid}`}
                 style={{ textDecoration: "none", color: "inherit" }}
-                author={data.userId.$oid}
+                nickName={data.userId.nickName}
                 title={data.recipeName}
               >
                 <div>
                   <Img src={data.thumbnail} />
                   <TextBox>
                     <Title>{recipeName}</Title>
-                    <Author>{author}</Author>
+                    <Author>{nickName}</Author>
                     <WrapperHeartComment>
                       <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
                       <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
