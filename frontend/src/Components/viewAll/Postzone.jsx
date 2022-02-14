@@ -79,7 +79,7 @@ const Postzone = () => {
           })
           .map((data) => {
             let recipeName = data.recipeName;
-            let nickName = data.userId.nickName;
+            let nickname = data.userId.nickName;
             if (recipeName.length > 20) {
               recipeName = recipeName.substring(0, 19) + "…";
             }
@@ -88,14 +88,14 @@ const Postzone = () => {
               <Link
                 to={`/detail/${data._id.$oid}`}
                 style={{ textDecoration: "none", color: "inherit" }}
-                nickName={data.userId.nickName}
+                nickname={data.userId.nickName}
                 title={data.recipeName}
               >
                 <div>
                   <Img src={data.thumbnail} />
                   <TextBox>
                     <Title>{recipeName}</Title>
-                    <Author>{nickName}</Author>
+                    <Author>{nickname}</Author>
                     <WrapperHeartComment>
                       <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
                       <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
