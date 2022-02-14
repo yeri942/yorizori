@@ -127,13 +127,14 @@ const WrapperHeartComment = styled.div`
 `;
 
 const Heart = styled.span`
-  background-position: ${({ clicked }) => (clicked ? "-33px" : "-16px")} 3.8px;
+  background-position: ${({ heartClick }) => (heartClick ? "-33px" : "-16px")} 3.8px;
 `;
 
 const Comment = styled.span``;
 const HeartCommentCount = styled.span`
   font-size: 13px;
   margin-right: 8px;
+  margin-left: 8px;
 `;
 
 export {

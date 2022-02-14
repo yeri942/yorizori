@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 import {
   getFamousPosts,
   // getFamousPostLikeUser,
@@ -94,6 +94,30 @@ export const famousUsersPostsSelector = selector({
     }
   },
 });
+
+//함수와 셀렉터 모듈화 작업중
+// //인기있는 유저들을 가져오면 그 유저가 작성한 게시물들을 가져옵니다.
+// export const famousUsersPostsSelector = selectorFamily({
+//   key: "famousUsersPostsSelector",
+//   get:
+//     (startIndex, limit) =>
+//     async ({ get }) => {
+//       try {
+//         // const famousUsers = get(famousUsersSelector);
+//         console.log(1111, typeof startIndex);
+//         const famousUserList = await getFamousUsers({ startIndex, limit });
+//         const promises = famousUserList.map(async ({ _id }) => {
+//           const posts = await getUserPosts(_id, 1, 6);
+//           return posts;
+//         });
+//         const famousUserPosts = await Promise.all(promises);
+//         return famousUserPosts;
+//       } catch (err) {
+//         console.error(err);
+//         throw err;
+//       }
+//     },
+// });
 
 // export const famousPostLikeUserSelector = selector({
 //   key: "FamousPostLikeUserSelector",

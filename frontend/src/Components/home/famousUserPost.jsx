@@ -25,7 +25,6 @@ import {
   TextWrapper,
   TextMain,
   LinkedText,
-  ImageWarpper,
   ImageWithTag,
   StyledImage,
   TextBox,
@@ -37,20 +36,19 @@ import {
   Comment,
 } from "./ariticleTemplateWithOneSlide";
 
-const FamoustViewRapper = styled.div``;
+// const FamoustViewRapper = styled.div``;
 
 //아직 작성중입니다....
 
 const FamousUserPost = () => {
   const navigate = useNavigate();
   const setFamousPost = useSetRecoilState(datailedPostAtom);
-  const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
   const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
-  const loginUser = useRecoilValue(loginUserAtom);
+  //   const loginUser = useRecoilValue(loginUserAtom);
 
   const [changePosts, setChangePosts] = useState(0);
 
-  if (famousListsLoadable.state === "loading" || famousUsersPostsLoadable.state === "loading") {
+  if (famousUsersPostsLoadable.state === "loading") {
     return <div>loading...</div>;
   }
 
@@ -61,7 +59,7 @@ const FamousUserPost = () => {
   };
 
   const clickChangePostHandler = () => {
-    console.log(loginUser);
+    // console.log(loginUser);
     setChangePosts((prev) => {
       console.log("prev", prev);
       if (prev === famousUsersPostsLoadable.contents.length - 1) return 0;
@@ -83,7 +81,7 @@ const FamousUserPost = () => {
   };
 
   //   console.log("famousUsersPostsLoadable", famousUsersPostsLoadable.contents[0]);
-  console.log("222", famousUsersPostsLoadable.contents);
+  //   console.log("222", famousUsersPostsLoadable.contents);
   return (
     <ArticleWrapper>
       <TextWrapper>
@@ -119,9 +117,9 @@ const FamousUserPost = () => {
                       className="sprite heart"
                       clicked={false}
                       onClick={() => alert("이제 하트해보자구")}
-                    />{" "}
+                    />
                     <HeartCommentCount>{item.numLikes}</HeartCommentCount>
-                    <span className="sprite comment" />{" "}
+                    <Comment className="sprite comment" />
                     <HeartCommentCount>{item.numComments}</HeartCommentCount>
                   </WrapperHeartComment>
                 </TextBox>
