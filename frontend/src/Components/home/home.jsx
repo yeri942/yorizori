@@ -37,15 +37,17 @@ const HomeBlock = styled.div`
 `;
 const Home = () => {
   const [loginUserLoadable, setloginUserLoadable] = useRecoilStateLoadable(loginUserSelector);
-  const [loginUser, setLoginUser] = useRecoilState(loginUserAtom);
-
-  // if (loginUserLoadable.state === "loading") return <div></div>;
+  const loginUser = useRecoilValue(loginUserAtom);
 
   useEffect(() => {
+    if (loginUser) return;
     if (loginUserLoadable.state === "hasValue") setloginUserLoadable(loginUserLoadable.contents);
-    console.log("loginUseratom에 값 잘 들어가나", loginUser);
+
+    console.log("홈 useEffect 실행여부");
   }, [loginUserLoadable]);
 
+  if (loginUserLoadable.state === "loading") return <div>loading...</div>;
+  console.log("홈 렌더링");
   return (
     <HomeBlock>
       <TopNav_main />
