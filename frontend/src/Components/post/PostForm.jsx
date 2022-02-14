@@ -1,7 +1,6 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
-import PostTemplete from "./PostTemplete";
-import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import {
   postPageStateAtom,
   MainImageStateAtom,
@@ -10,7 +9,7 @@ import {
   cookInfoAtom,
   InvalidationAtom,
 } from "./PostAtom/PostAtom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import PostStepOne from "./PostStepOne/PostStepOne";
 import PostStepTwo from "./PostStepTwo/PostStepTwo";
 import PostStepThree from "./PostStepThree/PostStepThree";
@@ -79,36 +78,42 @@ const PostForm = () => {
     let ImageIndex = 1;
     for (let [key, value] of Object.entries(data)) {
       // ingredient
-      if (key.indexOf("ingredient_") > -1) {
+      if (key.indexOf("ingredient_") > -1 && value.length >= 1) {
         ingre_el = new Object({
           ingreName: "",
-          ingreCount: "",
         });
         ingre_el.ingreName = value;
       }
-      if (key.indexOf("ingredientVolume_") > -1) {
+      if (key.indexOf("ingredientVolume_") > -1 && value.length) {
+        ingre_el = {
+          ...ingre_el,
+          ingreCount: "",
+        };
         ingre_el.ingreCount = value;
         ingredient.push(ingre_el);
       }
 
       // seasoning
-      if (key.indexOf("source_") > -1) {
+      if (key.indexOf("source_") > -1 && value.length) {
         seasoning_el = new Object({
           ingreName: "",
-          ingreCount: "",
         });
         seasoning_el.ingreName = value;
       }
-      if (key.indexOf("sourceVolume_") > -1) {
+      if (key.indexOf("sourceVolume_") > -1 && value.length) {
+        seasoning_el = {
+          ...seasoning_el,
+          ingreCount: "",
+        };
         seasoning_el.ingreCount = value;
         seasoning.push(seasoning_el);
       }
 
       // process
-      if (key.indexOf("order_") > -1) {
+      if (key.indexOf("order_") > -1 && value.length >= 1) {
+        console.log(`process : ${value}`);
         process_el = new Object({
           explain: "",
-          processTime: "",
         });
         process_el.explain = value;
         if (subImage.file[ImageIndex]) {
@@ -121,6 +126,10 @@ const PostForm = () => {
         }
       }
       if (key.indexOf("orderTimeMin_") > -1) {
+        process_el = {
+          ...process_el,
+          processTime: "",
+        };
         time = {
           ...time,
           min: value,
@@ -178,7 +187,7 @@ const PostForm = () => {
           swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => navigate("/"));
         })
         .catch((err) => {
-          swal("등록 실패", "알 수 없는 오류", "error");
+          swal("등록 실패", "", "error");
           console.log(err);
         });
 
