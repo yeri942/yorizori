@@ -133,9 +133,10 @@ const Recipe = ({ data }) => {
       {data && data.doneImage[0] && <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>}
       <StyledSlider {...settings}>
         {data &&
-          data.doneImage.map((photo, index) => {
-            return <ResultImg key={`ResultImg_${index}`} src={photo} />;
-          })}
+          data.doneImage[0] &&
+          data.doneImage.map((photo, index) => (
+            <ResultImg key={`ResultImg_${index}`} src={photo} />
+          ))}
       </StyledSlider>
     </RecipeWrapper>
   );

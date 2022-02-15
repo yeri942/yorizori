@@ -9,19 +9,35 @@ import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { detailDataAtom } from "../../states/detail";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
+import { detailDataAtom, detailLoadingStateAtom } from "../../states/detail";
+import { Watch } from "react-loader-spinner";
+import { Loading } from "../home/ariticleTemplateWithOneSlide";
 
 const PostDetail = () => {
   const [detailData, setDetailData] = useRecoilState(detailDataAtom);
+  const detailDataLodable = useRecoilValueLoadable(detailDataAtom);
+  console.log(detailDataLodable);
   const { postId } = useParams();
   useEffect(() => {
     const getProcessData = async () => {
-      const { data } = await axios.get(`/post/${postId}`);
-      setDetailData(data);
+      try {
+        const { data } = await axios.get(`/post/${postId}`);
+        setDetailData(data);
+      } catch (e) {
+        console.error(e);
+      }
     };
     getProcessData();
   }, []);
+
+  if (!detailData) {
+    return (
+      <Loading>
+        <Watch ariaLabel="loading-indicator" color="#d45500" />
+      </Loading>
+    );
+  }
 
   return (
     <PostDetailBlock>
@@ -35,7 +51,7 @@ const PostDetail = () => {
         <Line />
         <Comments />
         <Line />
-        <Recommend />
+        <Recommend data={detailData} />
       </Content>
       <BottomNav />
     </PostDetailBlock>

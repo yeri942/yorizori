@@ -52,9 +52,9 @@ const Postzone = () => {
     const fetchData = async () => {
       const result = await axios(url);
       setRecipes(result.data);
+      console.log(result);
     };
     fetchData();
-
     // let observer;
     // if (target) {
     //   observer = new IntersectionObserver(onIntersect, {

@@ -159,9 +159,7 @@ const PostForm = () => {
       ...category,
     };
 
-    Invalidation(submitData, setPostpostPageState, mainImage, setInvalidationState);
-
-    if (invalidationState === true) {
+    if (Invalidation(submitData, setPostpostPageState, mainImage, setInvalidationState) === true) {
       const formData = new FormData();
       setFormData(formData, submitData);
       formData.append("thumbnail", mainImage.file[0]);
@@ -180,14 +178,17 @@ const PostForm = () => {
           },
         })
         .then((res) => {
-          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => navigate("/"));
+          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {
+            // navigate("/");
+            window.location.replace("/");
+          });
         })
         .catch((err) => {
           swal("등록 실패", "", "error");
           console.log(err);
         });
 
-      // 데이터 누수를 방지하기위해 미리보기를 위해 생성한 URL 삭제.
+      //데이터 누수를 방지하기위해 미리보기를 위해 생성한 URL 삭제.
       subImage.preview.map((el, idx) => {
         if (el) {
           return window.URL.revokeObjectURL(el);
