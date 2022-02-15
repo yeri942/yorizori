@@ -77,7 +77,8 @@ const MyPageImage = styled.img`
   height: 115px;
   background-size: cover;
   border-radius: 50%;
-  
+  border: solid 1px gray;
+
   + p {
     font-family: sans-serif;
     margin-top: 15px;

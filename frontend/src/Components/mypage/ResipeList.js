@@ -10,7 +10,7 @@ import dummy from "../../posts.json";
 export default function ResipeButton(props) {
   const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "최근 확인한 레시피", "댓글 남긴 레시피"]
   const [onResipe, setOnResipe] = useState(false)
-  const resipeMenuButton = ["../images/bottomBT.png", "../images/bottomBT.png", "../images/bottomBT.png", "../images/bottomBT.png"]
+  const resipeMenuButton = ["../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png"]
 
 
 
