@@ -7,6 +7,7 @@ import { dropDownOptionsState } from "../../states/ViewAllAtom";
 import { useRecoilValue, useSetRecoilState, useRecoilValueLoadable } from "recoil";
 import { famousPostsSelector2, count, sortState } from "../../states/ViewAllAtom";
 import { searchAtom } from "../nav/NavAtom";
+import axios from "axios";
 
 const baseURL = "http://localhost:8080";
 
@@ -65,14 +66,12 @@ const Postzone = () => {
     let url;
     url = filteredData === "" ? urlAll : urlSearch;
 
-    fetch(url)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setRecipes(data);
-      });
-  });
+    const fetchData = async () => {
+      const result = await axios(url);
+      setRecipes(result.data);
+    };
+    fetchData();
+  }, [filteredData]);
 
   if (famousListsLoadable.state === "loading") {
     return <div>loading...</div>;
@@ -125,8 +124,10 @@ const Postzone = () => {
                     <Title>{recipeName}</Title>
                     <Author>{nickname}</Author>
                     <WrapperHeartComment>
-                      <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
-                      <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
+                      <span className="sprite heart" />
+                      <HeartCommentCount>{data.numLikes}</HeartCommentCount>
+                      <span className="sprite comment" />
+                      <HeartCommentCount>{data.numComments}</HeartCommentCount>
                     </WrapperHeartComment>
                   </TextBox>
                 </div>
