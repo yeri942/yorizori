@@ -11,7 +11,6 @@ const padNumber = (num, length) => {
 };
 
 const Recipe = ({ data }) => {
-  console.log(data);
   const [timerState, setTimerState] = useState(
     Array.from({ length: 100 }, () => {
       return {

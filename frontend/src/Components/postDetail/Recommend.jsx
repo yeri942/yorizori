@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-const selectIndex = (totalIndex, selectingNumber) => {
-  let randomIndexArray = [];
-  for (let i = 0; i < selectingNumber; i++) {
-    let randomNum = Math.floor(Math.random() * totalIndex);
-    if (randomIndexArray.indexOf(randomNum) === -1) {
-      randomIndexArray.push(randomNum);
-    } else {
-      i--;
-    }
-  }
-  return randomIndexArray;
-};
 
 const Recommend = ({ data }) => {
   const [allRecipes, setAllRecipes] = useState(null);
@@ -31,13 +18,10 @@ const Recommend = ({ data }) => {
       }
     };
     fetchData();
-    console.log(data.category);
   }, []);
-  console.log(randomNumArray);
 
   useEffect(() => {
     if (allRecipes) {
-      console.log(allRecipes.data);
       const FilteredData = allRecipes.data.filter((el) => {
         if (el.category === data.category) {
           return el;
@@ -50,12 +34,9 @@ const Recommend = ({ data }) => {
         dataCnt = dataLength;
       }
       const randomNumArray = selectIndex(dataLength, dataCnt);
-      console.log(randomNumArray);
       setRandomNumArray(randomNumArray);
     }
   }, [allRecipes]);
-
-  console.log(filteredRecipe);
 
   return (
     <RecommendWrapper>
@@ -67,11 +48,6 @@ const Recommend = ({ data }) => {
         {randomNumArray &&
           randomNumArray.map((n, index) => {
             return (
-              // <a
-              //   key={`RecommendLink_${index}`}
-              //   to={}
-              //   style={{ textDecoration: "none", color: "inherit" }}
-              // >
               <RecommendedPost
                 key={`RecommendPost_${index}`}
                 onClick={() => {
@@ -82,7 +58,6 @@ const Recommend = ({ data }) => {
                 <PostImg key={`PostImg_${index}`} src={filteredRecipe[n].thumbnail} />
                 <PostTitle key={`PostTitle_${index}`}>{filteredRecipe[n].recipeName}</PostTitle>
               </RecommendedPost>
-              // </a>
             );
           })}
       </RecommendedPostWrapper>
@@ -90,6 +65,19 @@ const Recommend = ({ data }) => {
   );
 };
 export default Recommend;
+
+const selectIndex = (totalIndex, selectingNumber) => {
+  let randomIndexArray = [];
+  for (let i = 0; i < selectingNumber; i++) {
+    let randomNum = Math.floor(Math.random() * totalIndex);
+    if (randomIndexArray.indexOf(randomNum) === -1) {
+      randomIndexArray.push(randomNum);
+    } else {
+      i--;
+    }
+  }
+  return randomIndexArray;
+};
 
 const StyledDiv = styled.div`
   font-size: 0.8rem;

@@ -9,15 +9,13 @@ import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
 import axios from "axios";
-import { useRecoilState, useRecoilValueLoadable } from "recoil";
-import { detailDataAtom, detailLoadingStateAtom } from "../../states/detail";
+import { useRecoilState } from "recoil";
+import { detailDataAtom } from "../../states/detail";
 import { Watch } from "react-loader-spinner";
 import { Loading } from "../home/ariticleTemplateWithOneSlide";
 
 const PostDetail = () => {
   const [detailData, setDetailData] = useRecoilState(detailDataAtom);
-  const detailDataLodable = useRecoilValueLoadable(detailDataAtom);
-  console.log(detailDataLodable);
   const { postId } = useParams();
   useEffect(() => {
     const getProcessData = async () => {
