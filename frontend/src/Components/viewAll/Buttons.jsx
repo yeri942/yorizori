@@ -69,7 +69,7 @@ const Buttons = () => {
       setRecipes(result.data);
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <>

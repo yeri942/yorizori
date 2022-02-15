@@ -32,7 +32,7 @@ const Modal = () => {
       setRecipes(result.data);
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
