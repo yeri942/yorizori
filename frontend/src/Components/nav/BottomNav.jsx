@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { pageStateAtom } from "../../states";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { authAtom } from "../../states";
+import { userIdAtom } from "../../states";
 
 const BottomNav = ({ post }) => {
   const pageState = useRecoilValue(pageStateAtom);
   const authCheck = useRecoilValue(authAtom);
+  const authId =  useRecoilValue(userIdAtom)
+
   const navigate = useNavigate();
   return (
     <BottomNavBlock post={post}>
@@ -15,7 +18,7 @@ const BottomNav = ({ post }) => {
       <IconImg pageState={pageState} home onClick={() => navigate("/")} />
       <IconImg pageState={pageState} recipe onClick={() => navigate("/view_all")} />
       { authCheck
-        ? <IconImg pageState={pageState} mypage onClick={() => navigate(`/user/${authCheck.uid}/profile`)}/>
+        ? <IconImg pageState={pageState} mypage onClick={() => navigate(`/user/${authId}/profile`)}/>
         : <IconImg pageState={pageState} mypage onClick={() => navigate('/login')} />
       }
     </BottomNavBlock>
