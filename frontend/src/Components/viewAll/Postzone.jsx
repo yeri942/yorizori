@@ -69,20 +69,8 @@ const Postzone = () => {
     const fetchData = async () => {
       const result = await axios(url);
       setRecipes(result.data);
-      console.log(result);
     };
     fetchData();
-<<<<<<< HEAD
-    // let observer;
-    // if (target) {
-    //   observer = new IntersectionObserver(onIntersect, {
-    //     threshold: 0.4,
-    //   });
-    //   observer.observe(target);
-    // }
-    // return () => observer && observer.disconnect();
-=======
->>>>>>> 013ad763ee5756e6619d5900969e4ebc778a17e0
   }, [filteredData]);
 
   if (famousListsLoadable.state === "loading") {

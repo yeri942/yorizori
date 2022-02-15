@@ -117,29 +117,3 @@ const MyForm = styled.form`
 `;
 
 export default MoreComments;
-
-const Wrapper = styled.div`
-  padding: 55px 12px 53px;
-`;
-
-const MyForm = styled.form`
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  display: flex;
-  & > input {
-    flex: 1;
-    height: 38px;
-    padding-left: 8px;
-    border: none;
-    border-top: 1px solid #dcdde1;
-    &:focus {
-      border: 1px solid #e1b12c;
-    }
-  }
-  & > button {
-    flex-basis: 50px;
-    background-color: ${(props) => props.theme.mainColor};
-    border: 1px solid #e1b12c;
-  }
-`;

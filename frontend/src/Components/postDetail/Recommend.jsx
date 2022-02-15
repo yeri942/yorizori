@@ -3,11 +3,24 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const selectIndex = (totalIndex, selectingNumber) => {
+  let randomIndexArray = [];
+  for (let i = 0; i < selectingNumber; i++) {
+    let randomNum = Math.floor(Math.random() * totalIndex);
+    if (randomIndexArray.indexOf(randomNum) === -1) {
+      randomIndexArray.push(randomNum);
+    } else {
+      i--;
+    }
+  }
+  return randomIndexArray;
+};
 const Recommend = ({ data }) => {
   const [allRecipes, setAllRecipes] = useState(null);
   const [randomNumArray, setRandomNumArray] = useState(null);
   const [filteredRecipe, setFilteredRecipe] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,6 +40,7 @@ const Recommend = ({ data }) => {
           return el;
         }
       });
+      console.log(FilteredData);
       setFilteredRecipe(FilteredData);
       const dataLength = FilteredData.length;
       let dataCnt = 4;
@@ -37,6 +51,8 @@ const Recommend = ({ data }) => {
       setRandomNumArray(randomNumArray);
     }
   }, [allRecipes]);
+  console.log(randomNumArray);
+  console.log(filteredRecipe);
 
   return (
     <RecommendWrapper>
@@ -65,19 +81,6 @@ const Recommend = ({ data }) => {
   );
 };
 export default Recommend;
-
-const selectIndex = (totalIndex, selectingNumber) => {
-  let randomIndexArray = [];
-  for (let i = 0; i < selectingNumber; i++) {
-    let randomNum = Math.floor(Math.random() * totalIndex);
-    if (randomIndexArray.indexOf(randomNum) === -1) {
-      randomIndexArray.push(randomNum);
-    } else {
-      i--;
-    }
-  }
-  return randomIndexArray;
-};
 
 const StyledDiv = styled.div`
   font-size: 0.8rem;
@@ -130,8 +133,3 @@ const PostTitle = styled.div`
   font-size: 11px;
   width: 155px;
 `;
-<<<<<<< HEAD
-=======
-
-export default Recommend;
->>>>>>> 013ad763ee5756e6619d5900969e4ebc778a17e0
