@@ -2,6 +2,36 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+
+const Recommend = () => {
+  return (
+    <RecommendWrapper>
+      <div style={{ fontSize: 11 }}>이런 메뉴는 어떠세요?</div>
+      <Button>한식</Button>
+      <Button>일식</Button>
+      <Button>중식</Button>
+      <RecommendedPostWrapper>
+        {[...Array(4)].map((n, index) => {
+          return (
+            <Link
+              key={`RecommendLink_${index}`}
+              to="/detail/"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RecommendedPost key={`RecommendPost_${index}`}>
+                <PostImg key={`PostImg_${index}`} src="../images/gam.jpg" />
+                <PostTitle key={`PostTitle_${index}`}>
+                  요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오
+                </PostTitle>
+              </RecommendedPost>
+            </Link>
+          );
+        })}
+      </RecommendedPostWrapper>
+    </RecommendWrapper>
+  );
+};
+
 const RecommendWrapper = styled.div`
   margin: 20px;
 `;
@@ -36,32 +66,5 @@ const PostTitle = styled.div`
   font-size: 11px;
   width: 155px;
 `;
-const Recommend = () => {
-  return (
-    <RecommendWrapper>
-      <div style={{ fontSize: 11 }}>이런 메뉴는 어떠세요?</div>
-      <Button>한식</Button>
-      <Button>일식</Button>
-      <Button>중식</Button>
-      <RecommendedPostWrapper>
-        {[...Array(4)].map((n, index) => {
-          return (
-            <Link
-              key={`RecommendLink_${index}`}
-              to="/detail/"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RecommendedPost key={`RecommendPost_${index}`}>
-                <PostImg key={`PostImg_${index}`} src="../images/gam.jpg" />
-                <PostTitle key={`PostTitle_${index}`}>
-                  요리왕 비룡에게 전수받은 마늘 50개 들어간 알리오올리오
-                </PostTitle>
-              </RecommendedPost>
-            </Link>
-          );
-        })}
-      </RecommendedPostWrapper>
-    </RecommendWrapper>
-  );
-};
+
 export default Recommend;
