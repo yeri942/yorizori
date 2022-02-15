@@ -204,6 +204,8 @@ router.get(
       res.status(404).send("해당하는 postId가 없습니다.");
       return;
     }
+    posts.numViews += 1;
+    await posts.save();
     res.status(200).json(posts);
   })
 );

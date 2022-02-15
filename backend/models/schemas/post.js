@@ -95,6 +95,13 @@ const PostSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
+    //게시글을 본 횟수
+    numViews: {
+      type: Number,
+      default: 0,
+    },
+
     //관리자가 엄선해주는 레시피 목록
     example: {
       type: Boolean,
