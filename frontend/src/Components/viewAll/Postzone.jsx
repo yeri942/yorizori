@@ -113,8 +113,10 @@ const Postzone = () => {
                     <Title>{recipeName}</Title>
                     <Author>{nickname}</Author>
                     <WrapperHeartComment>
-                      <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
-                      <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
+                      <span className="sprite heart" />{" "}
+                      <HeartCommentCount>{data.numLikes}</HeartCommentCount>
+                      <span className="sprite comment" />{" "}
+                      <HeartCommentCount>{data.numComments}</HeartCommentCount>
                     </WrapperHeartComment>
                   </TextBox>
                 </div>
