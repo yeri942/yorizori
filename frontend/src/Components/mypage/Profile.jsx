@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link,   } from "react-router-dom";
+import { Link, useParams,   } from "react-router-dom";
 import NavBottom from "../nav/BottomNav"
 import NavTop from "../nav/TopNav"
 import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
@@ -10,9 +10,10 @@ import axios from 'axios';
 
 const MyPageTemplate = () => {
   const [userData, setUserData] = useState([])
+  let { userId } = useParams()
 
   useEffect(()=>{
-    fetch("http://localhost:8080/user/61f625c472eab05eaee5e1bf/profile")
+    fetch(`http://localhost:8080/user/${userId}/profile`)
     .then(response => response.json())
     .then(data => setUserData(data.user))
     
@@ -71,12 +72,12 @@ const MyPageTemplate = () => {
 };
 
 const MyPageImage = styled.img`
+  background-image: url(${(props) => props.myImg ? props.myImg : "../../images/baseimage.png"});
   width: 115px;
   height: 115px;
-  border-radius: 50%;
-  background-image: url(${(props) => props.myImg});
   background-size: cover;
-
+  border-radius: 50%;
+  
   + p {
     font-family: sans-serif;
     margin-top: 15px;

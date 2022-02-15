@@ -9,15 +9,14 @@ const BottomNav = ({ post }) => {
   const pageState = useRecoilValue(pageStateAtom);
   const authCheck = useRecoilValue(authAtom);
   const navigate = useNavigate();
-
   return (
     <BottomNavBlock post={post}>
       <IconImg pageState={pageState} post onClick={() => navigate("/post")} />
       <IconImg pageState={pageState} home onClick={() => navigate("/")} />
       <IconImg pageState={pageState} recipe onClick={() => navigate("/view_all")} />
-      {authCheck
-      ? <IconImg pageState={pageState} mypage onClick={() => navigate("/users/mypage")} />
-      : <IconImg pageState={pageState} mypage onClick={() => navigate("/login")} />
+      { authCheck
+        ? <IconImg pageState={pageState} mypage onClick={() => navigate(`/user/${authCheck.uid}/profile`)}/>
+        : <IconImg pageState={pageState} mypage onClick={() => navigate('/login')} />
       }
     </BottomNavBlock>
   );
@@ -39,7 +38,7 @@ const BottomNavBlock = styled.div`
 
 const IconImg = styled.div`
   width: 90px;
-  background-image: url(../images/BottomIcon.png);
+  background-image: url(../../images/BottomIcon.png);
   background-position: ${({ post, home, recipe, mypage, pageState }) =>
     post
       ? "-30px -15px"
