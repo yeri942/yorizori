@@ -1,8 +1,90 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import dummy from "./PostDummyData.json";
 import { userIdAtom } from "../../states";
+import axios from "axios";
+
+const Summary = ({ data, postId }) => {
+  const [heartCheck, setHeartCheck] = useState(false);
+  const [numLikes, setNumLikes] = useState(data ? data.numLikes : 0);
+  const [heart, SetHeart] = useState(false);
+  const userId = useRecoilValue(userIdAtom);
+
+  const heartStateCheck = async () => {
+    const { data: heartArray } = await axios.get(`/like/${postId}`);
+    setNumLikes(heartArray.likeUserList.length);
+    setHeartCheck(false);
+    heartArray.likeUserList.forEach((el) => {
+      if (el.userId.id === userId) {
+        setHeartCheck(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    heartStateCheck();
+  }, []);
+
+  useEffect(() => {
+    if (heartCheck) SetHeart(true);
+    else SetHeart(false);
+  }, [heartCheck, numLikes]);
+
+  const HeartState = async () => {
+    if (heartCheck) {
+      await axios.delete("/like", {
+        data: {
+          postId: postId,
+        },
+      });
+    } else {
+      await axios.post("/like", { postId: postId });
+    }
+    heartStateCheck();
+  };
+
+  return (
+    <SummaryWrapper heartstate={heart}>
+      {data && (
+        <>
+          <Thumbnail src={data.thumbnail} />
+          <LCVS>
+            <Likes>
+              <span className="sprite heart" onClick={HeartState} />
+              <span>{numLikes}명이 좋아합니다.</span>
+            </Likes>
+            <Comments>
+              <span className="sprite comment" />
+              <span>{data.numComments}</span>
+            </Comments>
+            <Views>
+              <span className="sprite view" />
+              <span>200</span>
+            </Views>
+            <Share className="sprite share" />
+          </LCVS>
+          <div>
+            <Title>{data.recipeName}</Title>
+            <Content>{data.desc}</Content>
+          </div>
+          <Author>
+            <ProfileImg
+              src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
+            />
+            <Nickname>{data.userId.nickName}</Nickname>
+          </Author>
+          <SummaryInfo>
+            <Servings>{data.servings}</Servings>
+            <Time>{data.time}</Time>
+            <Diffic>{data.diffic}</Diffic>
+          </SummaryInfo>
+        </>
+      )}
+    </SummaryWrapper>
+  );
+};
+
+export default Summary;
 
 const SummaryWrapper = styled.div`
   width: 360px;
@@ -115,57 +197,3 @@ const SummaryInfo = styled.div`
 const Servings = styled.span``;
 const Time = styled.span``;
 const Diffic = styled.span``;
-
-const Summary = ({ data }) => {
-  const [heart, SetHeart] = useState(false);
-  const HeartState = () => {
-    SetHeart(!heart);
-  };
-
-  const handleImgError = (e) => {
-    console.log("aa");
-    e.target.src = "data.userId.profileImage";
-  };
-
-  return (
-    <SummaryWrapper heartstate={heart}>
-      {data && (
-        <>
-          <Thumbnail src={data.thumbnail} />
-          <LCVS>
-            <Likes>
-              <span className="sprite heart" onClick={HeartState} />
-              <span>{data.numLikes}명이 좋아합니다.</span>
-            </Likes>
-            <Comments>
-              <span className="sprite comment" />
-              <span>{data.numComments}</span>
-            </Comments>
-            <Views>
-              <span className="sprite view" />
-              <span>200</span>
-            </Views>
-            <Share className="sprite share" />
-          </LCVS>
-          <div>
-            <Title>{data.recipeName}</Title>
-            <Content>{data.desc}</Content>
-          </div>
-          <Author>
-            <ProfileImg
-              src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
-            />
-            <Nickname>{data.userId.nickName}</Nickname>
-          </Author>
-          <SummaryInfo>
-            <Servings>{data.servings}</Servings>
-            <Time>{data.time}</Time>
-            <Diffic>{data.diffic}</Diffic>
-          </SummaryInfo>
-        </>
-      )}
-    </SummaryWrapper>
-  );
-};
-
-export default Summary;
