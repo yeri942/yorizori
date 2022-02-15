@@ -73,8 +73,9 @@ const FamousUserPost = () => {
 
   const clickDetailedUserHandler = (user) => {
     setDetailedUser(user);
-    console.log(detailedUser);
-    navigate(`/users/mypage/${user}`);
+    // console.log(detailedUser);
+    // navigate(`/users/mypage/${user}`);
+    navigate(`/users/mypage/`);
   };
 
   //   const clickChangeUserHandler = () => {
