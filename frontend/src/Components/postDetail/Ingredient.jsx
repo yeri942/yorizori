@@ -3,15 +3,7 @@ import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import dummy from "./PostDummyData.json";
 
-const IngredientWrapper = styled.div`
-  margin: 20px;
-`;
-const IngredientInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  margin: 11px 20px 11px 11px;
-`;
+
 const Ingredient = ({ data }) => {
   return (
     <IngredientWrapper>
@@ -28,4 +20,15 @@ const Ingredient = ({ data }) => {
     </IngredientWrapper>
   );
 };
+
+const IngredientWrapper = styled.div`
+  margin: 20px;
+`;
+const IngredientInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: 11px 20px 11px 11px;
+`;
+
 export default Ingredient;

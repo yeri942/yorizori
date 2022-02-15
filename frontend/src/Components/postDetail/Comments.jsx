@@ -10,6 +10,101 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 import Toast from "./Toast";
 
+const Comments = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [comments, setComments] = useRecoilState(commentAtom);
+  const commentLength = useMemo(() => comments.length, [comments]);
+  const { postId } = useParams();
+  const isLogin = useRecoilValue(userIdAtom);
+  const userImg = useRecoilValue(userImage);
+  const url = `/comment/${postId}/detail`;
+  const [write, setWrite] = useState("");
+  const [toastStatus, setToastStatus] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  useEffect(() => {
+    // 원래 useEffect안에는 async-await을 사용하지 못하지만
+    // 즉시실행함수로 함수를 만든 후 실행함으로써 해결할 수 있음
+    // async를 useEffect에 그대로 전달하면 구조상 프로미스를 반환할 수 밖에 없고, 이펙트 함수에는 클린업 함수를 리턴해야한다는데
+    // 리액트가 받는건 덜렁 프라미스로 대체된다고 합니다.
+    (async () => {
+      const { data } = await axios(`${url}`);
+      setComments(data.comments);
+      setIsLoading(false);
+    })();
+    if (toastStatus) {
+      setTimeout(() => setToastStatus(false), 1000);
+    }
+  }, [toastStatus]);
+
+  const onChangeHandler = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setWrite(value);
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/comment", { postId, comment: write });
+      setWrite("");
+      setToastStatus(true);
+      setToastMessage("댓글이 등록되었습니다.");
+      setIsLoading(true);
+    } catch (err) {
+      console.error(err);
+      setToastStatus(true);
+      setToastMessage(err);
+    }
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key == "Enter") {
+      onSubmitHandler(e);
+    }
+  };
+
+  return (
+    <>
+      {!isLoading && (
+        <>
+          <Title>
+            댓글 <Count>{commentLength}</Count>
+          </Title>
+          <CommentsWrapper>
+            <form onSubmit={onSubmitHandler}>
+              <ProfileImg isImage={userImg} />
+              {!isLogin ? (
+                <CommentLink to="/login">공개 댓글 추가...</CommentLink>
+              ) : (
+                <>
+                  <AuthInput
+                    value={write}
+                    onChange={onChangeHandler}
+                    onKeyDown={onKeyPress}
+                    placeholder="공개 댓글 추가..."
+                    type="text"
+                  />
+                  <SubmitButton comment={write}>{write ? "등록" : ""}</SubmitButton>
+                </>
+              )}
+            </form>
+            {comments.slice(0, 3).map((comment) => (
+              <Comment key={comment._id} comment={comment} isMore={false} />
+            ))}
+            {commentLength === 0 ? (
+              <EmptyComment>아직 작성된 댓글이 없어요</EmptyComment>
+            ) : commentLength > 3 ? (
+              <More to="./comments">댓글 더보기</More>
+            ) : null}
+          </CommentsWrapper>
+        </>
+      )}
+      {toastStatus && <Toast msg={toastMessage} />}
+    </>
+  );
+};
+
 const CommentsWrapper = styled.div`
   padding: 10px 12px 0;
   & > form {
@@ -118,98 +213,4 @@ const EmptyComment = styled.div`
   color: #a5a8b1;
 `;
 
-const Comments = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [comments, setComments] = useRecoilState(commentAtom);
-  const commentLength = useMemo(() => comments.length, [comments]);
-  const { postId } = useParams();
-  const isLogin = useRecoilValue(userIdAtom);
-  const userImg = useRecoilValue(userImage);
-  const url = `/comment/${postId}/detail`;
-  const [write, setWrite] = useState("");
-  const [toastStatus, setToastStatus] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  useEffect(() => {
-    // 원래 useEffect안에는 async-await을 사용하지 못하지만
-    // 즉시실행함수로 함수를 만든 후 실행함으로써 해결할 수 있음
-    // async를 useEffect에 그대로 전달하면 구조상 프로미스를 반환할 수 밖에 없고, 이펙트 함수에는 클린업 함수를 리턴해야한다는데
-    // 리액트가 받는건 덜렁 프라미스로 대체된다고 합니다.
-    (async () => {
-      const { data } = await axios(`${url}`);
-      setComments(data.comments);
-      setIsLoading(false);
-    })();
-    if (toastStatus) {
-      setTimeout(() => setToastStatus(false), 1000);
-    }
-  }, [toastStatus]);
-
-  const onChangeHandler = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setWrite(value);
-  };
-
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("/comment", { postId, comment: write });
-      setWrite("");
-      setToastStatus(true);
-      setToastMessage("댓글이 등록되었습니다.");
-      setIsLoading(true)
-    } catch (err) {
-      console.error(err);
-      setToastStatus(true);
-      setToastMessage(err);
-    }
-  };
-
-  const onKeyPress = (e) => {
-    if (e.key == "Enter") {
-      onSubmitHandler(e);
-    }
-  };
-
-  return (
-    <>
-      {!isLoading && (
-        <>
-          <Title>
-            댓글 <Count>{commentLength}</Count>
-          </Title>
-          <CommentsWrapper>
-            <form onSubmit={onSubmitHandler}>
-              <ProfileImg isImage={userImg} />
-              {!isLogin ? (
-                <CommentLink to="/login">공개 댓글 추가...</CommentLink>
-              ) : (
-                <>
-                  <AuthInput
-                    value={write}
-                    onChange={onChangeHandler}
-                    onKeyDown={onKeyPress}
-                    placeholder="공개 댓글 추가..."
-                    type="text"
-                  />
-                  <SubmitButton comment={write}>{write ? "등록" : ""}</SubmitButton>
-                </>
-              )}
-            </form>
-            {comments.slice(0, 3).map((comment) => (
-              <Comment key={comment._id} comment={comment} isMore={false} />
-            ))}
-            {commentLength === 0 ? (
-              <EmptyComment>아직 작성된 댓글이 없어요</EmptyComment>
-            ) : commentLength > 3 ? (
-              <More to="./comments">댓글 더보기</More>
-            ) : null}
-          </CommentsWrapper>
-        </>
-      )}
-      {toastStatus && <Toast msg={toastMessage} />}
-    </>
-  );
-};
 export default Comments;
