@@ -12,24 +12,6 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { detailDataAtom } from "../../states/detail";
 
-const PostDetailBlock = styled.div`
-  font-size: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Content = styled.div`
-  width: 360px;
-  margin-top: 50px;
-  margin-bottom: 90px;
-`;
-const Line = styled.div`
-  width: 360px;
-  height: 10px;
-  background-color: rgba(0, 0, 0, 0.14);
-`;
 const PostDetail = () => {
   const [detailData, setDetailData] = useRecoilState(detailDataAtom);
   const { postId } = useParams();
@@ -61,3 +43,22 @@ const PostDetail = () => {
 };
 
 export default PostDetail;
+
+const PostDetailBlock = styled.div`
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Content = styled.div`
+  width: 360px;
+  margin-top: 50px;
+  margin-bottom: 90px;
+`;
+const Line = styled.div`
+  width: 360px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.14);
+`;

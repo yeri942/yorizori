@@ -173,10 +173,6 @@ const PostForm = () => {
         console.log(pair[0] + ", " + pair[1]);
       }
 
-      // for (let i = 0; i < processImage.length; i++) {
-      //   formData.append("process[" + i + "].processImage", process[i].processImage);
-      // }
-
       await axios
         .post("/post", formData, {
           headers: {
