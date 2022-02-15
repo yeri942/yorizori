@@ -1,6 +1,7 @@
 import React, { userRef, useState, useCallback, useMemo, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { Watch } from "react-loader-spinner";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,6 +29,7 @@ import {
   HeartCommentCount,
   Heart,
   Comment,
+  Loading,
 } from "./ariticleTemplateWithOneSlide";
 
 // const FamoustViewRapper = styled.div``;
@@ -58,7 +60,9 @@ const FamousPost = () => {
 
   if (famousListsLoadable.state === "loading") {
     return (
-      <div style={{ height: "300px", marginTop: "150px", fontSize: "50px" }}>로딩중입니다</div>
+      <Loading>
+        <Watch ariaLabel="loading-indicator" color="#d45500" />
+      </Loading>
     );
   }
   console.log("famousListsLoadable", famousListsLoadable.contents);
@@ -109,6 +113,15 @@ const FamousPost = () => {
     </ArticleWrapper>
   );
 };
+
+// const Loading = () => {
+//   return (
+//     <>
+//       <Watch ariaLabel="loading-indicator" />
+//     </>
+//   );
+// };
+
 const StyledSlider = styled(Slider)`
   margin-top: 5px;
   .slick-prev:before,
