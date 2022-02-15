@@ -1,28 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
 import { Link } from "react-router-dom";
-import dummy from "../../posts.json";
+import axios from "axios";
 
 const Modal = () => {
   const randomButton = useRecoilValue(randomButtonState);
   const setRandomButton = useSetRecoilState(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
+  const [recipes, setRecipes] = useState([]);
+
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
   };
 
-  console.log(randomPost._id);
-
   const getRandomIndex = async () => {
     if (randomButton) {
-      let random = parseInt(Math.random() * dummy.length);
-      setRandomPost(dummy[random]);
+      let random = parseInt(Math.random() * recipes.length);
+      setRandomPost(recipes[random]);
     }
   };
+
+  useEffect(() => {
+    const urlAll = "http://localhost:8080/post";
+
+    const fetchData = async () => {
+      const result = await axios(urlAll);
+      setRecipes(result.data);
+    };
+    fetchData();
+  });
+
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
       <ModalBackground onClick={closeModal} />
@@ -30,15 +41,22 @@ const Modal = () => {
         <div>
           <CloseButton onClick={closeModal} />
           <Recommendtext>랜덤으로 메뉴를 추천해드려요</Recommendtext>
-          <Link to={`/detail/${randomPost._id.$oid}`}>
+          <Link
+            to={`/detail/${randomPost._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+            nickname={randomPost.userId.nickName}
+            title={randomPost.recipeName}
+          >
             <Img src={randomPost.thumbnail} />
           </Link>
           <TextBox>
             <Title>{randomPost.recipeName}</Title>
-            <Author>{randomPost.userId.$oid}</Author>
+            <Author>{randomPost.userId.nickName}</Author>
             <WrapperHeartComment>
-              <span className="sprite heart" /> <HeartCommentCount>31</HeartCommentCount>
-              <span className="sprite comment" /> <HeartCommentCount>7</HeartCommentCount>
+              <span className="sprite heart" />{" "}
+              <HeartCommentCount>{randomPost.numLikes}</HeartCommentCount>
+              <span className="sprite comment" />{" "}
+              <HeartCommentCount>{randomPost.numComments}</HeartCommentCount>
             </WrapperHeartComment>
           </TextBox>
           <ButtonWrapper>
