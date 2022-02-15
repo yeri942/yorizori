@@ -3,9 +3,11 @@ import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { pageStateAtom } from "../../states";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { authAtom } from "../../states";
 
 const BottomNav = ({ post }) => {
   const pageState = useRecoilValue(pageStateAtom);
+  const authCheck = useRecoilValue(authAtom);
   const navigate = useNavigate();
 
   return (
@@ -13,7 +15,10 @@ const BottomNav = ({ post }) => {
       <IconImg pageState={pageState} post onClick={() => navigate("/post")} />
       <IconImg pageState={pageState} home onClick={() => navigate("/")} />
       <IconImg pageState={pageState} recipe onClick={() => navigate("/view_all")} />
-      <IconImg pageState={pageState} mypage onClick={() => navigate("/users/mypage")} />
+      {authCheck
+      ? <IconImg pageState={pageState} mypage onClick={() => navigate("/users/mypage")} />
+      : <IconImg pageState={pageState} mypage onClick={() => navigate("/login")} />
+      }
     </BottomNavBlock>
   );
 };

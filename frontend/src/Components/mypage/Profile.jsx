@@ -5,11 +5,21 @@ import NavBottom from "../nav/BottomNav"
 import NavTop from "../nav/TopNav"
 import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
 import ResipeButton from "../mypage/ResipeList"
+import axios from 'axios';
+
 
 const MyPageTemplate = () => {
-  const [ profileName, setProfileName ] = useState("요리조리1234")
+  const [userData, setUserData] = useState([])
 
-
+  useEffect(()=>{
+    fetch("http://localhost:8080/user/61f625c472eab05eaee5e1bf/profile")
+    .then(response => response.json())
+    .then(data => setUserData(data.user))
+    
+    .catch(err => console.log(err))
+  },[]);
+  
+  console.log(userData)
   return (
     <div>
       <NavTop />
@@ -18,20 +28,20 @@ const MyPageTemplate = () => {
             
             <MyPageMainInfoBox>
               <div className="InfoProfile">
-                <MyPageImage />
-                  <p>{profileName}</p>
+                <MyPageImage myImg={userData.profileImage}/>
+                  <p>{userData.nickName}</p>
               </div>
                 <MyPageFollowBox className="followBox">
                   <div>
                     <Link to="/">
                       <p>팔로워</p>
-                      <span>150</span>
+                      <span>{userData.numFollowers}</span>
                     </Link>
                   </div>
                   <div>
                     <Link to="/">
                       <p>팔로잉</p>
-                      <span>150</span>
+                      <span>{userData.numFollowees}</span>
                     </Link>
                   </div>
                 </MyPageFollowBox>
@@ -64,7 +74,7 @@ const MyPageImage = styled.img`
   width: 115px;
   height: 115px;
   border-radius: 50%;
-  background-image: url("../images/profile.jpg");
+  background-image: url(${(props) => props.myImg});
   background-size: cover;
 
   + p {
