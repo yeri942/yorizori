@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import React from "react";
 
+function Toast({ msg }) {
+  return <ToastDiv>{msg}</ToastDiv>;
+}
+
 const ToastDiv = styled.div`
   position: fixed;
   top: 50%;
@@ -15,8 +19,4 @@ const ToastDiv = styled.div`
   border: 1px solid #000;
 `;
 
-function Toast({ msg }) {
-  return <ToastDiv>{msg}</ToastDiv>;
-}
-
-export default Toast
+export default Toast;

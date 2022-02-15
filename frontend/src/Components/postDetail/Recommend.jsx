@@ -130,3 +130,8 @@ const PostTitle = styled.div`
   font-size: 11px;
   width: 155px;
 `;
+<<<<<<< HEAD
+=======
+
+export default Recommend;
+>>>>>>> 013ad763ee5756e6619d5900969e4ebc778a17e0

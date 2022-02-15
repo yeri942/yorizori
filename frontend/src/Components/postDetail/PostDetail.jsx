@@ -58,6 +58,39 @@ const PostDetail = () => {
 
 export default PostDetail;
 
+<<<<<<< HEAD
+=======
+const PostDetail = () => {
+  const [detailData, setDetailData] = useRecoilState(detailDataAtom);
+  const { postId } = useParams();
+  useEffect(() => {
+    const getProcessData = async () => {
+      const { data } = await axios.get(`/post/${postId}`);
+      setDetailData(data);
+    };
+    getProcessData();
+  }, []);
+
+  return (
+    <PostDetailBlock>
+      <TopNav />
+      <Content>
+        <Summary data={detailData} postId={postId} />
+        <Line />
+        <Ingredient data={detailData} />
+        <Line />
+        <Recipe data={detailData} />
+        <Line />
+        <Comments />
+        <Line />
+        <Recommend />
+      </Content>
+      <BottomNav />
+    </PostDetailBlock>
+  );
+};
+
+>>>>>>> 013ad763ee5756e6619d5900969e4ebc778a17e0
 const PostDetailBlock = styled.div`
   font-size: 18px;
   display: flex;
@@ -76,3 +109,8 @@ const Line = styled.div`
   height: 10px;
   background-color: rgba(0, 0, 0, 0.14);
 `;
+<<<<<<< HEAD
+=======
+
+export default PostDetail;
+>>>>>>> 013ad763ee5756e6619d5900969e4ebc778a17e0
