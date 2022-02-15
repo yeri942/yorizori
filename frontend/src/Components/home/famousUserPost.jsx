@@ -11,23 +11,7 @@ import {
   detailedUserAtom,
 } from "../../states/homeAtom";
 import { useRecoilState, useSetRecoilState, useRecoilValueLoadable } from "recoil";
-import {
-  ArticleWrapper,
-  TextMainWrapper,
-  TextWrapper,
-  TextMain,
-  LinkedText,
-  ImageWithTag,
-  StyledImage,
-  TextBox,
-  Title,
-  Author,
-  WrapperHeartComment,
-  HeartCommentCount,
-  Heart,
-  Comment,
-  Loading,
-} from "./ariticleTemplateWithOneSlide";
+import * as S from "./ariticleTemplateWithOneSlide";
 
 const FamousUserPost = () => {
   const navigate = useNavigate();
@@ -40,11 +24,11 @@ const FamousUserPost = () => {
 
   if (famousUsersPostsLoadable.state === "loading") {
     return (
-      <div>
-        <Loading>
+      <>
+        <S.Loading>
           <Watch ariaLabel="loading-indicator" color="#d45500" />
-        </Loading>
-      </div>
+        </S.Loading>
+      </>
     );
   }
 
@@ -65,9 +49,7 @@ const FamousUserPost = () => {
 
   const clickDetailedUserHandler = (user) => {
     setDetailedUser(user);
-    // console.log(detailedUser);
     navigate(`/users/mypage/${user._id}`);
-    // navigate(`/users/mypage/`);
   };
 
   const settings = {
@@ -83,53 +65,53 @@ const FamousUserPost = () => {
   };
 
   return (
-    <ArticleWrapper>
-      <TextWrapper>
-        <TextMainWrapper>
-          <TextMain>많은 사랑을 받은 ,</TextMain>
-          <TextMain>
+    <S.ArticleWrapper>
+      <S.TextWrapper>
+        <S.TextMainWrapper>
+          <S.TextMain>많은 사랑을 받은 ,</S.TextMain>
+          <S.TextMain>
             <span
               onClick={() =>
                 clickDetailedUserHandler(famousUsersPostsLoadable.contents[changePosts][0]?.userId)
               }
             >
               {famousUsersPostsLoadable.contents[changePosts][0]?.userId.nickName}
-            </span>{" "}
+            </span>
             님의 음식이에요.
-          </TextMain>
-        </TextMainWrapper>
+          </S.TextMain>
+        </S.TextMainWrapper>
 
-        <LinkedText onClick={clickChangePostHandler}>다른 인기유저</LinkedText>
-      </TextWrapper>
+        <S.LinkedText onClick={clickChangePostHandler}>다른 인기유저</S.LinkedText>
+      </S.TextWrapper>
       <StyledSlider className="sliderrr" {...settings}>
         {famousUsersPostsLoadable.contents[changePosts].map((item, idx) => {
           return (
-            <ImageWithTag className="doosan" key={item._id}>
-              <StyledImage
+            <S.ImageWithTag className="doosan" key={item._id}>
+              <S.StyledImage
                 src={item.thumbnail}
                 onClick={() => {
                   clickFamousPostHandler(item, idx);
                 }}
-              ></StyledImage>
-              <TextBox>
-                <Title>{item.recipeName}</Title>
-                <Author>{item.userId.nickName}</Author>
-                <WrapperHeartComment>
-                  <Heart
+              ></S.StyledImage>
+              <S.TextBox>
+                <S.Title>{item.recipeName}</S.Title>
+                <S.Author>{item.userId.nickName}</S.Author>
+                <S.WrapperHeartComment>
+                  <S.Heart
                     className="sprite heart"
                     clicked={false}
                     onClick={() => alert("이제 하트해보자구")}
                   />
-                  <HeartCommentCount>{item.numLikes}</HeartCommentCount>
-                  <Comment className="sprite comment" />
-                  <HeartCommentCount>{item.numComments}</HeartCommentCount>
-                </WrapperHeartComment>
-              </TextBox>
-            </ImageWithTag>
+                  <S.HeartCommentCount>{item.numLikes}</S.HeartCommentCount>
+                  <S.Comment className="sprite comment" />
+                  <S.HeartCommentCount>{item.numComments}</S.HeartCommentCount>
+                </S.WrapperHeartComment>
+              </S.TextBox>
+            </S.ImageWithTag>
           );
         })}
       </StyledSlider>
-    </ArticleWrapper>
+    </S.ArticleWrapper>
   );
 };
 
