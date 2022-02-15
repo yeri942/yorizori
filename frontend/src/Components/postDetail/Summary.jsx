@@ -122,6 +122,11 @@ const Summary = ({ data }) => {
     SetHeart(!heart);
   };
 
+  const handleImgError = (e) => {
+    console.log("aa");
+    e.target.src = "data.userId.profileImage";
+  };
+
   return (
     <SummaryWrapper heartstate={heart}>
       {data && (
@@ -147,7 +152,9 @@ const Summary = ({ data }) => {
             <Content>{data.desc}</Content>
           </div>
           <Author>
-            <ProfileImg src={data.userId.profileImage} />
+            <ProfileImg
+              src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
+            />
             <Nickname>{data.userId.nickName}</Nickname>
           </Author>
           <SummaryInfo>
