@@ -3,16 +3,18 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactLoading from "react-loading";
 import dummy from "../../posts.json";
-import { dropDownOptionsState } from "./ViewAllAtom";
-import { useRecoilValue } from "recoil";
+import { dropDownOptionsState } from "../../states/ViewAllAtom";
+import { useRecoilValue, useRecoilValueLoadable } from "recoil";
+import { famousPostsSelector2 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [countPost, setCountPost] = useState(4);
+  const [countPost, setCountPost] = useState(10);
 
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
-
+  const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector2);
+  let famousList = famousListsLoadable.contents;
   const getMoreItem = async () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -27,6 +29,7 @@ const Postzone = () => {
       observer.observe(entry.target);
     }
   };
+
   useEffect(() => {
     let observer;
     if (target) {
@@ -35,13 +38,17 @@ const Postzone = () => {
       });
       observer.observe(target);
     }
+    if (famousListsLoadable.state === "loading") {
+      return <div>loading...</div>;
+    }
+    console.log("famousListsLoadable", famousList);
     return () => observer && observer.disconnect();
   });
 
   return (
     <Wrapper>
       <WrapperPost>
-        {dummy
+        {/* {dummy
           .filter((data) => {
             if (dropDownOptions.category === "") {
               return data.category;
@@ -65,37 +72,37 @@ const Postzone = () => {
               return data.cook;
             }
             return data.cook === dropDownOptions.cook;
-          })
-          .map((data) => {
-            let recipeName = data.recipeName;
-            let author = data.userId.$oid;
-            if (recipeName.length > 20) {
-              recipeName = recipeName.substring(0, 19) + "…";
-            }
-            if (data.userId.$oid.length > 12) {
-              author = author.substring(0, 11) + "…";
-            }
-            return (
-              <Link
-                to={`/detail/${data._id.$oid}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-                author={data.userId.$oid}
-                title={data.recipeName}
-              >
-                <div>
-                  <Img src={data.thumbnail} />
-                  <TextBox>
-                    <Title>{recipeName}</Title>
-                    <Author>{author}</Author>
-                    <WrapperHeartComment>
-                      <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
-                      <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
-                    </WrapperHeartComment>
-                  </TextBox>
-                </div>
-              </Link>
-            );
-          })}
+          }) */}
+        {dummy.map((data) => {
+          let recipeName = data.recipeName;
+          let author = data.userId.nickName;
+          if (recipeName.length > 20) {
+            recipeName = recipeName.substring(0, 19) + "…";
+          }
+          // if (author.length > 12) {
+          //   author = author.substring(0, 11) + "…";
+          // }
+          return (
+            <Link
+              to={`/detail/${data._id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+              author={author}
+              title={recipeName}
+            >
+              <div>
+                <Img src={data.thumbnail} />
+                <TextBox>
+                  <Title>{recipeName}</Title>
+                  <Author>{author}</Author>
+                  <WrapperHeartComment>
+                    <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
+                    <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
+                  </WrapperHeartComment>
+                </TextBox>
+              </div>
+            </Link>
+          );
+        })}
       </WrapperPost>
 
       <div ref={setTarget} className="Target-Element">

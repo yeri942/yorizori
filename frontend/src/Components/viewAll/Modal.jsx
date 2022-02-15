@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { randomButtonState, randomPostState } from "./ViewAllAtom";
+import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
 import { Link } from "react-router-dom";
 import dummy from "../../posts.json";
 

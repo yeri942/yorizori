@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { randomButtonState, randomPostState, dropDownOptionsState } from "./ViewAllAtom";
+import { randomButtonState, randomPostState, dropDownOptionsState } from "../../states/ViewAllAtom";
 import dummy from "../../posts.json";
 
 const Buttons = () => {
