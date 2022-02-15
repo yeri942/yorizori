@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import NavBottom from "../nav/BottomNav"
 import NavTop from "../nav/TopNav"
 import { MyPageImage } from "./Profile"
@@ -9,15 +9,28 @@ import { MyPageEditInputBox } from "./ProfileEditStyle"
 import { MyPagePasswordEditBox } from "./ProfileEditStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
+import axios from 'axios';
 
 
 const EditMyPage = () => {
 
-  const [ Profileimage, setProfileImage] = useState("../images/profile.jpg");
   const [ myNickName, setMyNickName] = useState("요리조리1234")
   const [ nickCheck, setNickCheck ] = useState("type1")
   const [ password, setPassword ] = useState("1234")
+  const [userData, setUserData] = useState([])
+  const [ Profileimage, setProfileImage] = useState(userData.Profileimage ? userData.Profileimage : "../../images/baseimage.png");
+  let { userId } = useParams()
 
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/profile`)
+    .then(response => response.json())
+    .then(data => setUserData(data.user))
+    
+    .catch(err => console.log(err))
+  },[]);
+
+  console.log(userData)
+  
   const ClickUpload = (e) => {
     const imgBtn = document.querySelector("#file-upload")
     imgBtn.click()
@@ -29,6 +42,23 @@ const EditMyPage = () => {
 
   const pass1 = () => {
     document.querySelector(".passbox").classList.toggle("passcheck")
+  }
+
+  function successChenge() {
+    fetch(`http://localhost:8080/user/profile`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+      profileImage: "Test",
+      profileName: "테스트임",
+    }),
+      })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    
+    .catch(err => console.log(err))
   }
 
   function nickNameCheck(value) {
@@ -73,7 +103,7 @@ const EditMyPage = () => {
 
               <EditImage id="imgs"  onClick={ClickUpload} src={Profileimage}/>
                 <p style={{ marginTop: "40px", fontSize: "14px", color: "gray"}}>변경할 닉네임을 입력해주세요</p>
-              <EditInput placeholder={myNickName} type={nickCheck} onChange={(e) => {
+              <EditInput placeholder={userData.nickName} type={nickCheck} onChange={(e) => {
                 setMyNickName(e.target.value)
                 nickNameCheck(e.target.value)
               }}/>
@@ -87,8 +117,8 @@ const EditMyPage = () => {
                 </div>
               </MyPagePasswordEditBox>
               <div style={{position: "relative", top: "40px"}}>  
-                <Link to="/users/mypage">
-                  <EditBtn>
+                <Link to={`/user/${userId}/profile`}>
+                  <EditBtn onClick={successChenge}>
                     완료
                   </EditBtn>
                 </Link>

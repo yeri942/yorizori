@@ -29,8 +29,8 @@ const MyPageTemplate = () => {
             
             <MyPageMainInfoBox>
               <div className="InfoProfile">
-                <MyPageImage myImg={userData.profileImage}/>
-                  <p>{userData.nickName}</p>
+                <MyPageImage src={userData.Profileimage ? userData.Profileimage : "../../images/baseimage.png"}/>
+                <p>{userData.nickName}</p>
               </div>
                 <MyPageFollowBox className="followBox">
                   <div>
@@ -49,7 +49,7 @@ const MyPageTemplate = () => {
             </MyPageMainInfoBox>
             <MyPageMainBtnBox >
 
-              <Link to="/users/edit">
+              <Link to={`/user/${userData._id}/edit`}>
                 <MyPageMainProfileEdit type="button" >프로필 수정</MyPageMainProfileEdit>
               </Link>
 
@@ -72,12 +72,9 @@ const MyPageTemplate = () => {
 };
 
 const MyPageImage = styled.img`
-  background-image: url(${(props) => props.myImg ? props.myImg : "../../images/baseimage.png"});
   width: 115px;
   height: 115px;
-  background-size: cover;
   border-radius: 50%;
-  border: solid 1px gray;
 
   + p {
     font-family: sans-serif;

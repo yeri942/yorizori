@@ -30,7 +30,7 @@ function App() {
         <Route path="detail/:postId" element={<PostDetailPage />} />
         <Route path="detail/:postId/comments" element={<MoreComments />} />
         <Route element={<MyPage />} path="/user/:userId/profile" />
-        <Route element={<MyPageEdit />} path="/users/edit" />
+        <Route element={<MyPageEdit />} path="/user/:userId/edit" />
         <Route element={<PostPage />} path="/post" />
       </Routes>
     </RecoilRoot>
