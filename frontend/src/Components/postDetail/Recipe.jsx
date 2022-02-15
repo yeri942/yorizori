@@ -11,6 +11,7 @@ const padNumber = (num, length) => {
 };
 
 const Recipe = ({ data }) => {
+  console.log(data);
   const [timerState, setTimerState] = useState(
     Array.from({ length: 100 }, () => {
       return {
@@ -129,11 +130,12 @@ const Recipe = ({ data }) => {
             </Step>
           );
         })}
-      <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>
+      {data && data.doneImage[0] && <div style={{ fontWeight: 900, marginTop: 20 }}>완성 사진</div>}
       <StyledSlider {...settings}>
-        {dummy.post[0].postinfo.photo.map((photo, index) => {
-          return <ResultImg key={`ResultImg_${index}`} src={photo.image} />;
-        })}
+        {data &&
+          data.doneImage.map((photo, index) => {
+            return <ResultImg key={`ResultImg_${index}`} src={photo} />;
+          })}
       </StyledSlider>
     </RecipeWrapper>
   );
