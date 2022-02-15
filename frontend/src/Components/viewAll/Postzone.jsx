@@ -4,21 +4,38 @@ import styled from "styled-components";
 import ReactLoading from "react-loading";
 import dummy from "../../posts.json";
 import { dropDownOptionsState } from "../../states/ViewAllAtom";
-import { useRecoilValue, useRecoilValueLoadable } from "recoil";
-import { famousPostsSelector2 } from "../../states/ViewAllAtom";
+import { useRecoilValue, useSetRecoilState, useRecoilValueLoadable } from "recoil";
+import { famousPostsSelector2, count, sortState } from "../../states/ViewAllAtom";
+import { searchAtom } from "../nav/NavAtom";
+
+const baseURL = "http://localhost:8080";
 
 const Postzone = () => {
+  const filteredData = useRecoilValue(searchAtom);
+  const [recipes, setRecipes] = useState([]);
+
   const [target, setTarget] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [countPost, setCountPost] = useState(10);
+
+  const countPost = useRecoilValue(count);
+  const setCountPost = useSetRecoilState(count);
+
+  const currentSortState = useRecoilValue(sortState);
 
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector2);
+
   let famousList = famousListsLoadable.contents;
+
+  useEffect(() => {
+    console.log(countPost);
+    console.log(famousListsLoadable.contents);
+  }, [countPost]);
+
   const getMoreItem = async () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    setCountPost((countPost) => countPost + 4);
+    setCountPost((countPost) => countPost + 16);
     setIsLoaded(false);
   };
 
@@ -38,17 +55,32 @@ const Postzone = () => {
       });
       observer.observe(target);
     }
-    if (famousListsLoadable.state === "loading") {
-      return <div>loading...</div>;
-    }
-    console.log("famousListsLoadable", famousList);
     return () => observer && observer.disconnect();
+  }, [target]);
+
+  useEffect(() => {
+    const query = filteredData;
+    const urlAll = "http://localhost:8080/post";
+    const urlSearch = `http://localhost:8080/post/search?recipeName=${query}`;
+    let url;
+    url = filteredData === "" ? urlAll : urlSearch;
+
+    fetch(url)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setRecipes(data);
+      });
   });
 
+  if (famousListsLoadable.state === "loading") {
+    return <div>loading...</div>;
+  }
   return (
     <Wrapper>
       <WrapperPost>
-        {/* {dummy
+        {(currentSortState === "famous" ? famousList : recipes)
           .filter((data) => {
             if (dropDownOptions.category === "") {
               return data.category;
@@ -72,37 +104,35 @@ const Postzone = () => {
               return data.cook;
             }
             return data.cook === dropDownOptions.cook;
-          }) */}
-        {dummy.map((data) => {
-          let recipeName = data.recipeName;
-          let author = data.userId.nickName;
-          if (recipeName.length > 20) {
-            recipeName = recipeName.substring(0, 19) + "…";
-          }
-          // if (author.length > 12) {
-          //   author = author.substring(0, 11) + "…";
-          // }
-          return (
-            <Link
-              to={`/detail/${data._id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-              author={author}
-              title={recipeName}
-            >
-              <div>
-                <Img src={data.thumbnail} />
-                <TextBox>
-                  <Title>{recipeName}</Title>
-                  <Author>{author}</Author>
-                  <WrapperHeartComment>
-                    <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
-                    <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
-                  </WrapperHeartComment>
-                </TextBox>
-              </div>
-            </Link>
-          );
-        })}
+          })
+          .map((data, idx) => {
+            let recipeName = data.recipeName;
+            let nickname = data.userId.nickName;
+            if (recipeName.length > 20) {
+              recipeName = recipeName.substring(0, 19) + "…";
+            }
+
+            return (
+              <Link
+                to={`/detail/${data._id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+                nickname={nickname}
+                title={recipeName}
+              >
+                <div>
+                  <Img src={data.thumbnail} />
+                  <TextBox>
+                    <Title>{recipeName}</Title>
+                    <Author>{nickname}</Author>
+                    <WrapperHeartComment>
+                      <span className="sprite heart" /> <HeartCommentCount>42</HeartCommentCount>
+                      <span className="sprite comment" /> <HeartCommentCount>99</HeartCommentCount>
+                    </WrapperHeartComment>
+                  </TextBox>
+                </div>
+              </Link>
+            );
+          })}
       </WrapperPost>
 
       <div ref={setTarget} className="Target-Element">
