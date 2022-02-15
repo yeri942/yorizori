@@ -32,13 +32,23 @@ const Summary = ({ data, postId }) => {
 
   const HeartState = async () => {
     if (heartCheck) {
-      await axios.delete("/like", {
-        data: {
-          postId: postId,
-        },
-      });
+      try {
+        await axios.delete("/like", {
+          data: {
+            postId: postId,
+          },
+        });
+      } catch (e) {
+        console.error(e);
+        console.log(e.response.data.message);
+      }
     } else {
-      await axios.post("/like", { postId: postId });
+      try {
+        await axios.post("/like", { postId: postId });
+      } catch (e) {
+        console.error(e);
+        console.log(e.response.data.message);
+      }
     }
     heartStateCheck();
   };
@@ -50,7 +60,11 @@ const Summary = ({ data, postId }) => {
           <Thumbnail src={data.thumbnail} />
           <LCVS>
             <Likes>
-              <span className="sprite heart" onClick={HeartState} />
+              <span
+                className="sprite heart"
+                onClick={HeartState}
+                disabled={userId ? false : true}
+              />
               <span>{numLikes}명이 좋아합니다.</span>
             </Likes>
             <Comments>
@@ -59,7 +73,7 @@ const Summary = ({ data, postId }) => {
             </Comments>
             <Views>
               <span className="sprite view" />
-              <span>200</span>
+              <span>{data.numViews}</span>
             </Views>
             <Share className="sprite share" />
           </LCVS>
