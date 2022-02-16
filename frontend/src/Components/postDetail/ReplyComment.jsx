@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { userIdAtom } from "../../states";
 import Comment from "./Comment";
 
-function ReplyComment({ commentList, parentCommentId }) {
+function ReplyComment({ commentList, parentCommentId, postId }) {
   const [childCommentNumber, setChildCommentNumber] = useState(0);
   const [openRelpyComments, setOpenReplyComments] = useState(false);
+  const isLogin = useRecoilValue(userIdAtom)
 
   useEffect(() => {
     let commentNumber = 0;
@@ -21,8 +24,8 @@ function ReplyComment({ commentList, parentCommentId }) {
       <>
         {comment.parentComment === parentCommentId && (
           <ReplyWrapper key={comment._id}>
-            <Comment isMore={true} comment={comment} />
-            <ReplyComment commentList={commentList} parentCommentId={comment._id} />
+            <Comment isMore={true} comment={comment} isAuth={isLogin === comment.userId.id} postId={postId} />
+            <ReplyComment commentList={commentList} parentCommentId={comment._id} postId={postId} />
           </ReplyWrapper>
         )}
       </>

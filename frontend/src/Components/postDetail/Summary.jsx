@@ -1,14 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { userIdAtom } from "../../states";
+import { detailDataAtom, delAndAmendBtnStateAtom } from "../../states/detail";
 import axios from "axios";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const Summary = ({ data, postId }) => {
+  const navigate = useNavigate();
+  const [detailData, setDetailData] = useRecoilState(detailDataAtom);
   const [heartCheck, setHeartCheck] = useState(false);
-  const [numLikes, setNumLikes] = useState(data ? data.numLikes : 0);
-  const [heart, SetHeart] = useState(false);
+  const [delAndAmendBtnState, setDelAndAmendBtnState] = useRecoilState(delAndAmendBtnStateAtom);
+  const [numLikes, setNumLikes] = useState(data ? data.numLikes : null);
   const userId = useRecoilValue(userIdAtom);
+  const [heart, setHeart] = useState(false);
+
+  const deleteHandler = (postId) => {
+    try {
+      swal({
+        title: "정말 삭제하시겠습니까?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((res) => {
+        if (res) {
+          swal("게시물이 삭제되었습니다..", {
+            icon: "success",
+          }).then(() => {
+            axios.delete(`/post/${postId}`);
+            navigate("/");
+          });
+        }
+      });
+    } catch (e) {
+      if (e.response.status === 403) {
+        alert("로그아웃 상태입니다.");
+      }
+    }
+  };
 
   const heartStateCheck = async () => {
     const { data: heartArray } = await axios.get(`/like/${postId}`);
@@ -22,14 +52,16 @@ const Summary = ({ data, postId }) => {
   };
 
   useEffect(() => {
+    console.log(userId);
+    console.log(data.userId.id);
     heartStateCheck();
+    return () => setDetailData(null);
   }, []);
 
   useEffect(() => {
-    if (heartCheck) SetHeart(true);
-    else SetHeart(false);
+    if (heartCheck) setHeart(true);
+    else setHeart(false);
   }, [heartCheck, numLikes]);
-
   const HeartState = async () => {
     if (heartCheck) {
       try {
@@ -40,7 +72,6 @@ const Summary = ({ data, postId }) => {
         });
       } catch (e) {
         console.error(e);
-        console.log(e.response.data.message);
       }
     } else {
       try {
@@ -60,11 +91,8 @@ const Summary = ({ data, postId }) => {
           <Thumbnail src={data.thumbnail} />
           <LCVS>
             <Likes>
-              <span
-                className="sprite heart"
-                onClick={HeartState}
-                disabled={userId ? false : true}
-              />
+              {/* {heart && <HeartImage src="../images/onlylogo.png" />} */}
+              <span className="sprite heart" onClick={HeartState} />
               <span>{numLikes}명이 좋아합니다.</span>
             </Likes>
             <Comments>
@@ -86,6 +114,27 @@ const Summary = ({ data, postId }) => {
               src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
             />
             <Nickname>{data.userId.nickName}</Nickname>
+            {userId === data.userId.id && (
+              <DropDownContainer>
+                <DropDownBtn
+                  onClick={() => {
+                    setDelAndAmendBtnState(!delAndAmendBtnState);
+                  }}
+                />
+                {delAndAmendBtnState && (
+                  <DropDownWrapper>
+                    <StyledDiv
+                      onClick={() => {
+                        deleteHandler(postId);
+                      }}
+                    >
+                      삭제하기
+                    </StyledDiv>
+                    <StyledDiv>수정하기</StyledDiv>
+                  </DropDownWrapper>
+                )}
+              </DropDownContainer>
+            )}
           </Author>
           <SummaryInfo>
             <Servings>{data.servings}</Servings>
@@ -99,6 +148,36 @@ const Summary = ({ data, postId }) => {
 };
 
 export default Summary;
+
+const StyledDiv = styled.div`
+  + div {
+    margin-top: 8px;
+  }
+  width: 54px;
+`;
+const DropDownContainer = styled.div`
+  position: relative;
+  margin-left: auto;
+`;
+
+const DropDownBtn = styled.div`
+  background-image: url("../images/threedot.png");
+  width: 16px;
+  height: 16px;
+  background-size: cover;
+  z-index: 999;
+`;
+
+const DropDownWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #feae11;
+  color: white;
+  border-radius: 3px;
+  padding: 5px 10px;
+  position: absolute;
+  left: -65px;
+`;
 
 const SummaryWrapper = styled.div`
   width: 360px;
@@ -117,6 +196,7 @@ const SummaryWrapper = styled.div`
   .heart {
     width: 28px;
     height: 24.5px;
+    /* background-position: -71.5px 0px; */
     background-position: ${(props) => (props.heartstate === true ? "-71.5px 0px" : "-36.5px 0px")};
   }
   .comment {
@@ -207,6 +287,13 @@ const SummaryInfo = styled.div`
       height: 10px;
     }
   }
+`;
+
+const HeartImage = styled.img`
+  display: inline-block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 24.5px;
 `;
 const Servings = styled.span``;
 const Time = styled.span``;
