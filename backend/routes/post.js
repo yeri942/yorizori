@@ -134,17 +134,17 @@ router.post(
 router.get(
   "/search",
   asyncHandler(async (req, res, next) => {
-    const page = Number(req.query.page || 1);
-    const perPage = Number(req.query.perPage || 16);
+    // const page = Number(req.query.page || 1);
+    // const perPage = Number(req.query.perPage || 4);
     const recipeName = req.query.recipeName;
 
     const posts = await Post.find({ useYN: true, recipeName: { $regex: recipeName } })
       .populate({ path: "userId", select: "-password" })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } })
-      .sort({ createdAt: -1 }) //최근 순으로 정렬
-      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
-      .limit(perPage);
+      .sort({ createdAt: -1 }); //최근 순으로 정렬
+    // .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+    // .limit(perPage);
     res.status(200).json(posts);
   })
 );
@@ -326,20 +326,22 @@ router.patch(
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const page = Number(req.query.page || 1);
-    const perPage = Number(req.query.perPage || 16);
-    console.log(req.query);
-
-    const posts = await Post.find({
-      useYN: true,
-    })
-      .populate({ path: "userId", select: "-password" })
-      .populate({ path: "numLikes", match: { isUnliked: false } })
-      .populate({ path: "numComments", match: { isDeleted: false } })
-      .sort({ createdAt: -1 }) //최근 순으로 정렬
-      .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
-      .limit(perPage);
-    res.status(200).json(posts);
+    const totalPost = await Post.find({ useYN: true }).countDocuments({});
+    const page = Number(req.query.page);
+    const perPage = Number(req.query.perPage);
+    //현재 페이지수가 최대 페이지개수 나누기 페이지당 게시물로 한것까지만 프론트로 보낸다.
+    if (page <= Math.round(totalPost / perPage)) {
+      const posts = await Post.find({
+        useYN: true,
+      })
+        .populate({ path: "userId", select: "-password" })
+        .populate({ path: "numLikes", match: { isUnliked: false } })
+        .populate({ path: "numComments", match: { isDeleted: false } })
+        .sort({ createdAt: -1 }) //최근 순으로 정렬
+        .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+        .limit(perPage);
+      res.status(200).json(posts);
+    }
   })
 );
 
