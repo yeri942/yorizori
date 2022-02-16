@@ -11,6 +11,52 @@ import Recommend from "./Recommend";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { detailDataAtom } from "../../states/detail";
+import { Watch } from "react-loader-spinner";
+import { Loading } from "../home/ariticleTemplateWithOneSlide";
+
+const PostDetail = () => {
+  const [detailData, setDetailData] = useRecoilState(detailDataAtom);
+  const { postId } = useParams();
+  useEffect(() => {
+    const getProcessData = async () => {
+      try {
+        const { data } = await axios.get(`/post/${postId}`);
+        setDetailData(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getProcessData();
+  }, []);
+
+  if (!detailData) {
+    return (
+      <Loading>
+        <Watch ariaLabel="loading-indicator" color="#d45500" />
+      </Loading>
+    );
+  }
+
+  return (
+    <PostDetailBlock>
+      <TopNav />
+      <Content>
+        <Summary data={detailData} postId={postId} />
+        <Line />
+        <Ingredient data={detailData} />
+        <Line />
+        <Recipe data={detailData} />
+        <Line />
+        <Comments />
+        <Line />
+        <Recommend data={detailData} />
+      </Content>
+      <BottomNav />
+    </PostDetailBlock>
+  );
+};
+
+export default PostDetail;
 
 const PostDetailBlock = styled.div`
   font-size: 18px;
@@ -30,34 +76,3 @@ const Line = styled.div`
   height: 10px;
   background-color: rgba(0, 0, 0, 0.14);
 `;
-const PostDetail = () => {
-  const [detailData, setDetailData] = useRecoilState(detailDataAtom);
-  const { postId } = useParams();
-  useEffect(() => {
-    const getProcessData = async () => {
-      const { data } = await axios.get(`/post/${postId}`);
-      setDetailData(data);
-    };
-    getProcessData();
-  }, []);
-
-  return (
-    <PostDetailBlock>
-      <TopNav />
-      <Content>
-        <Summary data={detailData} postId={postId} />
-        <Line />
-        <Ingredient data={detailData} />
-        <Line />
-        <Recipe data={detailData} />
-        <Line />
-        <Comments />
-        <Line />
-        <Recommend />
-      </Content>
-      <BottomNav />
-    </PostDetailBlock>
-  );
-};
-
-export default PostDetail;
