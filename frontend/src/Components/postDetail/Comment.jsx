@@ -1,7 +1,13 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
 import { useMatch } from "react-router";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { authAtom, userIdAtom } from "../../states";
+import { AuthInput, SubmitButton } from "./Comments";
 import ReplyComment from "./ReplyComment";
+import Toast from "./Toast";
+import { toastAtom, messageAtom, isLoadingAtom } from "./toastAtom";
 
 const displayedAt = (createdAt) => {
   const milliSeconds = new Date().getTime() - new Date(createdAt).getTime();
@@ -21,18 +27,170 @@ const displayedAt = (createdAt) => {
   return `${Math.floor(years)}년 전`;
 };
 
-function Comment({ comment, isMore }) {
+function Comment({ comment, isMore, isAuth, postId }) {
+  const [toastStatus, setToastStatus] = useRecoilState(toastAtom);
+  const [toastMessage, setToastMessage] = useRecoilState(messageAtom);
+  const isLogin = useRecoilValue(userIdAtom);
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom)
+  const [toggleReply, setToggleReply] = useState(false);
+  const [replyComment, setReplyComment] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const [editComment, setEditComment] = useState(comment.comment);
+
+  // useEffect(() => {
+  //   if (toastStatus) {
+  //     setTimeout(() => setToastStatus(false), 1000);
+  //   }
+  // }, [toastStatus]);
+
+  const deleteHandler = async (commentId) => {
+    const res = await axios.patch(`/comment/${commentId}/delete`, { isDelete: true });
+    setToastStatus(true);
+    setToastMessage("댓글이 삭제되었습니다.");
+    setIsLoading(true);
+  };
+
+  const editHandler = () => {
+    setIsEdit(true);
+  };
+
+  const onChangeHandler = (e) => {
+    setEditComment(e.target.value);
+  };
+
+  const onSubmitHandler = async (commentId) => {
+    if (editComment === comment.comment) {
+      setIsEdit(false);
+      return;
+    }
+    axios.patch(`/comment/${commentId}`, { comment: editComment }).then((res) => {
+      console.log(res);
+      setToastMessage("수정이 완료되었습니다");
+      setToastStatus(true);
+      setIsEdit(false);
+      setIsLoading(true)
+    });
+  };
+
+  const replyHandler = () => {
+    setToggleReply(!toggleReply);
+  };
+
+  const onChangeRelpy = (e) => {
+    setReplyComment(e.target.value);
+  };
+
+  const onReplyHandler = async (commentId) => {
+    console.log(!replyComment, replyComment, "???");
+    if (!replyComment) {
+      setToggleReply(false);
+      console.log("대댓글 입력바람");
+      return;
+    }
+    console.log("Let's start Axios~!");
+    try {
+      const result = await axios.post(`/comment/`, {
+        postId,
+        parentComment: commentId,
+        comment: replyComment,
+      });
+      setToastMessage("댓글이 등록되었습니다.");
+      setToastStatus(true);
+      setToggleReply(false);
+      setIsLoading(true)
+    } catch (err) {
+      console.error(err);
+      setToastStatus(true);
+      setToggleReply(false);
+    }
+  };
+
+  console.log("Let's find Id", comment);
+  console.log("Are you auth?", isAuth);
   return (
     <Wrapper>
-      <ProfileImg isImage={comment.userId.profileImage ? comment.userId.profileImage : ""} />
-      <CommentWrapper>
-        <Nickname>{comment.userId.nickName}</Nickname>
-        <CommenContent isMore={isMore}>{comment.comment}</CommenContent>
-        <Time>{displayedAt(comment.createdAt)}</Time>
-      </CommentWrapper>
+      {comment.isDeleted ? (
+        <DeletedComment>삭제된 댓글입니다</DeletedComment>
+      ) : (
+        <>
+          <ProfileImg isImage={comment.userId.profileImage ? comment.userId.profileImage : ""} />
+          {isEdit ? (
+            <>
+              <AuthInput onChange={onChangeHandler}>{comment.comment}</AuthInput>
+              <SubmitButton onClick={() => onSubmitHandler(comment._id)} comment={true}>
+                수정
+              </SubmitButton>
+            </>
+          ) : (
+            <>
+              <CommentWrapper>
+                <Nickname>{comment.userId.nickName}</Nickname>
+                <CommenContent isMore={isMore}>{comment.comment}</CommenContent>
+                <Time>{displayedAt(comment.createdAt)}</Time>
+                {isLogin && (
+                  <>
+                    <ReplyImg
+                      onClick={replyHandler}
+                      src={`${process.env.PUBLIC_URL}/images/reply.png`}
+                    />
+                    {toggleReply && (
+                      <div>
+                        <AuthInput
+                          onChange={onChangeRelpy}
+                          placeholder="대댓글 추가..."
+                        ></AuthInput>
+                        <SubmitButton onClick={() => onReplyHandler(comment._id)} comment={true}>
+                          등록
+                        </SubmitButton>
+                      </div>
+                    )}
+                  </>
+                )}
+              </CommentWrapper>
+              {isAuth && (
+                <ButtonWrapper>
+                  <Button onClick={editHandler}>수정</Button>
+                  <Button onClick={() => deleteHandler(comment._id)}>삭제</Button>
+                </ButtonWrapper>
+              )}
+            </>
+          )}
+
+          {toastStatus && <Toast msg={toastMessage} />}
+        </>
+      )}
     </Wrapper>
   );
 }
+
+const DeletedComment = styled.div`
+  border-radius: 5px;
+  width: 100%;
+  text-align: center;
+  background-color: #7f8fa64b;
+  color: #b1b3b9;
+`;
+
+const ReplyImg = styled.img`
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  vertical-align: middle;
+`;
+
+const ButtonWrapper = styled.div`
+  align-self: flex-start;
+  flex-basis: 77px;
+  flex-shrink: 0;
+`;
+
+const Button = styled.button`
+  margin-left: 2px;
+  border: none;
+  background-color: transparent;
+  color: #a5a8b1;
+  font-size: 12px;
+`;
 
 export const ProfileImg = styled.img.attrs((props) => ({
   src: props.isImage ? props.isImage : process.env.PUBLIC_URL + "/images/onlylogo.png",
@@ -66,18 +224,20 @@ const Nickname = styled.div`
 const CommenContent = styled.div`
   margin-top: 4px;
   font-size: 13px;
+  width: 100%;
   ${(props) =>
     props.isMore
-      ? ""
+      ? "word-break:break-all"
       : `line-height: 17px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  word-break:break-all;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;`};
 `;
 
-const Time = styled.p`
+const Time = styled.span`
   margin-top: 4px;
   font-size: 12px;
   margin-bottom: 0;
