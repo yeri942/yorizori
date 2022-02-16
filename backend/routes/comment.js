@@ -33,7 +33,7 @@ router.get(
   "/:postId",
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
-    const comments = await Comment.find({ postId })
+    const comments = await Comment.find({ postId: postId, isDeleted: false })
       .populate({
         path: "userId",
         select: "-password",
@@ -87,6 +87,27 @@ router.get(
     const count = await Comment.count({ postId });
     console.log(count);
     return res.status(200).json({ count });
+  })
+);
+
+router.patch(
+  "/:commentId/delete",
+  asyncHandler(async (req, res) => {
+    const { commentId } = req.params;
+    const comment = await Comment.findOneAndUpdate({ _id: commentId }, { isDeleted: true });
+    console.log("haha I found comment, let's delete", comment);
+    return res.status(201).json({ comment });
+  })
+);
+
+router.patch(
+  "/:commentId",
+  asyncHandler(async (req, res) => {
+    const { commentId } = req.params;
+    const { comment } = req.body;
+    const result = await Comment.findOneAndUpdate({ _id: commentId }, {comment});
+    console.log("update is finished")
+    return res.status(201).json({ result })
   })
 );
 

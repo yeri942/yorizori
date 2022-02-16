@@ -2,7 +2,7 @@
 
 exports.isLoggedIn = (req, res, next) => {
   const { id } = req.cookies
-  console.log(id)
+  console.log(id, req)
   // isAuthenticated()로 검사해 로그인이 되어있으면
   if (req.isAuthenticated() || id) {
     next(); // 다음 미들웨어
