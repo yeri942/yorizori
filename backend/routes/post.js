@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post } = require("../models/");
+const { Post, User } = require("../models/");
 const { isLoggedIn } = require("./middlewares");
 const { recipeUpload, s3 } = require("../middlewares/upload");
 const asyncHandler = require("../utils/asyncHandler");
@@ -125,7 +125,7 @@ router.post(
         await posts.save();
       }
     }
-
+    await User.updateOne({ _id: userId }, { $inc: { numPosts: 1 } });
     res.status(201).json({ message: "레시피등록이 완료되었습니다." });
   })
 );
@@ -183,7 +183,6 @@ router.get(
         populate: [
           { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
       })
@@ -343,6 +342,7 @@ router.delete(
   ]),
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
+    const { id: userId } = req.user || req.cookies;
 
     const posts = await Post.findById(postId).findOne({ useYN: true }); // postId 찾아 삭제
     if (!posts) {
@@ -351,7 +351,8 @@ router.delete(
     }
 
     posts.useYN = false;
-    posts.save();
+    await posts.save();
+    await User.updateOne({ _id: userId }, { $inc: { numPosts: -1 } });
 
     res.status(200).json({ message: "레시피 삭제가 완료되었습니다." });
   })

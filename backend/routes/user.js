@@ -53,7 +53,6 @@ router.get(
     const user = await User.findOne({ _id: userId })
       .populate({ path: "numFollowees", match: { isUnfollowed: false } })
       .populate({ path: "numFollowers", match: { isUnfollowed: false } })
-      .populate({ path: "numPosts", match: { useYN: true } })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .select("-password"); //_id가 일치하는 유저를 찾음
     //password 제외한 정보를 보냄
@@ -85,7 +84,6 @@ router.get(
       // populate: [
       //   { path: "numFollowees", match: { isUnfollowed: false } },
       //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numPosts", match: { useYN: true } },
       //   { path: "numLikes", match: { isUnliked: false } },
       // ],
       // })
@@ -117,7 +115,6 @@ router.get(
       // populate: [
       //   { path: "numFollowees", match: { isUnfollowed: false } },
       //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numPosts", match: { useYN: true } },
       //   { path: "numLikes", match: { isUnliked: false } },
       // ],
       // })
@@ -150,7 +147,6 @@ router.get(
       // populate: [
       //   { path: "numFollowees", match: { isUnfollowed: false } },
       //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numPosts", match: { useYN: true } },
       //   { path: "numLikes", match: { isUnliked: false } },
       // ],
       // })
@@ -216,7 +212,6 @@ router.get(
       // populate: [
       //   { path: "numFollowees", match: { isUnfollowed: false } },
       //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numPosts", match: { useYN: true } },
       //   { path: "numLikes", match: { isUnliked: false } },
       // ],
       // })
@@ -251,7 +246,6 @@ router.get(
         populate: [
           { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
       });
@@ -281,7 +275,6 @@ router.get(
         populate: [
           { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
       });
@@ -301,7 +294,6 @@ router.get(
     const users = await User.find()
       .populate({ path: "numFollowees", match: { isUnfollowed: false } })
       .populate({ path: "numFollowers", match: { isUnfollowed: false } })
-      .populate({ path: "numPosts", match: { useYN: true } })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .sort({ createdAt: -1 });
     const sortedUsers = users
@@ -325,3 +317,16 @@ router.get(
   })
 );
 module.exports = router;
+
+// router.get(
+//   "/:userId/comment",
+//   isLoggedIn,
+//   asyncHandler(async (req, res, next) => {
+//     const { userId } = req.params;
+//     //댓글 collection에서 유저가 작성한 댓글을 필터링한 후 중복된 post를 제거한후 postId를 저장한 배열
+//     const commentPostIds = await Comment.find({ userId, isDeleted: false }).distinct("postId");
+//     //게시글 컬렉션에서 위에서 저장한 postId를 이용해 게시글을 찾음
+//     const commentPosts = await Post.find().where("_id").in(commentPostIds);
+//     res.status(200).json({ commentPosts });
+//   })
+// );

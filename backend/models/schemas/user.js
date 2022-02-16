@@ -33,6 +33,11 @@ const UserSchema = new Schema(
       type: Number,
       default: null,
     },
+    //유저가 작성한 게시글 수
+    numPosts: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -54,12 +59,12 @@ UserSchema.virtual("numFollowers", {
 });
 
 //유저가 작성한 게시글의 수를 받습니다.
-UserSchema.virtual("numPosts", {
-  ref: "Post",
-  localField: "_id",
-  foreignField: "userId",
-  count: true,
-});
+// UserSchema.virtual("numPosts", {
+//   ref: "Post",
+//   localField: "_id",
+//   foreignField: "userId",
+//   count: true,
+// });
 
 //유저가 좋아요한 게시글의 수를 받습니다.
 UserSchema.virtual("numLikes", {
