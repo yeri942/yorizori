@@ -308,6 +308,53 @@ router.patch(
   })
 );
 
+//레시피 쿼리로 조회 로직
+// router.get(
+//   "/",
+//   asyncHandler(async (req, res, next) => {
+//     let {
+//       startIndex,
+//       limit,
+//       ingredient,
+//       seasoning,
+//       category,
+//       condition,
+//       material,
+//       cook,
+//       servings,
+//       time,
+//       diffic,
+//     } = req.query;
+//     if (!startIndex) startIndex = 1;
+//     if (!limit) limit = 0;
+//     //startIndex와 limit으로 정제된 데이터를 보내줌
+//     startIndex = parseInt(startIndex);
+//     limit = parseInt(limit);
+
+//     await Post.find({
+//       ingredient,
+//       seasoning,
+//       category,
+//       condition,
+//       material,
+//       cook,
+//       servings,
+//       time,
+//       diffic,
+//     })
+//       .sort({ createdAt: -1 }) // 최신순정렬
+//       .skip(startIndex - 1)
+//       .limit(limit)
+//       .populate({
+//         path: "userId",
+//         select: "-password",
+//       })
+//       .populate({ path: "numComments", match: { isDeleted: false } });
+
+//     res.status(200).json({ userPosts });
+//   })
+// );
+
 //전체 레시피 조회
 router.get(
   "/",
