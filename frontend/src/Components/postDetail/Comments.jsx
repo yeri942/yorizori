@@ -9,18 +9,21 @@ import { authAtom, userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 import Toast from "./Toast";
+import { isLoadingAtom, messageAtom, postIdAtom, toastAtom } from "./toastAtom";
 
 const Comments = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom);
   const [comments, setComments] = useRecoilState(commentAtom);
   const commentLength = useMemo(() => comments.length, [comments]);
-  const { postId } = useParams();
   const isLogin = useRecoilValue(userIdAtom);
   const userImg = useRecoilValue(userImage);
+  const { postId } = useParams();
   const url = `/comment/${postId}/detail`;
   const [write, setWrite] = useState("");
-  const [toastStatus, setToastStatus] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastStatus, setToastStatus] = useRecoilState(toastAtom);
+  const [toastMessage, setToastMessage] = useRecoilState(messageAtom);
+
+  console.log(comments);
   useEffect(() => {
     // 원래 useEffect안에는 async-await을 사용하지 못하지만
     // 즉시실행함수로 함수를 만든 후 실행함으로써 해결할 수 있음
@@ -89,9 +92,10 @@ const Comments = () => {
                 </>
               )}
             </form>
-            {comments.slice(0, 3).map((comment) => (
-              <Comment key={comment._id} comment={comment} isMore={false} />
-            ))}
+            {comments.filter(comment => comment.isDeleted === false).slice(0, 3).map((comment) => {
+              const isAuth = comment.userId.id === isLogin;
+              return <Comment key={comment._id} comment={comment} isMore={false} isAuth={isAuth} postId={postId} />;
+            })}
             {commentLength === 0 ? (
               <EmptyComment>아직 작성된 댓글이 없어요</EmptyComment>
             ) : commentLength > 3 ? (
@@ -113,7 +117,7 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-const AuthInput = styled.textarea`
+export const AuthInput = styled.textarea`
   position: relative;
   flex: 1;
   border: none;
@@ -128,8 +132,10 @@ const AuthInput = styled.textarea`
   }
 `;
 
-const SubmitButton = styled.button`
-  border-radius: 12px;
+export const SubmitButton = styled.button`
+  color: #fff;
+  font-weight: bold;
+  border-radius: 4px;
   display: ${(props) => (props.comment ? "inline" : "none")};
   height: 37px;
   background-color: ${(props) => props.theme.mainColor};
