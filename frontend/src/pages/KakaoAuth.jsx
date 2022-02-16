@@ -42,6 +42,7 @@ function KakaoAuth() {
         profileImage: data.kakao_account.profile.thumbnail_image_url,
         kakaoId: data.id
       });
+      console.log(result)
       localStorage.setItem("user", JSON.stringify(result.data));
       setAuth(true)
       setUid(result.data.uid)

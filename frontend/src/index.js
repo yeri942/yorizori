@@ -7,6 +7,9 @@ import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Theme } from "./theme";
+import axios from "axios";
+
+// axios.defaults.baseURL = "http://localhost:8080"
 
 const GlobalStyle = createGlobalStyle`
   /* html, body, div, span, applet, object, iframe,
