@@ -183,7 +183,6 @@ const StyledDiv = styled.div`
   + div {
     margin-top: 8px;
   }
-  width: 54px;
 `;
 const DropDownContainer = styled.div`
   position: relative;
@@ -201,12 +200,18 @@ const DropDownBtn = styled.div`
 const DropDownWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 125px;
+  height: 100px;
   background-color: #feae11;
   color: white;
   border-radius: 3px;
   padding: 5px 10px;
   position: absolute;
-  left: -65px;
+  right: 0px;
+  font-size: 15px;
+  font-weight: 900;
 `;
 
 const SummaryWrapper = styled.div`
