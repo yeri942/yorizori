@@ -16,7 +16,7 @@ import * as S from "./ariticleTemplateWithOneSlide";
 
 const FamousPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(detailedPostAtom);
+  // const setFamousPost = useSetRecoilState(detailedPostAtom);
   // const famousPost = useRecoilValue(datailedPostAtom);
   const famousListsLoadable = useRecoilValueLoadable(famousPostsSelector);
   const reset = useRecoilRefresher_UNSTABLE(famousPostsSelector);

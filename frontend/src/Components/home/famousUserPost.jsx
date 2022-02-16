@@ -21,8 +21,8 @@ import * as S from "./ariticleTemplateWithOneSlide";
 
 const FamousUserPost = () => {
   const navigate = useNavigate();
-  const setFamousPost = useSetRecoilState(detailedPostAtom);
-  const setDetailedUser = useSetRecoilState(detailedUserAtom);
+  // const setFamousPost = useSetRecoilState(detailedPostAtom);
+  // const setDetailedUser = useSetRecoilState(detailedUserAtom);
   const famousUsersPostsLoadable = useRecoilValueLoadable(famousUsersPostsSelector);
   const reset = useRecoilRefresher_UNSTABLE(famousUsersPostsSelector);
   const componentMounted = useRef(true);
@@ -48,7 +48,7 @@ const FamousUserPost = () => {
 
   const clickFamousPostHandler = (item) => {
     const postId = item._id;
-    setFamousPost(item);
+    // setFamousPost(item);
     navigate(`/detail/${postId}`);
   };
 
@@ -62,7 +62,7 @@ const FamousUserPost = () => {
   };
 
   const clickDetailedUserHandler = (user) => {
-    setDetailedUser(user);
+    // setDetailedUser(user);
     navigate(`/users/mypage/${user._id}`);
   };
 
