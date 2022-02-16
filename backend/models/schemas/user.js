@@ -38,17 +38,22 @@ const UserSchema = new Schema(
       type: Number,
       default: 0,
     },
+    //유저를 팔로우하는 다른 유저의 수
+    numFollowees: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 //유저를 팔로우하는 다른 유저의 수를 받습니다.
-UserSchema.virtual("numFollowees", {
-  ref: "Follow",
-  localField: "_id",
-  foreignField: "followerId",
-  count: true,
-});
+// UserSchema.virtual("numFollowees", {
+//   ref: "Follow",
+//   localField: "_id",
+//   foreignField: "followerId",
+//   count: true,
+// });
 
 //유저가 팔로우하는 다른 유저의 수를 받습니다.
 UserSchema.virtual("numFollowers", {

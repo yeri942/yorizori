@@ -51,7 +51,6 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { userId } = req.params; //body에서 유저아이디를 받고
     const user = await User.findOne({ _id: userId })
-      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
       .populate({ path: "numFollowers", match: { isUnfollowed: false } })
       .populate({ path: "numLikes", match: { isUnliked: false } })
       .select("-password"); //_id가 일치하는 유저를 찾음
@@ -78,15 +77,14 @@ router.get(
       .sort({ createdAt: -1 })
       .skip(startIndex - 1)
       .limit(limit)
-      // .populate({
-      // path: "userId",
-      // select: "-password",
-      // populate: [
-      //   { path: "numFollowees", match: { isUnfollowed: false } },
-      //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numLikes", match: { isUnliked: false } },
-      // ],
-      // })
+      .populate({
+        path: "userId",
+        select: "-password",
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
+      })
       .populate({ path: "numComments", match: { isDeleted: false } });
 
     res.status(200).json({ userPosts });
@@ -109,15 +107,14 @@ router.get(
       .sort({ createdAt: -1 })
       .skip(startIndex - 1)
       .limit(limit)
-      // .populate({
-      //   path: "userId",
-      //   select: "-password",
-      // populate: [
-      //   { path: "numFollowees", match: { isUnfollowed: false } },
-      //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numLikes", match: { isUnliked: false } },
-      // ],
-      // })
+      .populate({
+        path: "userId",
+        select: "-password",
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
+      })
       .populate({
         path: "postId",
         match: { useYN: true },
@@ -141,15 +138,14 @@ router.get(
     // 예) a,b,a,b,c,a,b  => a,a,a,b,b,c
     const allCommentPosts = await Comment.find({ userId, isDeleted: false })
       .sort({ postId: 1, createdAt: -1 })
-      // .populate({
-      //   path: "userId",
-      //   select: "-password",
-      // populate: [
-      //   { path: "numFollowees", match: { isUnfollowed: false } },
-      //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numLikes", match: { isUnliked: false } },
-      // ],
-      // })
+      .populate({
+        path: "userId",
+        select: "-password",
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
+      })
       .populate({
         path: "postId",
         match: { useYN: true },
@@ -206,15 +202,14 @@ router.get(
       .sort({ createdAt: -1 })
       .skip(startIndex - 1)
       .limit(limit)
-      // .populate({
-      //   path: "userId",
-      //   select: "-password",
-      // populate: [
-      //   { path: "numFollowees", match: { isUnfollowed: false } },
-      //   { path: "numFollowers", match: { isUnfollowed: false } },
-      //   { path: "numLikes", match: { isUnliked: false } },
-      // ],
-      // })
+      .populate({
+        path: "userId",
+        select: "-password",
+        // populate: [
+        //   { path: "numFollowers", match: { isUnfollowed: false } },
+        //   { path: "numLikes", match: { isUnliked: false } },
+        // ],
+      })
       .populate({
         path: "postId",
         match: { useYN: true },
@@ -244,7 +239,6 @@ router.get(
         path: "followerId",
         select: "-password",
         populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
@@ -273,7 +267,6 @@ router.get(
         path: "followeeId",
         select: "-password",
         populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
@@ -289,30 +282,21 @@ router.get(
   "/sortByFollowees",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit, hasPost } = req.query;
-    let filteringNum = 0;
-    if (hasPost) filteringNum = 1;
-    const users = await User.find()
-      .populate({ path: "numFollowees", match: { isUnfollowed: false } })
-      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
-      .populate({ path: "numLikes", match: { isUnliked: false } })
-      .sort({ createdAt: -1 });
-    const sortedUsers = users
-      //팔로워가 많은 유저중 게시글이 없는 유저는 필터링함
-      .filter((user) => user.numPosts >= filteringNum)
-      .sort((a, b) => b.numFollowees - a.numFollowees);
-    if (!startIndex && !limit) {
-      res.status(200).json({ sortedUsers });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
-    const limitedSortedUsers = sortedUsers.slice(startIndex - 1, startIndex - 1 + limit);
+
+    let filteringNum = 0;
+    if (hasPost) filteringNum = 2;
+    const limitedSortedUsers = await User.find({ numPosts: { $gte: 1 } })
+      .sort({ numFollowees: -1, createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
+      .populate({ path: "numFollowers", match: { isUnfollowed: false } })
+      .populate({ path: "numLikes", match: { isUnliked: false } });
+
     res.status(200).json({ limitedSortedUsers });
   })
 );
