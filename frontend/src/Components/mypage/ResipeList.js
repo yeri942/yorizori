@@ -104,7 +104,7 @@ const ResipeListBox = styled.div`
     width: 100px;
     height: 100px;
     border-radius: 15px;
-    
+    object-fit: cover;
   }
   
   p {
