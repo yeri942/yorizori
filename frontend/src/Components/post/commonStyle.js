@@ -16,6 +16,7 @@ export const StyledP = styled.p`
     props.stepFour &&
     css`
       padding-left: 3px;
+      padding-bottom: 20px;
       height: 11px;
     `}
     ${(props) =>
@@ -73,6 +74,11 @@ export const ContainerDiv = styled.div`
     css`
       padding: 7px 15px 0px 15px;
     `}
+  ${(props) =>
+    props.stepTwo &&
+    css`
+      border: none;
+    `}
 `;
 
 export const AddBtn = styled.div`
@@ -80,10 +86,11 @@ export const AddBtn = styled.div`
   padding: 12px 0;
   font-weight: 600;
   ::before {
+    font-size: 1rem;
     content: "+";
     color: white;
-    margin-right: 5px;
-    padding: 0px 5px;
+    margin-right: 8px;
+    padding: 0px 8px;
     background-color: #feae11;
     border-radius: 100px;
   }
@@ -91,7 +98,7 @@ export const AddBtn = styled.div`
 
 export const DropdownWrapper = styled.div`
   display: flex;
-  margin: 5px 0;
+  margin: 7px 0;
   justify-content: center;
 
   .rdn {
@@ -112,7 +119,7 @@ export const DropdownWrapper = styled.div`
   .rdn-control-arrow {
     width: 14px;
     height: 14px;
-    background-image: url("../images/dropArrow.png");
+    background-image: url("../../images/dropArrow.png");
     background-repeat: no-repeat;
     background-size: contain;
     position: absolute;
@@ -125,7 +132,7 @@ export const DropdownWrapper = styled.div`
   }
 
   & > div {
-    width: 132px;
+    width: 140px;
     height: 55px;
     border: 2px solid #feae11;
     border-radius: 50px;
@@ -135,7 +142,12 @@ export const DropdownWrapper = styled.div`
     padding-top: 14px;
     padding-right: 20px;
     &:not(:last-child) {
-      margin-right: 11px;
+      margin-right: 9px;
+      ${(props) =>
+        props.small &&
+        css`
+          margin-right: 5px;
+        `}
     }
     & > div:not(:first-child) {
       background-color: white;
