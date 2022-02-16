@@ -34,9 +34,7 @@ const Summary = ({ data, postId }) => {
         }
       });
     } catch (e) {
-      if (e.response.status === 403) {
-        alert("로그아웃 상태입니다.");
-      }
+      console.error(e);
     }
   };
 
@@ -130,7 +128,13 @@ const Summary = ({ data, postId }) => {
                     >
                       삭제하기
                     </StyledDiv>
-                    <StyledDiv>수정하기</StyledDiv>
+                    <StyledDiv
+                      onClick={() => {
+                        navigate(`/post/${postId}`, { state: { data } });
+                      }}
+                    >
+                      수정하기
+                    </StyledDiv>
                   </DropDownWrapper>
                 )}
               </DropDownContainer>

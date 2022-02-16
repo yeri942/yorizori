@@ -30,8 +30,8 @@ function useUserActions() {
       swal("로그인 성공", "로그인되었습니다.", "success").then(() => navigate("/"));
     } catch (e) {
       console.error(e);
-      if (e.response.status === 401) {
-        alert("존재하지않는계정입니다.");
+      if (e.response.status === 400) {
+        swal("로그인 실패", e.response.data.message, "warning");
       }
     }
   }

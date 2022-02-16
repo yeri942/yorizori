@@ -51,8 +51,6 @@ const Recommend = ({ data }) => {
       setRandomNumArray(randomNumArray);
     }
   }, [allRecipes]);
-  console.log(randomNumArray);
-  console.log(filteredRecipe);
 
   return (
     <RecommendWrapper>
