@@ -56,6 +56,7 @@ router.post("/find", isNotLoggedIn, asyncHandler( async (req, res) => {
     isUserExist.save();
   }
   res.cookie("id", id)
+  console.log(req.cookies)
   res.status(200).json({ message: "업데이트 성공!", uid: isUserExist._id, uimg: isUserExist.profileImage })
 }))
 
