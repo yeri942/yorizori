@@ -43,7 +43,7 @@ export default function ResipeButton(props) {
                 console.log(item)
               return (
                 <ResipeListItem key={index}>
-                  <Link to="/detail">
+                  <Link to={`/detail/${props.nums === "1" || props.nums === "2" ? item.postId.id : item.id } `}>
                     { props.nums === "1" || props.nums === "2"
                       ? <img src={item.postId.thumbnail} alt=""/>
                       : <img src={item.thumbnail} alt=""/>
