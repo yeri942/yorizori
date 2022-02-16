@@ -8,11 +8,10 @@ import dummy from "../../posts.json";
 
 
 export default function ResipeButton(props) {
-  const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "최근 확인한 레시피", "댓글 남긴 레시피"]
+  const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "댓글 남긴 레시피", "최근 확인한 레시피", ]
   const [onResipe, setOnResipe] = useState(false)
   const resipeMenuButton = ["../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png"]
-
-
+  const listResipe = [ "postResipe", "likeResipe", "commentResipe", "historyResipe" ]
 
   const changeResipe = () => {
     setOnResipe((onResipe) => {
@@ -40,13 +39,20 @@ export default function ResipeButton(props) {
             onResipe 
             ? 
             <ResipeListBox>
-              { dummy.map((item, index) => {
+              { props[listResipe[props.nums]].map((item, index) => {
+                console.log(item)
               return (
                 <ResipeListItem key={index}>
                   <Link to="/detail">
-                    <img src={item.thumbnail} alt=""/>
+                    { props.nums === "1" || props.nums === "2"
+                      ? <img src={item.postId.thumbnail} alt=""/>
+                      : <img src={item.thumbnail} alt=""/>
+                    }
                   </Link>
-                  <p> {item.recipeName}</p>
+                  { props.nums === "1" || props.nums === "2"
+                    ? <p> {item.postId.recipeName}</p>
+                    : <p> {item.recipeName}</p>
+                  }
                 </ResipeListItem>
                 )
               })}
