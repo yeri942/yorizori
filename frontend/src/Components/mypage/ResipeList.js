@@ -12,7 +12,7 @@ export default function ResipeButton(props) {
   const [onResipe, setOnResipe] = useState(false)
   const resipeMenuButton = ["../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png"]
   const listResipe = [ "postResipe", "likeResipe", "commentResipe", "historyResipe" ]
-
+  
   const changeResipe = () => {
     setOnResipe((onResipe) => {
       console.log(onResipe)
