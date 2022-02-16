@@ -116,6 +116,7 @@ router.get(
     // }
     req.logout();
     req.session.destroy(); // 로그인인증 수단으로 사용한 세션쿠키를 지우고 파괴한다. 세션쿠키가 없다는 말은 즉 로그아웃 인 말.
+    res.clearCookie("id")
     res.status(200).json({ message: "로그아웃 성공" });
   })
 );
