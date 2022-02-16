@@ -119,7 +119,6 @@ const Summary = ({ data, postId }) => {
           <Thumbnail src={data.thumbnail} />
           <LCVS>
             <Likes>
-              {/* {heart && <HeartImage src="../images/onlylogo.png" />} */}
               <span className="sprite heart" onClick={HeartState} />
               <span>{numLikes}명이 좋아합니다.</span>
             </Likes>
@@ -139,6 +138,9 @@ const Summary = ({ data, postId }) => {
           </div>
           <Author>
             <ProfileImg
+              onClick={() => {
+                navigate(`/user/${data.userId.id}/profile`);
+              }}
               src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
             />
             <Nickname>{data.userId.nickName}</Nickname>
@@ -189,7 +191,7 @@ const DropDownContainer = styled.div`
 `;
 
 const DropDownBtn = styled.div`
-  background-image: url("../images/threedot.png");
+  background-image: url("../../images/threedot.png");
   width: 16px;
   height: 16px;
   background-size: cover;
@@ -212,7 +214,7 @@ const SummaryWrapper = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("../images/icons.png");
+    background-image: url("../../images/icons.png");
     background-repeat: no-repeat;
     background-size: 135px 61.05px;
   }
