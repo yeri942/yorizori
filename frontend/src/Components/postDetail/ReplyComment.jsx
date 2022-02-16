@@ -2,15 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
 
-const ReplyWrapper = styled.div`
-  margin-left: 10px;
-`;
-
-const MoreWrapper = styled.p`
-  margin: 0;
-  margin-top: 4px;
-`;
-
 function ReplyComment({ commentList, parentCommentId }) {
   const [childCommentNumber, setChildCommentNumber] = useState(0);
   const [openRelpyComments, setOpenReplyComments] = useState(false);
@@ -49,5 +40,14 @@ function ReplyComment({ commentList, parentCommentId }) {
     </>
   );
 }
+
+const ReplyWrapper = styled.div`
+  margin-left: 10px;
+`;
+
+const MoreWrapper = styled.p`
+  margin: 0;
+  margin-top: 4px;
+`;
 
 export default ReplyComment;
