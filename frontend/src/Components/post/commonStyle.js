@@ -1,3 +1,4 @@
+import { waitForNone } from "recoil";
 import styled, { css } from "styled-components";
 
 export const StyledP = styled.p`
@@ -10,7 +11,7 @@ export const StyledP = styled.p`
   ${(props) =>
     props.stepOne &&
     css`
-      padding-top: 20px;
+      padding-top: 10px;
     `}
   ${(props) =>
     props.stepFour &&
@@ -79,20 +80,26 @@ export const ContainerDiv = styled.div`
     css`
       border: none;
     `}
+    ${(props) =>
+    props.big &&
+    css`
+      border: none;
+    `}
 `;
 
 export const AddBtn = styled.div`
   text-align: center;
   padding: 12px 0;
-  font-weight: 600;
+  font-weight: 900;
+
   ::before {
-    font-size: 1rem;
     content: "+";
     color: white;
     margin-right: 8px;
-    padding: 0px 8px;
+    padding: 0px 6px;
     background-color: #feae11;
     border-radius: 100px;
+    font-size: 13px;
   }
 `;
 
