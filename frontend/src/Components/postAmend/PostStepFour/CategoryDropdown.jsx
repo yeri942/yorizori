@@ -6,18 +6,38 @@ import { useRecoilState } from "recoil";
 
 const CategoryDropdown = ({ data }) => {
   const [category, setCategory] = useRecoilState(categoryAtom);
+
   useEffect(() => {
-    setCategory({
-      ...category,
-      category: data.category,
-      material: data.material,
-      condition: data.condition,
-    });
-  }, []);
+    console.log(category);
+    if (!category.category) {
+      setCategory({
+        ...category,
+        category: data.category,
+      });
+    }
+    if (!category.material) {
+      setCategory({
+        ...category,
+        material: data.material,
+      });
+    }
+    if (!category.condition) {
+      setCategory({
+        ...category,
+        condition: data.condition,
+      });
+    }
+    if (!category.cook) {
+      setCategory({
+        ...category,
+        cook: data.cook,
+      });
+    }
+  }, [category]);
 
   return (
     <>
-      <DropdownWrapper>
+      <DropdownWrapper category>
         <Dropdown
           placeholder={category.category ? category.category : "종류별"}
           options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
@@ -39,7 +59,7 @@ const CategoryDropdown = ({ data }) => {
           }}
         />
       </DropdownWrapper>
-      <DropdownWrapper>
+      <DropdownWrapper category>
         <Dropdown
           placeholder={category.condition ? category.condition : "상황별"}
           options={[

@@ -7,7 +7,7 @@ import { useFormContext } from "react-hook-form";
 
 const IngredientsList = ({ data }) => {
   const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
-  console.log(data);
+
   const { register, setValue } = useFormContext();
   const deleteIngredient = (index) => {
     setIngredientsList((oldList) => {
@@ -21,7 +21,19 @@ const IngredientsList = ({ data }) => {
   };
 
   useEffect(() => {
-    setIngredientsList(data.ingredient);
+    if (ingredientsList.length < data.ingredient.length) {
+      for (let i = 0; i < data.ingredient.length - 1; i++) {
+        setIngredientsList((oldList) => {
+          const newList = [
+            ...oldList,
+            {
+              key: new Date().getTime(),
+            },
+          ];
+          return newList;
+        });
+      }
+    }
   }, []);
 
   return (
@@ -33,13 +45,17 @@ const IngredientsList = ({ data }) => {
               {...register(`ingredient_${index + 1}`)}
               placeholder="ex) 우유"
               key={`ingredient_${index}`}
-              defaultValue={data.ingredient[index].ingreName}
+              defaultValue={
+                index + 1 <= data.ingredient.length ? data.ingredient[index].ingreName : ""
+              }
             ></Ingredient>
             <Volume
               {...register(`ingredientVolume_${index + 1}`)}
               placeholder="200ml"
               key={`ingredient_volume_${index}`}
-              defaultValue={data.ingredient[index].ingreCount}
+              defaultValue={
+                index + 1 <= data.ingredient.length ? data.ingredient[index].ingreCount : ""
+              }
             ></Volume>
             {index + 1 === ingredientsList.length && (
               <DeleteBtn
@@ -80,8 +96,8 @@ const Ingredient = styled.textarea`
   height: 59px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
-  padding: 19px 0px 0px 25px;
+  border-radius: 10px;
+  padding: 16px 0px 0px 25px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea};
@@ -92,8 +108,8 @@ const Volume = styled.textarea`
   height: 59px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
-  padding: 19px 0px 0px 25px;
+  border-radius: 10px;
+  padding: 16px 0px 0px 25px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea}

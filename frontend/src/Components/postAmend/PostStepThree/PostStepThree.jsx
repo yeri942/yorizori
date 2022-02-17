@@ -78,7 +78,7 @@ const PostStepThree = ({ data }) => {
 
       <ContainerDiv big>
         <OrderList data={data}></OrderList>
-        <AddOrder></AddOrder>
+        <AddOrder data={data}></AddOrder>
       </ContainerDiv>
     </PostTemplete>
   );

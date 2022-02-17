@@ -5,10 +5,10 @@ import NavBottom from "../nav/BottomNav";
 import { StyledP } from "./commonStyle";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { postPageStateAtom } from "./PostAtom/PostAtom";
+
 const PostTemplete = ({ children, stepNum, page, request }) => {
   const postPageState = useRecoilValue(postPageStateAtom);
   const setPostpostPageState = useSetRecoilState(postPageStateAtom);
-
   return (
     <PostTempleteBlock autocomplete="off">
       <PostNav />
@@ -35,7 +35,7 @@ const PostTemplete = ({ children, stepNum, page, request }) => {
         </PageBtn>
       </BtnWrapper>
       <StyledBtn page={page} type="submit">
-        수정하기
+        작성 완료
       </StyledBtn>
 
       <NavBottom />
@@ -53,7 +53,7 @@ const StyledBtn = styled.button`
   width: 315px;
   height: 58px;
   background: #fcad2c;
-  border-radius: 50px;
+  border-radius: 10px;
   color: white;
   font-size: 1.1rem;
   font-weight: 550;

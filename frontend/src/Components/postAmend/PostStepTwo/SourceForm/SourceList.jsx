@@ -7,11 +7,11 @@ import { useFormContext } from "react-hook-form";
 
 const SourceList = ({ data }) => {
   const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
+
   const { register, setValue } = useFormContext();
   const deleteIngredient = (index) => {
     setValue(`source_${index + 1}`, "");
     setValue(`sourceVolume_${index + 1}`, "");
-
     setSourceList((oldList) => {
       const newList = oldList.filter(function (el, i) {
         return index !== i;
@@ -19,9 +19,20 @@ const SourceList = ({ data }) => {
       return newList;
     });
   };
-
   useEffect(() => {
-    setSourceList(data.seasoning);
+    if (SourceList.length < data.seasoning.length) {
+      for (let i = 0; i < data.seasoning.length - 1; i++) {
+        setSourceList((oldList) => {
+          const newList = [
+            ...oldList,
+            {
+              key: new Date().getTime(),
+            },
+          ];
+          return newList;
+        });
+      }
+    }
   }, []);
 
   return (
@@ -33,13 +44,17 @@ const SourceList = ({ data }) => {
               {...register(`source_${index + 1}`)}
               placeholder="ex) 간장"
               key={`source_${index}`}
-              defaultValue={data.seasoning[index].ingreName}
+              defaultValue={
+                index + 1 <= data.seasoning.length ? data.seasoning[index].ingreName : ""
+              }
             ></Ingredient>
             <Volume
               {...register(`sourceVolume_${index + 1}`)}
               placeholder="한 큰술"
               key={`source_volume_${index}`}
-              defaultValue={data.seasoning[index].ingreCount}
+              defaultValue={
+                index + 1 <= data.seasoning.length ? data.seasoning[index].ingreCount : ""
+              }
             ></Volume>
             {index + 1 === SourceList.length && (
               <DeleteBtn
@@ -80,8 +95,8 @@ const Ingredient = styled.textarea`
   height: 59px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
-  padding: 19px 0px 0px 25px;
+  border-radius: 10px;
+  padding: 16px 0px 0px 25px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea};
@@ -92,8 +107,8 @@ const Volume = styled.textarea`
   height: 59px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
-  padding: 19px 0px 0px 25px;
+  border-radius: 10px;
+  padding: 16px 0px 0px 25px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea}

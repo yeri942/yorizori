@@ -61,7 +61,6 @@ const PostStepOne = () => {
   };
 
   return (
-    // <PostTemplete stepNum={1} page={1} request={"레시피 제목을 입력해주세요.(필수)"}>
     <PostTemplete stepNum={1} page={1} request={"썸네일을 등록해주세요.(필수)"}>
       <ModalBackground
         modalState={modalState}
@@ -69,21 +68,12 @@ const PostStepOne = () => {
           setModalState(false);
         }}
       />
-      {/* {mainImage.state ? "썸네일 확인하기" : "썸네일 등록하기"} */}
       <ModalBox modalState={modalState}>
         <ImgBox ref={PreviewRef} src="" alt="none" />
-        {/* <DeleteImg onClick={changeImg}>삭제하기</DeleteImg> */}
         <ModalClose onClick={closePreview}>
           <CloseP>x</CloseP>
         </ModalClose>
       </ModalBox>
-      {/* {mainImage.state ? (
-        <ImgUploadButton onClick={openPreview}>썸네일 확인하기</ImgUploadButton>
-      ) : (
-        <ImgUploadButton ref={ImgLabel} htmlFor="main_img">
-          썸네일 등록하기
-        </ImgUploadButton>
-      )} */}
       <ButtonWrapper>
         <ImgUploadButton ref={ImgLabel} htmlFor="main_img">
           {mainImage.state ? "썸네일 변경하기" : "썸네일 등록하기"}

@@ -154,7 +154,8 @@ const Summary = ({ data, postId }) => {
           <Author>
             <ProfileImg
               onClick={() => {
-                navigate(`/user/${data.userId.id}/profile`);
+                // navigate(`/user/${data.userId.id}/profile`);
+                window.location.replace(`/user/${data.userId.id}/profile`);
               }}
               src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
             />
@@ -177,7 +178,7 @@ const Summary = ({ data, postId }) => {
                     </StyledDiv>
                     <StyledDiv
                       onClick={() => {
-                        navigate(`/post/${postId}`, { state: { data } });
+                        navigate(`/post/${postId}`, { state: { data, postId } });
                       }}
                     >
                       수정하기

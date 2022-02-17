@@ -21,37 +21,31 @@ const PostStepOne = ({ data }) => {
   const ImgLabel = useRef();
   const ImgInput = useRef();
   const PreviewRef = useRef();
-  const { watch } = useForm();
+  const { watch, setValue, getValues } = useForm();
   const { register } = useFormContext();
 
   const mainImage = useRecoilValue(MainImageStateAtom);
   const setMainImage = useSetRecoilState(MainImageStateAtom);
   const [modalState, setModalState] = useState(false);
-  const [prevFile, setPrevFile] = useState(null);
+  const [number, setNumber] = useState(0);
+
+  useEffect(() => {
+    if (!mainImage.state) {
+      ConvertURLtoFile(data.thumbnail).then((el) => {
+        console.log([el]);
+        setMainImage({
+          ...mainImage,
+          file: [el],
+          state: true,
+          preview: data.thumbnail,
+        });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     PreviewRef.current.src = mainImage.preview;
   }, [watch, mainImage]);
-
-  useEffect(() => {
-    const filesInArr = [prevFile];
-    console.log(filesInArr);
-    setMainImage({
-      ...mainImage,
-      file: filesInArr,
-    });
-  }, [prevFile]);
-
-  useEffect(() => {
-    ConvertURLtoFile(data.thumbnail).then((file) => {
-      setPrevFile(file);
-    });
-    setMainImage({
-      ...mainImage,
-      preview: data.thumbnail,
-      state: true,
-    });
-  }, []);
 
   const handleImage = (e) => {
     let cur_file = e.target.files[0];
@@ -83,7 +77,7 @@ const PostStepOne = ({ data }) => {
   };
 
   return (
-    <PostTemplete stepNum={1} page={1} request={"레시피 제목을 입력해주세요.(필수)"}>
+    <PostTemplete stepNum={1} page={1} request={"썸네일을 등록해주세요.(필수)"}>
       <ModalBackground
         modalState={modalState}
         onClick={() => {
@@ -92,22 +86,29 @@ const PostStepOne = ({ data }) => {
       />
       <ModalBox modalState={modalState}>
         <ImgBox ref={PreviewRef} src="" alt="none" />
-        <DeleteImg onClick={changeImg}>삭제하기</DeleteImg>
-        <ModalClose onClick={closePreview}>x</ModalClose>
+        <ModalClose onClick={closePreview}>
+          <CloseP>x</CloseP>
+        </ModalClose>
       </ModalBox>
-
+      <ButtonWrapper>
+        <ImgUploadButton ref={ImgLabel} htmlFor="main_img">
+          {mainImage.state ? "썸네일 변경하기" : "썸네일 등록하기"}
+        </ImgUploadButton>
+        <ImgCheckButton
+          type="button"
+          state={mainImage.state}
+          onClick={openPreview}
+          value="썸네일 확인하기"
+          disabled={mainImage.state ? false : true}
+        />
+      </ButtonWrapper>
+      <StyledP stepOne>레시피 제목을 입력해주세요.(필수)</StyledP>
       <TitleInput
         {...register(`recipeName`)}
         placeholder="마늘 50개 들어간 알리오 올리오"
         defaultValue={data.recipeName}
       />
       <PositionRelative>
-        {mainImage.file ? (
-          <Preview onClick={openPreview} />
-        ) : (
-          <ImgUploadLabel ref={ImgLabel} htmlFor="main_img" />
-        )}
-
         <ImgUploadInput
           accept="image/*"
           ref={ImgInput}
@@ -128,10 +129,17 @@ const PostStepOne = ({ data }) => {
 
 export default PostStepOne;
 
+const CloseP = styled.p`
+  margin: 0;
+  position: absolute;
+  top: -3px;
+  left: 6px;
+`;
+
 const TitleInput = styled.input`
   width: 315px;
   height: 60px;
-  border-radius: 50px;
+  border-radius: 15px;
   border: 1px solid #feae11;
   font-size: 1rem;
   font-weight: bold;
@@ -151,6 +159,33 @@ const ImgUploadLabel = styled.label`
   left: 110px;
 `;
 
+const ImgUploadButton = styled.label`
+  width: 157.5px;
+  height: 60px;
+  border-radius: 10px 0px 0px 10px;
+  background-color: #feae11;
+  color: white;
+  padding: 17px 0px 0px 23px;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const ImgCheckButton = styled.input`
+  border: none;
+  width: 157.5px;
+  height: 60px;
+  border-radius: 0px 10px 10px 0px;
+  background-color: ${(props) => (props.state === true ? "#feae11" : "#c4c4c4")};
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+`;
+
 const ImgUploadInput = styled.input`
   display: none;
 `;
@@ -164,7 +199,7 @@ const StyledTextArea = styled.textarea`
   height: 159px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
+  border-radius: 15px;
   padding: 50px 45px 0 45px;
   font-size: 1rem;
   font-weight: bold;

@@ -10,14 +10,10 @@ const PostStepFour = ({ data }) => {
   return (
     <PostTemplete stepNum={4} page={4} request={"추가정보를 입력해 주세요.(필수)"}>
       <StyledP stepFour>카테고리(필수)</StyledP>
-      <ContainerDiv drop>
-        <CategoryDropdown data={data} />
-      </ContainerDiv>
+      <CategoryDropdown data={data} />
 
       <StyledP stepFour>요리정보(필수)</StyledP>
-      <ContainerDiv drop small>
-        <CookInfoDropdown data={data} />
-      </ContainerDiv>
+      <CookInfoDropdown data={data} />
     </PostTemplete>
   );
 };

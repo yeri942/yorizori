@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -61,9 +61,16 @@ const PostForm = () => {
   const subImage = useRecoilValue(SubImageStateAtom);
   const [invalidationState, setInvalidationState] = useRecoilState(InvalidationAtom);
   const { state } = useLocation();
-  const { data } = state;
+  const { data, postId } = state;
   const navigate = useNavigate();
   const methods = useForm();
+
+  useEffect(() => {
+    console.log(state);
+    console.log(data._id);
+    console.log(postId);
+    console.log(state);
+  }, []);
 
   const onSubmit = async (data) => {
     let ingredient = [];
@@ -172,6 +179,8 @@ const PostForm = () => {
       for (var pair of formData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
+
+      await axios.delete(`/post/${postId}`);
 
       await axios
         .post("/post", formData, {

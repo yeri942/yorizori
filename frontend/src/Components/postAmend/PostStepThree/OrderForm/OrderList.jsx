@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ResetTextarea, Preview } from "../../commonStyle";
@@ -12,16 +12,60 @@ import {
 import { ConvertURLtoFile } from "../../util/ConvertURLtoFile";
 
 const OrderList = ({ data }) => {
-  const [beforImage, setBeforImage] = useState({
-    file: [],
-  });
   const [OrderList, setOrderList] = useRecoilState(OrderListAtom);
   const [subModalState, setSubModalState] = useRecoilState(SubModalStateAtom);
   const setDeleteIndex = useSetRecoilState(DeleteIndexAtom);
   const setSubImage = useSetRecoilState(SubImageStateAtom);
   const subImage = useRecoilValue(SubImageStateAtom);
-  console.log(data);
+
   const { register, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (OrderList.length < data.process.length) {
+      for (let i = 0; i < data.process.length - 1; i++) {
+        setOrderList((oldList) => {
+          const newList = [
+            ...oldList,
+            {
+              key: new Date().getTime(),
+            },
+          ];
+          return newList;
+        });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    data.copyImage.map((el, index) => {
+      ConvertURLtoFile(el).then((imgFile) => {
+        console.log(imgFile);
+        console.log(el);
+        if (!subImage.preview[index + 1]) {
+          setSubImage((oldList) => {
+            const newList = {
+              ...oldList,
+              file: oldList.file.map((element, idx) => {
+                if (element) {
+                  return element;
+                } else if (idx === index + 1) {
+                  return imgFile;
+                }
+              }),
+              preview: oldList.preview.map((element, idx) => {
+                if (element) {
+                  return element;
+                } else if (idx === index + 1) {
+                  return el;
+                }
+              }),
+            };
+            return newList;
+          });
+        }
+      });
+    });
+  }, []);
 
   const deleteIngredient = (index) => {
     setValue(`order_${index + 1}`, "");
@@ -90,40 +134,6 @@ const OrderList = ({ data }) => {
     });
     setDeleteIndex(e.target.dataset.name);
   };
-  let testArray = [];
-  useEffect(() => {
-    data.copyImage.map((el, idx) => {
-      ConvertURLtoFile(el).then((file) => {
-        console.log(file);
-        console.log(subImage.file);
-      });
-    });
-
-    console.log(beforImage);
-
-    setSubImage({
-      ...subImage,
-      preview: [0, ...data.copyImage, ...subImage.preview],
-    });
-
-    setOrderList([data.process]);
-    data.process.map((el) => {
-      setOrderList((oldList) => {
-        const newList = [
-          {
-            key: el,
-          },
-          ...oldList,
-        ];
-        return newList;
-      });
-    });
-    // return () => {
-    //   data.process = [];
-    // };
-  }, []);
-
-  console.log(OrderList);
 
   return (
     <>
@@ -134,9 +144,10 @@ const OrderList = ({ data }) => {
               {...register(`order_${index + 1}`)}
               placeholder="ex) 마늘을 잘게 썬다."
               key={`order_${index}`}
+              defaultValue={index + 1 <= data.process.length ? data.process[index].explain : ""}
             ></Ingredient>
             <TimeWrapper key={`TimeWrapper_${index}`}>
-              {subImage.preview[index + 1] ? (
+              {subImage.file[index + 1] ? (
                 <Preview
                   key={`Preview_${index}`}
                   data-name={`${index + 1}`}
@@ -158,7 +169,9 @@ const OrderList = ({ data }) => {
               <TimeInput
                 {...register(`orderTimeMin_${index + 1}`)}
                 placeholder="05"
-                defaultValue={index <= 1 ? data.process[index].processTime.min : 0}
+                defaultValue={
+                  index + 1 <= data.process.length ? data.process[index].processTime.min : "00"
+                }
                 type="number"
                 min="0"
                 key={`TimeInput_min_${index}`}
@@ -168,7 +181,9 @@ const OrderList = ({ data }) => {
               <TimeInput
                 {...register(`orderTimeSec_${index + 1}`)}
                 placeholder="00"
-                defaultValue={index <= 1 ? data.process[index].processTime.sec : 0}
+                defaultValue={
+                  index + 1 <= data.process.length ? data.process[index].processTime.sec : "00"
+                }
                 type="number"
                 max="60"
                 min="0"
@@ -223,7 +238,7 @@ const Ingredient = styled.textarea`
   height: 54px;
   border: 1px solid #feae11;
   box-sizing: border-box;
-  border-radius: 50px;
+  border-radius: 10px;
   padding: 15px 55px 0px 25px;
   font-size: 1rem;
   font-weight: bold;

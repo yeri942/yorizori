@@ -6,15 +6,28 @@ import { useRecoilState } from "recoil";
 
 const CookInfoDropdown = ({ data }) => {
   const [cookInfo, setCookInfo] = useRecoilState(cookInfoAtom);
-  console.log(data);
+
   useEffect(() => {
-    setCookInfo({
-      ...cookInfo,
-      servings: data.servings,
-      time: data.time,
-      diffic: data.diffic,
-    });
-  }, []);
+    console.log(cookInfo);
+    if (!cookInfo.servings) {
+      setCookInfo({
+        ...cookInfo,
+        servings: data.servings,
+      });
+    }
+    if (!cookInfo.time) {
+      setCookInfo({
+        ...cookInfo,
+        time: data.time,
+      });
+    }
+    if (!cookInfo.diffic) {
+      setCookInfo({
+        ...cookInfo,
+        diffic: data.diffic,
+      });
+    }
+  }, [cookInfo]);
 
   return (
     <>
