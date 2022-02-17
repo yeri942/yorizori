@@ -169,6 +169,21 @@ router.get(
   })
 );
 
+router.get(
+  "/withFilter/count",
+  asyncHandler(async (req, res, next) => {
+    let filteredCondition = {};
+    for (const [key, value] of Object.entries(req.query)) {
+      value ? (filteredCondition[key] = value) : null;
+    }
+
+    console.log("filteredCondition", filteredCondition);
+    const filteredPostCount = await Post.find(filteredCondition).countDocuments();
+
+    res.status(200).json({ filteredPostCount });
+  })
+);
+
 //레시피 쿼리로 조회하는 로직
 //startIndex : 시작인덱스
 //limit : 조회할 게시글 개수
@@ -200,7 +215,7 @@ router.get(
     }
 
     console.log("filteredCondition", filteredCondition);
-    const userPosts = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
+    const filteredPost = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
       .sort({ createdAt: -1 }) // 최신순정렬
       .skip(startIndex - 1)
       .limit(limit)
@@ -210,7 +225,7 @@ router.get(
       })
       .populate({ path: "numComments", match: { isDeleted: false } });
 
-    res.status(200).json({ userPosts });
+    res.status(200).json({ filteredPost });
   })
 );
 
