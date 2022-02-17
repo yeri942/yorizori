@@ -6,9 +6,9 @@ import styled from "styled-components";
 import { userIdAtom } from "../../states";
 import { commentAtom } from "../../states/comment";
 import TopNav from "../nav/TopNav";
-import Comment from "./Comment";
+import {MemoizeComment as Comment} from "./Comment";
 import ReplyComment from "./ReplyComment";
-import { isLoadingAtom, messageAtom, postIdAtom, toastAtom } from "./toastAtom";
+import { isLoadingAtom, messageAtom, toastAtom } from "./toastAtom";
 
 function MoreComments() {
   const [comments, setComments] = useRecoilState(commentAtom);
@@ -33,26 +33,20 @@ function MoreComments() {
     }
   }, [toastStatus, isLoading]);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    // if (!newComment) {
-    //   alert("댓글을 입력해주세요!");
-    //   return;
-    // }
-    // fetch(url, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     postId: "61f61970198538e03c2b75a9",
-    //     userId: "61f619dec8eb6ca33d73bbc2",
-    //     comment: newComment,
-    //   }),
-    // }).then((res) => {
-    //   console.log(res);
-    // });
-    // setNewComment("");
+    try {
+      const res = await axios.post("/comment", { postId, comment: newComment });
+      setNewComment("");
+      setToastStatus(true);
+      setToastMessage("댓글이 등록되었습니다.");
+      setIsLoading(true);
+    } catch (err) {
+      console.error(err);
+      setNewComment("");
+      setToastStatus(true);
+      setToastMessage(err);
+    }
   };
 
   const changeHandler = ({ target: { value } }) => {
@@ -72,10 +66,9 @@ function MoreComments() {
         {!isLoading &&
           comments.map((comment, index) => {
             const isAuth = comment.userId.id === isLogin;
-            console.log(comment);
             return (
               !comment.parentComment && (
-                <>
+                <React.Fragment key={index}>
                   <Comment
                     key={comment._id}
                     comment={{ ...comment }}
@@ -89,7 +82,7 @@ function MoreComments() {
                     parentCommentId={comment._id}
                     postId={postId}
                   />
-                </>
+                </React.Fragment>
               )
             );
           })}
