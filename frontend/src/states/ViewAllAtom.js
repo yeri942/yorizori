@@ -1,6 +1,11 @@
 import { atom, selector } from "recoil";
 import { getFamousPosts } from "../actions/homeAction";
 
+export const categoryAtom = atom({
+  key: "category",
+  default: {},
+});
+
 export const randomButtonState = atom({
   key: "randomButtonState",
   default: false,
