@@ -37,10 +37,9 @@ router.post(
 
 router.post("/find", isNotLoggedIn, asyncHandler( async (req, res) => {
   const {email, nickName, kakaoId, profileImage } = req.body;
-  console.log(req.body)
-  console.log(typeof kakaoId)
   const isUserExist = await User.findOne({ email });
-  let id = isUserExist?._id;
+  console.log(isUserExist,"유져 있냐??")
+  let id;
   if(!isUserExist) {
     const user = await User.create({
       email,
@@ -50,14 +49,14 @@ router.post("/find", isNotLoggedIn, asyncHandler( async (req, res) => {
     })
     id = user._id;
     console.log(id)
+    res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: user.profileImage })
   }
   else if(!isUserExist.kakaoId) {
+    id = isUserExist?._id;
     isUserExist.kakaoId = kakaoId;
     isUserExist.save();
+    res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: isUserExist.profileImage })
   }
-  res.cookie("id", id)
-  console.log(req.cookies)
-  res.status(200).json({ message: "업데이트 성공!", uid: isUserExist._id, uimg: isUserExist.profileImage })
 }))
 
 //* 로그인 요청
