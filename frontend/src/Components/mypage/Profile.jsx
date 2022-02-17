@@ -157,13 +157,13 @@ const MyPageTemplate = () => {
                       <span>{myPostResipe.length}</span>
                   </div>
                   <div>
-                    <Link to="/">
+                    <Link to={`/user/${authId}/follower`}>
                       <p>팔로워</p>
                       <span>{userData.numFollowers}</span>
                     </Link>
                   </div>
                   <div>
-                    <Link to="/">
+                    <Link to={`/user/${authId}/followee`}>
                       <p>팔로잉</p>
                       <span>{userData.numFollowees}</span>
                     </Link>
