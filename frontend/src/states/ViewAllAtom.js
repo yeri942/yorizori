@@ -2,8 +2,24 @@ import { atom, selector } from "recoil";
 import { getFamousPosts } from "../actions/homeAction";
 
 export const categoryAtom = atom({
-  key: "category",
-  default: {},
+  key: "categoryAtom",
+  default: "",
+});
+export const materialAtom = atom({
+  key: "materialAtom",
+  default: "",
+});
+export const conditionAtom = atom({
+  key: "conditionAtom",
+  default: "",
+});
+export const cookAtom = atom({
+  key: "cookAtom",
+  default: "",
+});
+export const ViewAll = atom({
+  key: "viewAll",
+  default: [],
 });
 
 export const randomButtonState = atom({

@@ -1,56 +1,85 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
-
+import { searchAtom } from "../nav/NavAtom";
 import { useRecoilState } from "recoil";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { dropDownOptionsState } from "../../states/ViewAllAtom";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import {
+  dropDownOptionsState,
+  categoryAtom,
+  materialAtom,
+  conditionAtom,
+  cookAtom,
+  ViewAll,
+} from "../../states/ViewAllAtom";
+
 const CategoryDropdown = () => {
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
-  const [recipe, setRecipe] = useState([]);
-  const clearDropDownOptions = (e) => {
-    const defaultName = document.querySelectorAll(".rdn-control-placeholder");
-    const defaultNameList = ["종류", "재료", "상황", "방법"];
-    defaultName.forEach((item, index) => {
-      item.innerText = defaultNameList[index];
-    });
-
-    setDropDownOptions(() => ({
-      category: "",
-      material: "",
-      condition: "",
-      cook: "",
-    }));
-  };
+  const [filterCategory, setFilterCategory] = useRecoilState(categoryAtom);
+  const [filterMaterial, setFilterMaterial] = useRecoilState(materialAtom);
+  const [filterCondition, setFilterCondition] = useRecoilState(conditionAtom);
+  const [filterCook, setFilterCook] = useRecoilState(cookAtom);
+  const resetSearchValue = useResetRecoilState(searchAtom);
+  const [category, setCategoty] = useState([]);
+  const [recipe, setRecipe] = useRecoilState(ViewAll);
+  const resetView = useResetRecoilState(ViewAll);
+  const resetCategory = useResetRecoilState(categoryAtom);
+  const resetMaterial = useResetRecoilState(materialAtom);
+  const resetCondition = useResetRecoilState(conditionAtom);
+  const resetCook = useResetRecoilState(cookAtom);
 
   useEffect(() => {
-    const defaultName = document.querySelectorAll(".rdn-control-placeholder");
-    const defaultCategory = ["category", "material", "condition", "cook"];
-    const defaultNameList = ["종류", "재료", "상황", "방법"];
+    const fetchData = async () => {
+      const category = dropDownOptions.value;
 
-    defaultName.forEach((item, index) => {
-      if (!dropDownOptions[defaultCategory[index]]) {
-        item.innerText = defaultNameList[index];
-      } else {
-        item.innerText = dropDownOptions[defaultCategory[index]];
-        const title = item.innerText;
-      }
-    });
-  });
-  const getRecipe = (value) => {
-    // if (value === Dropdown.options) console.log("change!", value, dropDownOptions);
-
-    console.log(value.value);
+      const url = `http://localhost:8080/post/withFilter?category=${category}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setCategoty(data.category);
+    };
+    fetchData();
+  }, []);
+  const handleFilterCategory = (e) => {
+    resetView();
+    setFilterCategory(e.value);
+    resetSearchValue();
+    resetMaterial();
+    resetCondition();
+    resetCook();
   };
+  const handleFilterMaterial = (e) => {
+    resetView();
+    setFilterMaterial(e.value);
+    resetSearchValue();
+    resetCategory();
+    resetCondition();
+    resetCook();
+  };
+  const handleFilterCondition = (e) => {
+    resetView();
+    setFilterCondition(e.value);
+    resetSearchValue();
+    resetCategory();
+    resetMaterial();
+    resetCook();
+  };
+  const handleFilterCook = (e) => {
+    resetView();
+    setFilterCondition(e.value);
+    resetSearchValue();
+    resetCategory();
+    resetMaterial();
+    resetCondition();
+  };
+
   return (
     <>
       <DropdownWrapper>
         <Dropdown
-          className="category"
           placeholder="종류"
           options={["한식", "중식", "일식", "아시안", "양식", "기타"]}
-          onChange={getRecipe}
+          onChange={(e) => handleFilterCategory(e)}
           onSelect={(value) => {
             setDropDownOptions((dropDownValues) => ({
               ...dropDownValues,
@@ -61,12 +90,11 @@ const CategoryDropdown = () => {
             }));
           }} // always fires once a selection happens even if there is no change
         />
-
         <Dropdown
           placeholder="재료"
           options={["육류", "채소류", "해물류", "과일류", "달걀/유제품", "기타"]}
           value="one"
-          onChange={getRecipe}
+          onChange={(e) => handleFilterMaterial(e)}
           onSelect={(value) => {
             setDropDownOptions((dropDownValues) => ({
               ...dropDownValues,
@@ -91,7 +119,7 @@ const CategoryDropdown = () => {
             "기타",
           ]}
           value="one"
-          onChange={getRecipe}
+          onChange={(e) => handleFilterCondition(e)}
           onSelect={(value) => {
             setDropDownOptions((dropDownValues) => ({
               ...dropDownValues,
@@ -107,7 +135,7 @@ const CategoryDropdown = () => {
           options={["볶음", "무침", "비빔", "끓이기", "굽기", "삶기", "튀김", "기타"]}
           className="last"
           value="one"
-          onChange={getRecipe}
+          onChange={(e) => handleFilterCook(e)}
           onSelect={(value) => {
             setDropDownOptions((dropDownValues) => ({
               ...dropDownValues,
