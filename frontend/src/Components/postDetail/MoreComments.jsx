@@ -8,7 +8,7 @@ import { commentAtom } from "../../states/comment";
 import TopNav from "../nav/TopNav";
 import {MemoizeComment as Comment} from "./Comment";
 import ReplyComment from "./ReplyComment";
-import { isLoadingAtom, messageAtom, postIdAtom, toastAtom } from "./toastAtom";
+import { isLoadingAtom, messageAtom, toastAtom } from "./toastAtom";
 
 function MoreComments() {
   const [comments, setComments] = useRecoilState(commentAtom);

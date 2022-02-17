@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import TopNav from "../nav/TopNav";
 import BottomNav from "../nav/BottomNav";
@@ -9,7 +9,7 @@ import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
 import axios from "axios";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState} from "recoil";
 import { detailDataAtom, delAndAmendBtnStateAtom } from "../../states/detail";
 import { Watch } from "react-loader-spinner";
 import { Loading } from "../home/ariticleTemplateWithOneSlide";

@@ -1,15 +1,13 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
-import moment from "moment";
 import { Link, useParams } from "react-router-dom";
 import { MemoizeComment as Comment, ProfileImg } from "./Comment";
-import ReplyComment from "./ReplyComment";
 import axios from "axios";
-import { authAtom, userIdAtom, userImage } from "../../states";
+import { userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 import Toast from "./Toast";
-import { isLoadingAtom, messageAtom, postIdAtom, toastAtom } from "./toastAtom";
+import { isLoadingAtom, messageAtom, toastAtom } from "./toastAtom";
 
 const Comments = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom);
