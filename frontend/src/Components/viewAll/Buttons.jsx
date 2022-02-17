@@ -19,6 +19,7 @@ const Buttons = () => {
   const currentSortState = useRecoilValue(sortState);
   const setCurrentSortState = useSetRecoilState(sortState);
   const [recipes, setRecipes] = useState([]);
+  const [page, setPage] = useState(1);
 
   const randompost = () => {
     setRandomButton(true);
@@ -49,6 +50,23 @@ const Buttons = () => {
     }
   };
 
+  const getRecipe = async () => {
+    try {
+      const url = `http://localhost:8080/post?page=${page}&perPage=10`;
+
+      const fetchData = async () => {
+        // setLoading(true);
+        const result = await axios(url);
+        const resultrecipes = recipes.concat(result.data);
+        setRecipes(resultrecipes);
+        // setLoading(false);
+      };
+      fetchData();
+    } catch {
+      console.error("에러");
+    }
+  };
+
   useEffect(() => {
     const defaultName = document.querySelectorAll(".rdn-control-placeholder");
     const defaultCategory = ["category", "material", "condition", "cook"];
@@ -62,14 +80,11 @@ const Buttons = () => {
       }
     });
 
-    const urlAll = "http://localhost:8080/post";
-
-    const fetchData = async () => {
-      const result = await axios(urlAll);
-      setRecipes(result.data);
-    };
-    fetchData();
-  }, []);
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getRecipe();
+    }
+  }, [page]);
 
   return (
     <>

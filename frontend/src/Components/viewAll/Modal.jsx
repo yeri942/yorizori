@@ -12,6 +12,7 @@ const Modal = () => {
   const setRandomPost = useSetRecoilState(randomPostState);
   const [recipes, setRecipes] = useState([]);
   const { Kakao } = window;
+  const [page, setPage] = useState(1);
   const url = "http://localhost:3000";
 
   const setShare = () => {
@@ -52,15 +53,28 @@ const Modal = () => {
     }
   };
 
-  useEffect(() => {
-    const urlAll = "http://localhost:8080/post";
+  const getRecipe = async () => {
+    try {
+      const url = `http://localhost:8080/post?page=${page}&perPage=10`;
 
-    const fetchData = async () => {
-      const result = await axios(urlAll);
-      setRecipes(result.data);
-    };
-    fetchData();
-  }, []);
+      const fetchData = async () => {
+        // setLoading(true);
+        const result = await axios(url);
+        const resultrecipes = recipes.concat(result.data);
+        setRecipes(resultrecipes);
+        // setLoading(false);
+      };
+      fetchData();
+    } catch {
+      console.error("에러");
+    }
+  };
+  useEffect(() => {
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getRecipe();
+    }
+  }, [page]);
 
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
