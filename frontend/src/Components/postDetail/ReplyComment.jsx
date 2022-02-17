@@ -10,14 +10,9 @@ function ReplyComment({ commentList, parentCommentId, postId }) {
   const isLogin = useRecoilValue(userIdAtom)
 
   useEffect(() => {
-    let commentNumber = 0;
-    commentList.map((comment) => {
-      if (comment.parentComment === parentCommentId) {
-        commentNumber += 1;
-      }
-    });
+    let commentNumber = commentList.filter((comment) => (comment.parentComment === parentCommentId)).length;
     setChildCommentNumber(commentNumber);
-  }, [commentList]); // 전체 댓글 개수가 변할때마다 상황을 감지해서 useEffect의 함수를 실행한다.
+  }, [commentList, parentCommentId]); // 전체 댓글 개수가 변할때마다 상황을 감지해서 useEffect의 함수를 실행한다.
 
   const renderReplyCommnet = (parentCommentId) =>
     commentList.map((comment, index) => (
