@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { userIdAtom } from "../../states";
-import Comment from "./Comment";
+import {MemoizeComment as Comment} from "./Comment";
 
 function ReplyComment({ commentList, parentCommentId, postId }) {
   const [childCommentNumber, setChildCommentNumber] = useState(0);
@@ -23,9 +23,9 @@ function ReplyComment({ commentList, parentCommentId, postId }) {
     commentList.map((comment, index) => (
       <>
         {comment.parentComment === parentCommentId && (
-          <ReplyWrapper key={comment._id}>
-            <Comment isMore={true} comment={comment} isAuth={isLogin === comment.userId.id} postId={postId} />
-            <ReplyComment commentList={commentList} parentCommentId={comment._id} postId={postId} />
+          <ReplyWrapper key={index} >
+            <Comment key={comment._id} isMore={true} comment={comment} isAuth={isLogin === comment.userId.id} postId={postId} />
+            <ReplyComment key={comment._id + index} commentList={commentList} parentCommentId={comment._id} postId={postId} />
           </ReplyWrapper>
         )}
       </>
