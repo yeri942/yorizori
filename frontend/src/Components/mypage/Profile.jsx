@@ -6,56 +6,93 @@ import NavTop from "../nav/TopNav"
 import { MyPageMainBox, MyPageMainImgBox, MyPageMainBtnBox, MypageResipeBox} from "./ProfileStyle"
 import ResipeButton from "../mypage/ResipeList"
 import axios from 'axios';
-
+import { useRecoilValue } from "recoil";
+import { userIdAtom } from "../../states";
+import { TargetPostZone, TargetPostBox } from "./FollowerStyle";
 
 const MyPageTemplate = () => {
   const [ userData, setUserData] = useState([])
+  const [ targetUserData, setTargetUserData] = useState([])
   const [ myPostResipe, setMyPostResipe ] = useState([])
+  const [ targetPostResipe, setTargetPostResipe ] = useState([])
   const [ myLikeResipe, setMyLikeResipe ] = useState([])
   const [ myCommentResipe, setMyCommentResipe ] = useState([])
   const [ myHistoryResipe, setHistoryResipe ] = useState([])
   let { userId } = useParams()
+  const authId =  useRecoilValue(userIdAtom)
 
+  console.log("유저", userId)
+  console.log("로그인", authId)
+  console.log("타켓", targetUserData)
+  
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/profile`)
+    fetch(`http://localhost:8080/user/${authId}/profile`)
       .then(response => response.json())
       .then(data => setUserData(data.user))
       
       .catch(err => console.log(err))
   },[]);
   
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${userId}/profile`)
+      .then(response => response.json())
+      .then(data => setTargetUserData(data.user))
+      
+      .catch(err => console.log(err))
+  },[]);
+
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/post`)
+    fetch(`http://localhost:8080/user/${authId}/post`)
       .then(response => response.json())
       .then(data => setMyPostResipe(data.userPosts))
     },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/like`)
+    fetch(`http://localhost:8080/user/${userId}/post`)
+      .then(response => response.json())
+      .then(data => setTargetPostResipe(data.userPosts))
+    },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${authId}/like`)
       .then(response => response.json())
       .then(data => setMyLikeResipe(data.likePosts))
     },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/comment`)
+    fetch(`http://localhost:8080/user/${authId}/comment`)
       .then(response => response.json())
       .then(data => setMyCommentResipe(data.commentPosts))
     },[]);
 
   useEffect(()=>{
-    fetch(`http://localhost:8080/user/${userId}/history`)
+    fetch(`http://localhost:8080/user/${authId}/history`)
       .then(response => response.json())
       .then(data => setHistoryResipe(data.lastViewedPosts))
     },[]);
+
+
+  async function followerCall() {
+    await axios
+      .post("/follow", {
+      followerId : userId,
+      headers: {
+        "Content-Type": "application/json",
+        },
+      })
+      .then((data) => alert("팔로우 성공"))
+      .catch((err) => console.log(err));
+  }
 
 
   return (
     <div>
       <NavTop />
         <MyPageMainBox style={{ marginTop: "80px", marginBottom: "90px" }}>
+        { userId === authId 
+        ?
           <MyPageMainImgBox inImgBox>
-            
             <MyPageMainInfoBox>
               <div className="InfoProfile">
                 <MyPageImage src={userData.profileImage ? userData.profileImage : "../../images/baseimage.png"}/>
@@ -96,8 +133,36 @@ const MyPageTemplate = () => {
               
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
-        </MyPageMainBox>
+        : 
+        <MyPageMainImgBox>
+          <MyPageMainInfoBox>
+            <div className="InfoProfile">
+              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/baseimage.png"}/>
+              <p>{targetUserData.nickName}</p>
+            </div>
+          </MyPageMainInfoBox>
 
+          <MyPageMainBtnBox>
+            <MyPageMainProfileEdit type="button" onClick={followerCall}>팔로우 +</MyPageMainProfileEdit>
+          </MyPageMainBtnBox>
+
+          <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "20px"}} />
+          <TargetPostBox>
+            <TargetPostZone>
+              { targetPostResipe.map((item) => {
+                return (
+                  <Link to={`/detail/${item.id}`}>
+                    <img src={item.thumbnail}/>
+                  </Link>
+                )
+              })}
+            </TargetPostZone>
+          </TargetPostBox>
+
+
+        </MyPageMainImgBox>
+        }
+        </MyPageMainBox>
       <NavBottom />
     </div>
   
