@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import NavBottom from "../nav/BottomNav"
@@ -21,8 +21,10 @@ const EditMyPage = () => {
   const [ profileImage, setProfileImage] = useState(userData.profileImage ? userData.profileImage : "../../images/baseimage.png");
   const [ saveImage, setSaveImage ] = useState("")
   const [ savenickName, setSaveNickName ] = useState("")
+  const nickNameInput = useRef()
   let { userId } = useParams()
 
+  console.log(userData)
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
     .then(response => response.json())
@@ -112,9 +114,9 @@ const EditMyPage = () => {
             <MyPageMainImgBox>
               <input type="file" id="file-upload" accept="img/*" onChange={imgChange} required multiple  style={{display:'none'}} />
 
-              <EditImage id="imgs"  onClick={ClickUpload} src={profileImage}/>
+              <EditImage id="imgs"  onClick={ClickUpload} src={profileImage ? profileImage : "../../images/baseimage.png" }/>
                 <p style={{ marginTop: "40px", fontSize: "14px", color: "gray"}}>변경할 닉네임을 입력해주세요</p>
-              <EditInput placeholder={userData.nickName} type={nickCheck} onChange={(e) => {
+              <EditInput ref={nickNameInput} placeholder={userData.nickName} type={nickCheck} onChange={(e) => {
                 setMyNickName(e.target.value)
                 nickNameCheck(e.target.value)
               }}/>
@@ -127,12 +129,19 @@ const EditMyPage = () => {
                 <div className="showpass">
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "21px"}}>  
+              <div style={{position: "relative", top: "21px"}}>
+              { nickCheck === "type2" 
+              ? 
+                <EditBtn type="button" onClick={successChenge, () => nickNameInput.current.focus()}>
+                  완료
+                </EditBtn>
+              :
                 <Link to={`/user/${userId}/profile`}>
                   <EditBtn onClick={successChenge}>
-                    완료
+                  완료
                   </EditBtn>
                 </Link>
+              }
               </div>
 
             </MyPageMainImgBox>
