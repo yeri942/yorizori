@@ -42,11 +42,8 @@ function useUserActions() {
       swal("회원가입 성공", "환영합니다", "success").then(() => navigate("/login"));
     } catch (e) {
       console.error(e);
-      if (e.response.status === 409) {
-        alert("이메일중복");
-      }
-      if (e.response.status === 404) {
-        alert("경로오류");
+      if (e.response.status === 400) {
+        swal("회원가입 실패", e.response.data.message, "warning");
       }
     }
   }

@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import Comment from "./Comment";
+import { userIdAtom } from "../../states";
+import {MemoizeComment as Comment} from "./Comment";
 
-function ReplyComment({ commentList, parentCommentId }) {
+function ReplyComment({ commentList, parentCommentId, postId }) {
   const [childCommentNumber, setChildCommentNumber] = useState(0);
   const [openRelpyComments, setOpenReplyComments] = useState(false);
+  const isLogin = useRecoilValue(userIdAtom)
 
   useEffect(() => {
-    let commentNumber = 0;
-    commentList.map((comment) => {
-      if (comment.parentComment === parentCommentId) {
-        commentNumber += 1;
-      }
-    });
+    let commentNumber = commentList.filter((comment) => (comment.parentComment === parentCommentId)).length;
     setChildCommentNumber(commentNumber);
-  }, [commentList]); // 전체 댓글 개수가 변할때마다 상황을 감지해서 useEffect의 함수를 실행한다.
+  }, [commentList, parentCommentId]); // 전체 댓글 개수가 변할때마다 상황을 감지해서 useEffect의 함수를 실행한다.
 
   const renderReplyCommnet = (parentCommentId) =>
     commentList.map((comment, index) => (
       <>
         {comment.parentComment === parentCommentId && (
-          <ReplyWrapper key={comment._id}>
-            <Comment isMore={true} comment={comment} />
-            <ReplyComment commentList={commentList} parentCommentId={comment._id} />
+          <ReplyWrapper key={index} >
+            <Comment key={comment._id} isMore={true} comment={comment} isAuth={isLogin === comment.userId.id} postId={postId} />
+            <ReplyComment key={comment._id + index} commentList={commentList} parentCommentId={comment._id} postId={postId} />
           </ReplyWrapper>
         )}
       </>

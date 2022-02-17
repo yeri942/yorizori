@@ -7,9 +7,12 @@ import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Theme } from "./theme";
+import axios from "axios";
 
-const GlobalStyle = createGlobalStyle`
-  /* html, body, div, span, applet, object, iframe,
+// axios.defaults.baseURL = "http://localhost:8080"
+
+/*const GlobalStyle = createGlobalStyle`
+   html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -59,8 +62,8 @@ table {
 a {
   color: inherit;
   text-decoration: none;
-}  */
-`;
+}  
+`;*/
 
 ReactDOM.render(
   <BrowserRouter>

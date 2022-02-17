@@ -1,3 +1,4 @@
+import { waitForNone } from "recoil";
 import styled, { css } from "styled-components";
 
 export const StyledP = styled.p`
@@ -10,12 +11,13 @@ export const StyledP = styled.p`
   ${(props) =>
     props.stepOne &&
     css`
-      padding-top: 20px;
+      padding-top: 10px;
     `}
   ${(props) =>
     props.stepFour &&
     css`
-      padding-left: 3px;
+      padding-left: 10px;
+      padding-bottom: 20px;
       height: 11px;
     `}
     ${(props) =>
@@ -73,25 +75,37 @@ export const ContainerDiv = styled.div`
     css`
       padding: 7px 15px 0px 15px;
     `}
+  ${(props) =>
+    props.stepTwo &&
+    css`
+      border: none;
+    `}
+    ${(props) =>
+    props.big &&
+    css`
+      border: none;
+    `}
 `;
 
 export const AddBtn = styled.div`
   text-align: center;
   padding: 12px 0;
-  font-weight: 600;
+  font-weight: 900;
+
   ::before {
     content: "+";
     color: white;
-    margin-right: 5px;
-    padding: 0px 5px;
+    margin-right: 8px;
+    padding: 0px 6px;
     background-color: #feae11;
     border-radius: 100px;
+    font-size: 13px;
   }
 `;
 
 export const DropdownWrapper = styled.div`
   display: flex;
-  margin: 5px 0;
+  margin: 7px 0;
   justify-content: center;
 
   .rdn {
@@ -112,10 +126,7 @@ export const DropdownWrapper = styled.div`
   .rdn-control-arrow {
     width: 14px;
     height: 14px;
-    /* border-top: 10px solid #feae11;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent; */
-    background-image: url("../images/dropArrow.png");
+    background-image: url("../../images/dropArrow.png");
     background-repeat: no-repeat;
     background-size: contain;
     position: absolute;
@@ -128,25 +139,28 @@ export const DropdownWrapper = styled.div`
   }
 
   & > div {
-    width: 132px;
+    width: 140px;
     height: 55px;
     border: 2px solid #feae11;
     border-radius: 50px;
     box-sizing: border-box;
     font-size: 1rem;
-    font-weight: 900;
     text-align: center;
     padding-top: 14px;
     padding-right: 20px;
     &:not(:last-child) {
-      margin-right: 11px;
+      margin-right: 9px;
+      ${(props) =>
+        props.small &&
+        css`
+          margin-right: 5px;
+        `}
     }
     & > div:not(:first-child) {
       background-color: white;
       width: 120px;
       z-index: 100;
       color: #feae11;
-      /* transform: translateY(-5px) translateX(10px); */
       border-radius: 10px;
       border: 2px solid #feae11;
     }
@@ -206,12 +220,12 @@ export const ModalBox = styled.div`
   align-items: center;
   flex-direction: column;
   z-index: 999;
-  /* 
+
   ${(props) =>
-    props.sub &&
+    props.detail &&
     css`
-      right: 7px;
-    `} */
+      right: 6px;
+    `}
 `;
 export const ModalBackground = styled.div`
   display: ${(props) => (props.modalState === true ? "flex" : "none")};
@@ -224,12 +238,24 @@ export const ModalBackground = styled.div`
   z-index: 500;
   justify-content: center;
   overflow: hidden;
+  ${(props) =>
+    props.detail &&
+    css`
+      right: 0;
+      overflow: hidden;
+    `}
 `;
 
 export const ImgBox = styled.img`
   width: 300px;
   height: 300px;
   position: relative;
+  ${(props) =>
+    props.detail &&
+    css`
+      width: 100%;
+      height: 100%;
+    `}
 `;
 
 export const DeleteImg = styled.div`

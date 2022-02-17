@@ -6,15 +6,45 @@ import { detailDataAtom, delAndAmendBtnStateAtom } from "../../states/detail";
 import axios from "axios";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
+import { commentScrollStateAtom } from "../../states/detail";
 
 const Summary = ({ data, postId }) => {
   const navigate = useNavigate();
   const [detailData, setDetailData] = useRecoilState(detailDataAtom);
   const [heartCheck, setHeartCheck] = useState(false);
   const [delAndAmendBtnState, setDelAndAmendBtnState] = useRecoilState(delAndAmendBtnStateAtom);
+  const [commentScrollState, setCommentScrollState] = useRecoilState(commentScrollStateAtom);
   const [numLikes, setNumLikes] = useState(data ? data.numLikes : null);
   const userId = useRecoilValue(userIdAtom);
   const [heart, setHeart] = useState(false);
+  const { Kakao } = window;
+  const url = "http://localhost:3000";
+
+  const setShare = () => {
+    const shareURL = url + "/detail/" + data._id;
+
+    Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: data.recipeName,
+        description: data.desc,
+        imageUrl: data.thumbnail,
+        link: {
+          mobileWebUrl: shareURL,
+          webUrl: shareURL,
+        },
+      },
+      buttons: [
+        {
+          title: "레시피 구경가기",
+          link: {
+            mobileWebUrl: shareURL,
+            webUrl: shareURL,
+          },
+        },
+      ],
+    });
+  };
 
   const deleteHandler = (postId) => {
     try {
@@ -77,6 +107,16 @@ const Summary = ({ data, postId }) => {
       } catch (e) {
         console.error(e);
         console.log(e.response.data.message);
+        swal({
+          title: "로그인 하러가기",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((res) => {
+          if (res) {
+            navigate("/login");
+          }
+        });
       }
     }
     heartStateCheck();
@@ -89,19 +129,23 @@ const Summary = ({ data, postId }) => {
           <Thumbnail src={data.thumbnail} />
           <LCVS>
             <Likes>
-              {/* {heart && <HeartImage src="../images/onlylogo.png" />} */}
               <span className="sprite heart" onClick={HeartState} />
               <span>{numLikes}명이 좋아합니다.</span>
             </Likes>
             <Comments>
-              <span className="sprite comment" />
+              <span
+                className="sprite comment"
+                onClick={() => {
+                  setCommentScrollState(true);
+                }}
+              />
               <span>{data.numComments}</span>
             </Comments>
             <Views>
               <span className="sprite view" />
               <span>{data.numViews}</span>
             </Views>
-            <Share className="sprite share" />
+            <Share className="sprite share" onClick={setShare} />
           </LCVS>
           <div>
             <Title>{data.recipeName}</Title>
@@ -109,6 +153,9 @@ const Summary = ({ data, postId }) => {
           </div>
           <Author>
             <ProfileImg
+              onClick={() => {
+                navigate(`/user/${data.userId.id}/profile`);
+              }}
               src={data.userId.profileImage ? data.userId.profileImage : "../images/onlylogo.png"}
             />
             <Nickname>{data.userId.nickName}</Nickname>
@@ -157,7 +204,6 @@ const StyledDiv = styled.div`
   + div {
     margin-top: 8px;
   }
-  width: 54px;
 `;
 const DropDownContainer = styled.div`
   position: relative;
@@ -165,7 +211,7 @@ const DropDownContainer = styled.div`
 `;
 
 const DropDownBtn = styled.div`
-  background-image: url("../images/threedot.png");
+  background-image: url("../../images/threedot.png");
   width: 16px;
   height: 16px;
   background-size: cover;
@@ -175,12 +221,18 @@ const DropDownBtn = styled.div`
 const DropDownWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 125px;
+  height: 100px;
   background-color: #feae11;
   color: white;
   border-radius: 3px;
   padding: 5px 10px;
   position: absolute;
-  left: -65px;
+  right: 0px;
+  font-size: 15px;
+  font-weight: 900;
 `;
 
 const SummaryWrapper = styled.div`
@@ -188,7 +240,7 @@ const SummaryWrapper = styled.div`
   .sprite {
     display: inline-block;
     flex-shrink: 0;
-    background-image: url("../images/icons.png");
+    background-image: url("../../images/icons.png");
     background-repeat: no-repeat;
     background-size: 135px 61.05px;
   }
@@ -254,11 +306,11 @@ const Share = styled.div`
 const Title = styled.div`
   font-size: 18px;
   font-weight: 900;
-  margin: 8px 0px 6px 20px;
+  margin: 8px 20px 6px 20px;
 `;
 const Content = styled.div`
   font-size: 13px;
-  margin: 0 0 10px 20px;
+  margin: 0 20px 10px 20px;
 `;
 const Author = styled.div`
   display: flex;

@@ -8,15 +8,22 @@ import dummy from "../../posts.json";
 
 
 export default function ResipeButton(props) {
-  const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "최근 확인한 레시피", "댓글 남긴 레시피"]
+  const resipeMenu = ["내가 작성한 레시피", "좋아요 누른 레시피", "댓글 남긴 레시피", "최근 확인한 레시피", ]
   const [onResipe, setOnResipe] = useState(false)
   const resipeMenuButton = ["../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png", "../../images/bottomBT.png"]
+  const listResipe = [ "postResipe", "likeResipe", "commentResipe", "historyResipe" ]
+  
+  let datas = ""
 
+  if(props.nums === "1" || props.nums === "2") {
+    datas = props[listResipe[props.nums]].filter((item) => item.postId)
+  } else {
+    datas = props[listResipe[props.nums]]
+  }
 
 
   const changeResipe = () => {
     setOnResipe((onResipe) => {
-      console.log(onResipe)
       return !onResipe
     })
   }
@@ -40,13 +47,21 @@ export default function ResipeButton(props) {
             onResipe 
             ? 
             <ResipeListBox>
-              { dummy.map((item, index) => {
+              { 
+                datas.map((item, index) => {
+                console.log(item)
               return (
                 <ResipeListItem key={index}>
-                  <Link to="/detail">
-                    <img src={item.thumbnail} alt=""/>
+                  <Link to={`/detail/${props.nums === "1" || props.nums === "2" || props.nums === "3" ? item.postId.id : item.id } `}>
+                    { props.nums === "1" || props.nums === "2" || props.nums === "3"
+                      ? <img src={item.postId.thumbnail} alt=""/>
+                      : <img src={item.thumbnail} alt=""/>
+                    }
                   </Link>
-                  <p> {item.recipeName}</p>
+                  { props.nums === "1" || props.nums === "2" || props.nums === "3"
+                    ? <p> {item.postId.recipeName}</p>
+                    : <p> {item.recipeName}</p>
+                  }
                 </ResipeListItem>
                 )
               })}
@@ -103,7 +118,7 @@ const ResipeListBox = styled.div`
     margin: 15px 25px 0 25px;
     width: 100px;
     height: 100px;
-    border-radius: 15px;
+    border-radius: 5px;
     object-fit: cover;
   }
   
