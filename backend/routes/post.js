@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post } = require("../models/");
+const { Post, User } = require("../models/");
 const { isLoggedIn } = require("./middlewares");
 const { recipeUpload, s3 } = require("../middlewares/upload");
 const asyncHandler = require("../utils/asyncHandler");
@@ -125,7 +125,7 @@ router.post(
         await posts.save();
       }
     }
-
+    await User.updateOne({ _id: userId }, { $inc: { numPosts: 1 } });
     res.status(201).json({ message: "레시피등록이 완료되었습니다." });
   })
 );
@@ -140,7 +140,6 @@ router.get(
 
     const posts = await Post.find({ useYN: true, recipeName: { $regex: recipeName } })
       .populate({ path: "userId", select: "-password" })
-      .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } })
       .sort({ createdAt: -1 }); //최근 순으로 정렬
     // .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
@@ -150,33 +149,68 @@ router.get(
 );
 
 //게시글들을 좋아요 받은 순으로 내림차순 정렬해서 값을 전달.
-// populate virtual 기능으로 가져온 count값으로 바로 정렬하는 방법을 찾지 못해서
-//일단 데이터배열을 가져온 후에 sort를 한번 더 적용했습니다.
 router.get(
   "/sortByLike",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit } = req.query;
-    const posts = await Post.find({ useYN: true })
-      .populate({ path: "userId", select: "-password" })
-      //게시글이 받은 좋아요 수와 댓글 수를 populate 해옴
-      .populate({ path: "numLikes", match: { isUnliked: false } })
-      .populate({ path: "numComments", match: { isDeleted: false } })
-      .sort({ createdAt: -1 });
-    const sortedPosts = posts.sort((a, b) => b.numLikes - a.numLikes);
-    if (!startIndex && !limit) {
-      res.status(200).json({ sortedPosts });
-      return;
-    }
-    //startIndex 와 limit  중 하나만 보내면 에러를 던짐
-    if (!startIndex || !limit) {
-      throw Error("startIndex와 limit 중 빠진 항목이 있습니다.");
-      return;
-    }
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
     //startIndex와 limit으로 정제된 데이터를 보내줌
     startIndex = parseInt(startIndex);
     limit = parseInt(limit);
-    const limitedSortedPosts = sortedPosts.slice(startIndex - 1, startIndex - 1 + limit);
+    const limitedSortedPosts = await Post.find({ useYN: true })
+      .sort({ numLikes: -1, createdAt: -1 })
+      .skip(startIndex - 1)
+      .limit(limit)
+      .populate({ path: "userId", select: "-password" })
+      //게시글이 받은 댓글 수를 populate 해옴
+      .populate({ path: "numComments", match: { isDeleted: false } });
     res.status(200).json({ limitedSortedPosts });
+  })
+);
+
+//레시피 쿼리로 조회하는 로직
+//startIndex : 시작인덱스
+//limit : 조회할 게시글 개수
+//category, condition, material, cook, servings, time, diffc 같은 필터링 조건 모양맞게 넣으면됨
+// (EX) category : '한식' , material : '기타'
+//currentPost 에 postId를 넘기면 해당 게시글은 제외하고 데이터를 보내줌
+router.get(
+  "/withFilter",
+  asyncHandler(async (req, res, next) => {
+    let { startIndex, limit, currentPost } = req.query;
+    console.log("currentPost", currentPost);
+
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
+    //startIndex와 limit으로 정제된 데이터를 보내줌
+    startIndex = parseInt(startIndex);
+    limit = parseInt(limit);
+    let filteredCondition = {};
+    for (const [key, value] of Object.entries(req.query)) {
+      value
+        ? key != "startIndex"
+          ? key != "limit"
+            ? key != "currentPost"
+              ? (filteredCondition[key] = value)
+              : null
+            : null
+          : null
+        : null;
+    }
+
+    console.log("filteredCondition", filteredCondition);
+    const userPosts = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
+      .sort({ createdAt: -1 }) // 최신순정렬
+      .skip(startIndex - 1)
+      .limit(limit)
+      .populate({
+        path: "userId",
+        select: "-password",
+      })
+      .populate({ path: "numComments", match: { isDeleted: false } });
+
+    res.status(200).json({ userPosts });
   })
 );
 
@@ -192,13 +226,10 @@ router.get(
         path: "userId",
         select: "-password",
         populate: [
-          { path: "numFollowees", match: { isUnfollowed: false } },
           { path: "numFollowers", match: { isUnfollowed: false } },
-          { path: "numPosts", match: { useYN: true } },
           { path: "numLikes", match: { isUnliked: false } },
         ],
       })
-      .populate({ path: "numLikes", match: { isUnliked: false } })
       .populate({ path: "numComments", match: { isDeleted: false } });
     if (!posts) {
       res.status(404).send("해당하는 postId가 없습니다.");
@@ -335,7 +366,6 @@ router.get(
         useYN: true,
       })
         .populate({ path: "userId", select: "-password" })
-        .populate({ path: "numLikes", match: { isUnliked: false } })
         .populate({ path: "numComments", match: { isDeleted: false } })
         .sort({ createdAt: -1 }) //최근 순으로 정렬
         .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
@@ -356,6 +386,7 @@ router.delete(
   ]),
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
+    const { id: userId } = req.user || req.cookies;
 
     const posts = await Post.findById(postId).findOne({ useYN: true }); // postId 찾아 삭제
     if (!posts) {
@@ -364,7 +395,8 @@ router.delete(
     }
 
     posts.useYN = false;
-    posts.save();
+    await posts.save();
+    await User.updateOne({ _id: userId }, { $inc: { numPosts: -1 } });
 
     res.status(200).json({ message: "레시피 삭제가 완료되었습니다." });
   })
