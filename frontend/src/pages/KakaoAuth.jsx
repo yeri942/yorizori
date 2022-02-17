@@ -7,6 +7,15 @@ import { useNavigate } from "react-router";
 import swal from "sweetalert";
 
 function KakaoAuth() {
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://developers.kakao.com/sdk/js/kakao.min.js"
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  },[])
   const REST_API_KEY = process.env.REACT_APP_KAKAKO_KEY;
   const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
   const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";

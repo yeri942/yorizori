@@ -15,6 +15,7 @@ const Modal = () => {
   const [page, setPage] = useState(1);
   const url = "http://localhost:3000";
 
+  //
   const setShare = () => {
     const shareURL = url + "/detail/" + randomPost._id;
 
@@ -44,6 +45,7 @@ const Modal = () => {
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
+    document.body.style.overflow = "unset";
   };
 
   const getRandomIndex = async () => {
@@ -69,6 +71,7 @@ const Modal = () => {
       console.error("에러");
     }
   };
+
   useEffect(() => {
     if (page <= (Math.ceil(recipes.length) + 10) / 10) {
       console.log("page?", page);

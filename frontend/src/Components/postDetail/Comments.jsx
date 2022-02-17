@@ -1,15 +1,14 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
-import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import Comment, { ProfileImg } from "./Comment";
-import ReplyComment from "./ReplyComment";
+import { MemoizeComment as Comment, ProfileImg } from "./Comment";
 import axios from "axios";
-import { authAtom, userIdAtom, userImage } from "../../states";
+import { userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 import Toast from "./Toast";
 import { isLoadingAtom, messageAtom, postIdAtom, toastAtom } from "./toastAtom";
+import { commentScrollStateAtom } from "../../states/detail";
 
 const Comments = () => {
   const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom);
@@ -22,8 +21,19 @@ const Comments = () => {
   const [write, setWrite] = useState("");
   const [toastStatus, setToastStatus] = useRecoilState(toastAtom);
   const [toastMessage, setToastMessage] = useRecoilState(messageAtom);
-
+  const [commentScrollState, setCommentScrollState] = useRecoilState(commentScrollStateAtom);
+  const commentDomRef = useRef(null);
   console.log(comments);
+
+  useEffect(() => {
+    if (commentScrollState === true) {
+      commentDomRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+    setCommentScrollState(false);
+  }, [commentScrollState]);
+
   useEffect(() => {
     // 원래 useEffect안에는 async-await을 사용하지 못하지만
     // 즉시실행함수로 함수를 만든 후 실행함으로써 해결할 수 있음
@@ -56,6 +66,7 @@ const Comments = () => {
       setIsLoading(true);
     } catch (err) {
       console.error(err);
+      setWrite("");
       setToastStatus(true);
       setToastMessage(err);
     }
@@ -71,7 +82,7 @@ const Comments = () => {
     <>
       {!isLoading && (
         <>
-          <Title>
+          <Title ref={commentDomRef}>
             댓글 <Count>{commentLength}</Count>
           </Title>
           <CommentsWrapper>
@@ -92,10 +103,22 @@ const Comments = () => {
                 </>
               )}
             </form>
-            {comments.filter(comment => comment.isDeleted === false).slice(0, 3).map((comment) => {
-              const isAuth = comment.userId.id === isLogin;
-              return <Comment key={comment._id} comment={comment} isMore={false} isAuth={isAuth} postId={postId} />;
-            })}
+            {comments
+              .filter((comment) => comment.isDeleted === false)
+              .slice(0, 3)
+              .map((comment) => {
+                console.log("Look at me", comment);
+                const isAuth = comment.userId?.id === isLogin;
+                return (
+                  <Comment
+                    key={comment._id}
+                    comment={comment}
+                    isMore={false}
+                    isAuth={isAuth}
+                    postId={postId}
+                  />
+                );
+              })}
             {commentLength === 0 ? (
               <EmptyComment>아직 작성된 댓글이 없어요</EmptyComment>
             ) : commentLength > 3 ? (
