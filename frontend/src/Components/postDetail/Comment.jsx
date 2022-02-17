@@ -130,6 +130,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
                 {isLogin && (
                   <>
                     <ReplyImg
+                      isActive={toggleReply}
                       onClick={replyHandler}
                       src={`${process.env.PUBLIC_URL}/images/reply.png`}
                     />
@@ -174,8 +175,10 @@ const DeletedComment = styled.div`
 const ReplyImg = styled.img`
   width: 12px;
   height: 12px;
-  margin-left: 4px;
-  vertical-align: middle;
+  margin-left: 8px;
+  vertical-align: -4px;
+  image-rendering: -webkit-optimize-contrast;
+  opacity: ${props => props.isActive ? 1:0.5};
 `;
 
 const ButtonWrapper = styled.div`
@@ -244,4 +247,5 @@ const Time = styled.span`
   color: #a5a8b1;
 `;
 
-export default Comment;
+// export default Comment;
+export const MemoizeComment = React.memo(Comment)
