@@ -42,35 +42,35 @@ const CategoryDropdown = () => {
   }, []);
   const handleFilterCategory = (e) => {
     resetView();
-    setFilterCategory(e.value);
     resetSearchValue();
     resetMaterial();
     resetCondition();
     resetCook();
+    setFilterCategory(e.value);
   };
   const handleFilterMaterial = (e) => {
     resetView();
-    setFilterMaterial(e.value);
     resetSearchValue();
     resetCategory();
     resetCondition();
     resetCook();
+    setFilterMaterial(e.value);
   };
   const handleFilterCondition = (e) => {
     resetView();
-    setFilterCondition(e.value);
     resetSearchValue();
     resetCategory();
     resetMaterial();
     resetCook();
+    setFilterCondition(e.value);
   };
   const handleFilterCook = (e) => {
     resetView();
-    setFilterCondition(e.value);
     resetSearchValue();
     resetCategory();
     resetMaterial();
     resetCondition();
+    setFilterCondition(e.value);
   };
 
   return (

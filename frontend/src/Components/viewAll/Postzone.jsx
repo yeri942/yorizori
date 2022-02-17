@@ -46,6 +46,7 @@ const Postzone = () => {
         const fetchData = async () => {
           const result = await axios(url);
           setRecipes(result.data);
+          console.log(result.data);
         };
         fetchData();
       }
@@ -78,23 +79,24 @@ const Postzone = () => {
 
   const getCategoryRecipe = () => {
     try {
-      if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0]) return;
-      console.log(categoryFilter[0]);
-
-      const category = categoryFilter[0];
-      const material = materialFilter[0];
-      const condition = conditionFilter[0];
-      const cook = cookFilter[0];
-
-      const categoryParams = category === "" ? "" : `&category=${category}`;
-      const materialParams = material === "" ? "" : `&material=${material}`;
-
-      const conditionParams = condition === "" ? "" : `&condition=${condition}`;
-      const cookParams = cook === "" ? "" : `&cook=${cook}`;
-
-      const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
-
       const fetchData = async () => {
+        if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0])
+          return;
+        console.log(categoryFilter[0]);
+
+        const category = categoryFilter[0];
+        const material = materialFilter[0];
+        const condition = conditionFilter[0];
+        const cook = cookFilter[0];
+
+        const categoryParams = category === "" ? "" : `&category=${category}`;
+        const materialParams = material === "" ? "" : `&material=${material}`;
+
+        const conditionParams = condition === "" ? "" : `&condition=${condition}`;
+        const cookParams = cook === "" ? "" : `&cook=${cook}`;
+
+        const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
+
         const result = await axios(url);
         const resultrecipes = recipes.concat(result.data.userPosts);
         setRecipes(resultrecipes);
@@ -118,9 +120,15 @@ const Postzone = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  console.log(recipes);
   for (let i = 0; i < recipes.length; i++) {
-    console.log(recipes[i].category, recipes[i].material, recipes[i].condition, recipes[i].cook);
+    console.log(
+      recipes[i].category,
+      recipes[i].material,
+      recipes[i].condition,
+      recipes[i].cook,
+      recipes[i].recipeName
+    );
   }
   return (
     <Wrapper>
