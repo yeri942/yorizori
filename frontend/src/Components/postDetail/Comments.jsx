@@ -1,11 +1,9 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
-import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import Comment, { ProfileImg } from "./Comment";
-import ReplyComment from "./ReplyComment";
+import { MemoizeComment as Comment, ProfileImg } from "./Comment";
 import axios from "axios";
-import { authAtom, userIdAtom, userImage } from "../../states";
+import { userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 import Toast from "./Toast";
@@ -68,6 +66,7 @@ const Comments = () => {
       setIsLoading(true);
     } catch (err) {
       console.error(err);
+      setWrite("");
       setToastStatus(true);
       setToastMessage(err);
     }
@@ -108,7 +107,8 @@ const Comments = () => {
               .filter((comment) => comment.isDeleted === false)
               .slice(0, 3)
               .map((comment) => {
-                const isAuth = comment.userId.id === isLogin;
+                console.log("Look at me", comment);
+                const isAuth = comment.userId?.id === isLogin;
                 return (
                   <Comment
                     key={comment._id}

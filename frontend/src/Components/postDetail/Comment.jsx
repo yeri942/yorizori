@@ -113,7 +113,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
         <DeletedComment>삭제된 댓글입니다</DeletedComment>
       ) : (
         <>
-          <ProfileImg isImage={comment.userId.profileImage ? comment.userId.profileImage : ""} />
+          <ProfileImg isImage={comment.userId?.profileImage ? comment.userId?.profileImage : ""} />
           {isEdit ? (
             <>
               <AuthInput onChange={onChangeHandler}>{comment.comment}</AuthInput>
@@ -124,12 +124,13 @@ function Comment({ comment, isMore, isAuth, postId }) {
           ) : (
             <>
               <CommentWrapper>
-                <Nickname>{comment.userId.nickName}</Nickname>
+                <Nickname>{comment.userId?.nickName}</Nickname>
                 <CommenContent isMore={isMore}>{comment.comment}</CommenContent>
                 <Time>{displayedAt(comment.createdAt)}</Time>
                 {isLogin && (
                   <>
                     <ReplyImg
+                      isActive={toggleReply}
                       onClick={replyHandler}
                       src={`${process.env.PUBLIC_URL}/images/reply.png`}
                     />
@@ -174,8 +175,10 @@ const DeletedComment = styled.div`
 const ReplyImg = styled.img`
   width: 12px;
   height: 12px;
-  margin-left: 4px;
-  vertical-align: middle;
+  margin-left: 8px;
+  vertical-align: -4px;
+  image-rendering: -webkit-optimize-contrast;
+  opacity: ${props => props.isActive ? 1:0.5};
 `;
 
 const ButtonWrapper = styled.div`
@@ -244,4 +247,5 @@ const Time = styled.span`
   color: #a5a8b1;
 `;
 
-export default Comment;
+// export default Comment;
+export const MemoizeComment = React.memo(Comment)
