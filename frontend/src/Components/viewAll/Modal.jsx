@@ -201,6 +201,9 @@ const Author = styled.p`
 `;
 const WrapperHeartComment = styled.div`
   line-height: 15px;
+  & > span {
+    margin-right: 5px;
+  }
 `;
 const HeartCommentCount = styled.span`
   font-size: 13px;

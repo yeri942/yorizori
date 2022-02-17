@@ -136,7 +136,7 @@ const Postzone = () => {
 export default Postzone;
 
 const Wrapper = styled.div`
-  overflow: scroll;
+  // overflow: scroll;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -161,14 +161,13 @@ const Wrapper = styled.div`
   }
 `;
 const WrapperPost = styled.div`
+  // overflow: scroll;
   display: grid;
   margin-top: 15px;
   grid: auto-flow 270px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
   justify-items: center;
-  overflow: scroll;
-
   & > div {
     width: 160px;
     height: 228px;
