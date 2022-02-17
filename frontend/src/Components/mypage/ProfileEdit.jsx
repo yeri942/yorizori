@@ -24,7 +24,6 @@ const EditMyPage = () => {
   const nickNameInput = useRef()
   let { userId } = useParams()
 
-  console.log(userData)
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
     .then(response => response.json())

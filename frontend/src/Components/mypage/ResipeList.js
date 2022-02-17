@@ -24,7 +24,6 @@ export default function ResipeButton(props) {
 
   const changeResipe = () => {
     setOnResipe((onResipe) => {
-      console.log(onResipe)
       return !onResipe
     })
   }
