@@ -130,22 +130,6 @@ router.post(
   })
 );
 
-// //레시피명 검색
-// router.get(
-//   "/search",
-//   asyncHandler(async (req, res, next) => {
-//     const recipeName = req.query.recipeName;
-
-//     const posts = await Post.find({ useYN: true, recipeName: { $regex: recipeName } })
-//       .populate({ path: "userId", select: "-password" })
-//       .populate({ path: "numComments", match: { isDeleted: false } })
-//       .sort({ createdAt: -1 }); //최근 순으로 정렬
-//     // .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
-//     // .limit(perPage);
-//     res.status(200).json(posts);
-//   })
-// );
-
 //게시글들을 좋아요 받은 순으로 내림차순 정렬해서 값을 전달.
 router.get(
   "/sortByLike",
@@ -177,7 +161,6 @@ router.get(
   "/withFilter",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit, currentPost } = req.query;
-    console.log("currentPost", currentPost);
 
     if (!startIndex) startIndex = 1;
     if (!limit) limit = 0;
@@ -198,17 +181,25 @@ router.get(
     }
 
     console.log("filteredCondition", filteredCondition);
-    const userPosts = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
-      .sort({ createdAt: -1 }) // 최신순정렬
-      .skip(startIndex - 1)
-      .limit(limit)
-      .populate({
-        path: "userId",
-        select: "-password",
-      })
-      .populate({ path: "numComments", match: { isDeleted: false } });
+    const totalPost = await Post.find({
+      ...filteredCondition,
+      _id: { $ne: currentPost },
+      useYN: true,
+    }).countDocuments({});
+    // console.log(Math.round(totalPost / limit));
+    if (startIndex <= Math.round(totalPost / limit)) {
+      const userPosts = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
+        .sort({ numLikes: -1, createdAt: -1 })
+        .skip((startIndex - 1) * limit)
+        .limit(limit)
+        .populate({
+          path: "userId",
+          select: "-password",
+        })
+        .populate({ path: "numComments", match: { isDeleted: false } });
 
-    res.status(200).json({ userPosts });
+      res.status(200).json({ userPosts });
+    }
   })
 );
 
