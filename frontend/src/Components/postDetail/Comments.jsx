@@ -94,7 +94,8 @@ const Comments = () => {
               )}
             </form>
             {comments.filter(comment => comment.isDeleted === false).slice(0, 3).map((comment) => {
-              const isAuth = comment.userId.id === isLogin;
+              console.log("Look at me",comment)
+              const isAuth = comment.userId?.id === isLogin;
               return <Comment key={comment._id} comment={comment} isMore={false} isAuth={isAuth} postId={postId} />;
             })}
             {commentLength === 0 ? (

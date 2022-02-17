@@ -113,7 +113,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
         <DeletedComment>삭제된 댓글입니다</DeletedComment>
       ) : (
         <>
-          <ProfileImg isImage={comment.userId.profileImage ? comment.userId.profileImage : ""} />
+          <ProfileImg isImage={comment.userId?.profileImage ? comment.userId?.profileImage : ""} />
           {isEdit ? (
             <>
               <AuthInput onChange={onChangeHandler}>{comment.comment}</AuthInput>
@@ -124,7 +124,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
           ) : (
             <>
               <CommentWrapper>
-                <Nickname>{comment.userId.nickName}</Nickname>
+                <Nickname>{comment.userId?.nickName}</Nickname>
                 <CommenContent isMore={isMore}>{comment.comment}</CommenContent>
                 <Time>{displayedAt(comment.createdAt)}</Time>
                 {isLogin && (
