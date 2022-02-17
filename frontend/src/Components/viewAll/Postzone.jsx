@@ -98,7 +98,7 @@ const Postzone = () => {
             }
             return data.cook === dropDownOptions.cook;
           })
-          .map((data) => {
+          .map((data, index) => {
             let recipeName = data.recipeName;
             let nickname = data.userId.nickName;
             if (recipeName.length > 20) {
@@ -111,7 +111,7 @@ const Postzone = () => {
                 style={{ textDecoration: "none", color: "inherit" }}
                 nickname={nickname}
                 title={recipeName}
-                key={data._id}
+                key={index}
               >
                 <div>
                   <Img src={data.thumbnail} />
