@@ -250,12 +250,13 @@ export const ImgBox = styled.img`
   width: 300px;
   height: 300px;
   position: relative;
+  object-fit: cover;
   ${(props) =>
     props.detail &&
     css`
       width: 100%;
       height: 100%;
-    `}
+    `};
 `;
 
 export const DeleteImg = styled.div`
