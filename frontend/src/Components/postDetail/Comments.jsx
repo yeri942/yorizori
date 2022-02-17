@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { Link, useParams } from "react-router-dom";
-import Comment, { ProfileImg } from "./Comment";
+import { MemoizeComment as Comment, ProfileImg } from "./Comment";
 import ReplyComment from "./ReplyComment";
 import axios from "axios";
 import { authAtom, userIdAtom, userImage } from "../../states";
@@ -56,6 +56,7 @@ const Comments = () => {
       setIsLoading(true);
     } catch (err) {
       console.error(err);
+      setWrite("")
       setToastStatus(true);
       setToastMessage(err);
     }
