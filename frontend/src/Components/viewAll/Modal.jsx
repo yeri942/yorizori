@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { randomButtonState, randomPostState, ViewAll } from "../../states/ViewAllAtom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -10,7 +10,7 @@ const Modal = () => {
   const setRandomButton = useSetRecoilState(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
   const { Kakao } = window;
   const [page, setPage] = useState(1);
   const url = "http://localhost:3000";
@@ -70,10 +70,7 @@ const Modal = () => {
     }
   };
   useEffect(() => {
-    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-      console.log("page?", page);
-      getRecipe();
-    }
+    getRecipe();
   });
 
   return (

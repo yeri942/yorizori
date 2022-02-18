@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import axios from "axios";
 import {
   randomButtonState,
   randomPostState,
   dropDownOptionsState,
   sortState,
+  ViewAll,
 } from "../../states/ViewAllAtom";
 import dummy from "../../posts.json";
 
@@ -18,7 +19,7 @@ const Buttons = () => {
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
   const currentSortState = useRecoilValue(sortState);
   const setCurrentSortState = useSetRecoilState(sortState);
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
   const [page, setPage] = useState(1);
 
   const randompost = () => {
@@ -38,48 +39,26 @@ const Buttons = () => {
     }
   };
 
-  // const getRecipe = async () => {
-  //   try {
-  //     const url = `http://localhost:8080/post`;
+  const getRecipe = async () => {
+    try {
+      const url = `http://localhost:8080/post`;
 
-  //     const fetchData = async () => {
-  //       // setLoading(true);
-  //       const result = await axios(url);
-  //       const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-  //       setRecipes(resultrecipes);
-  //       // setLoading(false);
-  //     };
-  //     fetchData();
-  //   } catch {
-  //     console.error("에러");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-  //     console.log("page?", page);
-  //     getRecipe();
-  //   }
-  // });
+      const fetchData = async () => {
+        // setLoading(true);
+        const result = await axios(url);
+        const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
+        setRecipes(resultrecipes);
+        // setLoading(false);
+      };
+      fetchData();
+    } catch {
+      console.error("에러");
+    }
+  };
 
   useEffect(() => {
-    const defaultName = document.querySelectorAll(".rdn-control-placeholder");
-    const defaultCategory = ["category", "material", "condition", "cook"];
-    const defaultNameList = ["종류", "재료", "상황", "방법"];
-
-    defaultName.forEach((item, index) => {
-      if (!dropDownOptions[defaultCategory[index]]) {
-        item.innerText = defaultNameList[index];
-      } else {
-        item.innerText = dropDownOptions[defaultCategory[index]];
-      }
-    });
-    // getRecipe();
-    // if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-    //   console.log("page?", page);
-    //   getRecipe();
-    // }
-  }, [page]);
+    getRecipe();
+  });
 
   return (
     <>
