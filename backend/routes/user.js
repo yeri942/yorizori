@@ -294,7 +294,7 @@ router.get(
 
     let filteringNum = 0;
     if (hasPost) filteringNum = 2;
-    const limitedSortedUsers = await User.find({ numPosts: { $gte: 1 } })
+    const limitedSortedUsers = await User.find({ numPosts: { $gte: filteringNum } })
       .sort({ numFollowees: -1, createdAt: -1 })
       .skip(startIndex - 1)
       .limit(limit)
