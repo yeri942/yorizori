@@ -61,17 +61,8 @@ const Buttons = () => {
     console.log("최신순");
     setCurrentSortState("recent");
     resetDropDownOptions();
-    // if (recentPage !== 1) setRecentRecipes([]);
-    if (
-      !(
-        recentRecipes.length == 10 &&
-        currentSortState === "recent" &&
-        dropDownOptions == { category: "", material: "", condition: "", cook: "" }
-      )
-    ) {
-      setRecentRecipes([]);
-    }
-    setRecentPage(1);
+    setRecentRecipes([]);
+    setDefaultViewAllPost((prev) => !prev);
   };
   return (
     <>
