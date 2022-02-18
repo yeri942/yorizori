@@ -231,7 +231,7 @@ router.get(
 );
 
 //레시피 수정
-router.patch(
+router.post(
   "/:postId",
   isLoggedIn,
   recipeUpload.fields([
