@@ -7,17 +7,12 @@ import { Link } from "react-router-dom";
 function SearchBar({}) {
   const setItem = useSetRecoilState(searchAtom);
 
-  const [filteredData, setFilteredData] = useState("");
+  const [filteredData, setFilteredData] = useRecoilState(searchAtom);
   const searchText = () => {
     setItem(filteredData);
   };
   const handleSearch = (e) => {
     setFilteredData(e.target.value);
-  };
-  const keyPress = (e) => {
-    if (e.key == "Enter") {
-      searchText();
-    }
   };
 
   return (
@@ -25,7 +20,6 @@ function SearchBar({}) {
       <SearchInputs
         placeholder="검색어"
         onChange={handleSearch}
-        onKeyPress={keyPress}
         value={filteredData}
       ></SearchInputs>
       <Link to="/view_all">
