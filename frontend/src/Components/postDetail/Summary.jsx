@@ -21,6 +21,8 @@ const Summary = ({ data, postId }) => {
   const url = "http://localhost:3000";
 
   const setShare = () => {
+    Kakao.init("75b86b45a7630e0d846144c11cebb951");
+    Kakao.isInitialized();
     const shareURL = url + "/detail/" + data._id;
 
     Kakao.Link.sendDefault({
