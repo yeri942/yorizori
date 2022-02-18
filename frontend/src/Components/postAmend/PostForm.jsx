@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, set, useFormContext } from "react-hook-form";
 import {
   postPageStateAtom,
   MainImageStateAtom,
@@ -8,6 +8,9 @@ import {
   categoryAtom,
   cookInfoAtom,
   InvalidationAtom,
+  IngredientsListAtom,
+  SourceListAtom,
+  InitialrenderStateAtom,
 } from "./PostAtom/PostAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import PostStepOne from "./PostStepOne/PostStepOne";
@@ -19,6 +22,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+
 const PostFormBlock = styled.form``;
 document.addEventListener(
   "keydown",
@@ -54,23 +58,21 @@ function setFormData(formData, data, parentKey) {
 }
 
 const PostForm = () => {
+  const [subImage, setSubImage] = useRecoilState(SubImageStateAtom);
   const [postPageState, setPostpostPageState] = useRecoilState(postPageStateAtom);
   const mainImage = useRecoilValue(MainImageStateAtom);
   const cookInfo = useRecoilValue(cookInfoAtom);
   const category = useRecoilValue(categoryAtom);
-  const subImage = useRecoilValue(SubImageStateAtom);
   const [invalidationState, setInvalidationState] = useRecoilState(InvalidationAtom);
+  const [InitialrenderState, setInitialState] = useRecoilState(InitialrenderStateAtom);
   const { state } = useLocation();
   const { data, postId } = state;
   const navigate = useNavigate();
   const methods = useForm();
 
   useEffect(() => {
-    console.log(state);
-    console.log(data._id);
-    console.log(postId);
-    console.log(state);
-  }, []);
+    setInitialState(false);
+  }, [InitialrenderState]);
 
   const onSubmit = async (data) => {
     let ingredient = [];
@@ -86,6 +88,7 @@ const PostForm = () => {
     let processImage = [];
     let ImageIndex = 1;
     for (let [key, value] of Object.entries(data)) {
+      console.log(`key : ${key} value : ${value} `);
       // ingredient
       if (key.indexOf("ingredient_") > -1 && value.length >= 1) {
         ingre_el = new Object({
@@ -150,7 +153,12 @@ const PostForm = () => {
           sec: value,
         };
         process_el.processTime = time;
-        process.push(process_el);
+        if (process_el.explain) process.push(process_el);
+
+        process_el = {
+          ...process_el,
+          explain: "",
+        };
       }
     }
 
@@ -168,6 +176,7 @@ const PostForm = () => {
       ...category,
     };
 
+    // if (true === true) {
     if (Invalidation(submitData, setPostpostPageState, mainImage, setInvalidationState) === true) {
       const formData = new FormData();
       setFormData(formData, submitData);
@@ -180,18 +189,18 @@ const PostForm = () => {
         console.log(pair[0] + ", " + pair[1]);
       }
 
-      await axios.delete(`/post/${postId}`);
+      // await axios.delete(`/post/${postId}`);
 
       await axios
-        .post("/post", formData, {
+        .post(`/post/${postId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
+          console.log(res);
           swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {
-            // navigate("/");
-            window.location.replace("/");
+            window.location.replace(`/detail/${postId}`);
           });
         })
         .catch((err) => {
@@ -212,17 +221,21 @@ const PostForm = () => {
   return (
     <FormProvider {...methods}>
       <PostFormBlock onSubmit={methods.handleSubmit(onSubmit)}>
-        {postPageState === 1 ? (
+        {(InitialrenderState || postPageState === 1) && <PostStepOne data={data}></PostStepOne>}
+        {(InitialrenderState || postPageState === 2) && <PostStepTwo data={data}></PostStepTwo>}
+        {(InitialrenderState || postPageState === 3) && <PostStepThree data={data}></PostStepThree>}
+        {(InitialrenderState || postPageState === 4) && <PostStepFour data={data}></PostStepFour>}
+        {/* {postPageState === 1 || true ? (
           <PostStepOne data={data}></PostStepOne>
-        ) : postPageState === 2 ? (
+        ) : postPageState === 2 || true ? (
           <PostStepTwo data={data}></PostStepTwo>
-        ) : postPageState === 3 ? (
+        ) : postPageState === 3 || true ? (
           <PostStepThree data={data}></PostStepThree>
-        ) : postPageState === 4 ? (
+        ) : postPageState === 4 || true ? (
           <PostStepFour data={data}></PostStepFour>
         ) : (
           <PostStepOne data={data}></PostStepOne>
-        )}
+        )} */}
       </PostFormBlock>
     </FormProvider>
   );

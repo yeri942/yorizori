@@ -8,7 +8,7 @@ import ResipeButton from "../mypage/ResipeList"
 import axios from 'axios';
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../states";
-import { TargetPostZone, TargetPostBox } from "./FollowerStyle";
+import { TargetPostZone, TargetPostBox, PostWrapper } from "./FollowerStyle";
 
 const MyPageTemplate = () => {
   const [ userData, setUserData] = useState([])
@@ -138,7 +138,6 @@ const MyPageTemplate = () => {
   // console.log("타켓팔로잉", targetFollowee)
   // console.log("나의팔로워", myFollower)
   // console.log("나의팔로잉", myFollowee)
-
   return (
     <div>
       <NavTop />
@@ -190,7 +189,7 @@ const MyPageTemplate = () => {
         <MyPageMainImgBox>
           <MyPageMainInfoBox>
             <div className="InfoProfile">
-              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/baseimage.png"}/>
+              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/onlylogo.png"}/>
               <p>{targetUserData.nickName}</p>
             </div>
           </MyPageMainInfoBox>
@@ -207,12 +206,20 @@ const MyPageTemplate = () => {
           <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "20px"}} />
           <TargetPostBox>
             
+                    
             <TargetPostZone>
               { targetPostResipe.map((item, input) => {
                 return (
-                  <Link key={input} to={`/detail/${item.id}`}>
-                    <img src={item.thumbnail}/>
-                  </Link>
+                  <Link
+                      key={input}
+                      to={`/detail/${item.id} `}
+                      style={{ textDecoration: "none", color: "inherit", height: "170px;" }}
+                    >
+                      <PostWrapper>
+                        <img style={{ objectFit: "cover" }} src={item.thumbnail} />
+                        <div>{item.recipeName}</div>
+                      </PostWrapper>
+                    </Link>
                 )
               })}
             </TargetPostZone>
@@ -232,6 +239,7 @@ const MyPageImage = styled.img`
   width: 115px;
   height: 115px;
   border-radius: 50%;
+  object-fit: cover;
 
   + p {
     font-family: sans-serif;

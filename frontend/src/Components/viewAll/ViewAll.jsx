@@ -7,6 +7,7 @@ import PostzoneByRecent from "./PostzoneByRecent";
 import TopNav_main from "../nav/TopNav_main";
 import BottomNav from "../nav/BottomNav";
 import Modal from "./Modal";
+import ScrollToTopButton from "../nav/ScrollToTopButton";
 
 import { useRecoilValue } from "recoil";
 import { randomButtonState, randomPostState, sortState } from "../../states/ViewAllAtom";
@@ -26,6 +27,7 @@ const ViewAll = () => {
         <CategoryDropdown></CategoryDropdown>
         {famousOrRecentCondition === "famous" ? <Postzone /> : <PostzoneByRecent />}
       </Content>
+      <ScrollToTopButton />
       <BottomNav />
     </ViewAllBlock>
   );

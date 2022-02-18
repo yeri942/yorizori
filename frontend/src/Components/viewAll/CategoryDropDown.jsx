@@ -219,6 +219,7 @@ const DropdownWrapper = styled.div`
     font-size: 13px;
     font-weight: 900;
     color: #feae11;
+    text-align: center;
 
     &:not(:last-child) {
       margin-right: 8px;

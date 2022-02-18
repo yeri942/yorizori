@@ -8,15 +8,15 @@ import swal from "sweetalert";
 
 function KakaoAuth() {
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://developers.kakao.com/sdk/js/kakao.min.js"
-    document.body.appendChild(script)
+    // const script = document.createElement("script")
+    // script.src = "https://developers.kakao.com/sdk/js/kakao.min.js"
+    // document.body.appendChild(script)
 
-    return () => {
-      document.body.removeChild(script)
-    }
+    // return () => {
+    //   document.body.removeChild(script)
+    // }
   },[])
-  const REST_API_KEY = process.env.REACT_APP_KAKAKO_KEY;
+  const REST_API_KEY = process.env.REACT_APP_REST_API;
   const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
   const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
   const code = new URL(window.location.href).searchParams.get("code");
@@ -35,8 +35,10 @@ function KakaoAuth() {
     });
 
     try {
+      console.log(payload)
       // access token 가져오기
       const res = await axios.post("https://kauth.kakao.com/oauth/token", payload);
+      console.log(res)
 
       // Kakao Javascript SDK 초기화
       window.Kakao.init(REST_API_KEY);
@@ -58,7 +60,8 @@ function KakaoAuth() {
       setUimg(result.data.uimg)
       swal("로그인 성공", "로그인되었습니다.", "success").then(() => navigate("/"));
     } catch (err) {
-      console.log(err);
+      console.log("왜 에러나고 지랄이야")
+      console.error(err);
     }
   };
 

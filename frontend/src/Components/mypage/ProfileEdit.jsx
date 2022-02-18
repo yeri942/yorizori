@@ -10,6 +10,8 @@ import { MyPagePasswordEditBox } from "./ProfileEditStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCircleCheck, faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
+import { userIdAtom } from "../../states";
+import { useRecoilValue } from "recoil";
 
 
 const EditMyPage = () => {
@@ -18,11 +20,15 @@ const EditMyPage = () => {
   const [ nickCheck, setNickCheck ] = useState("type1")
   const [ password, setPassword ] = useState("1234")
   const [ userData, setUserData] = useState([])
+  const [ myAuthData, setMyAuthData ] = useState([]) 
   const [ profileImage, setProfileImage] = useState(userData.profileImage ? userData.profileImage : "../../images/baseimage.png");
   const [ saveImage, setSaveImage ] = useState("")
   const [ savenickName, setSaveNickName ] = useState("")
+  const [ allUser, setAllUser ] = useState([]) 
   const nickNameInput = useRef()
   let { userId } = useParams()
+  const authId =  useRecoilValue(userIdAtom)
+  const allNameData = allUser.map((item) => item.nickName)
 
   useEffect(()=>{
     fetch(`http://localhost:8080/user/${userId}/profile`)
@@ -34,6 +40,22 @@ const EditMyPage = () => {
     
     .catch(err => console.log(err))
   },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/${authId}/profile`)
+      .then(response => response.json())
+      .then(data => setMyAuthData(data.user))
+      
+      .catch(err => console.log(err))
+  },[]);
+
+  useEffect(()=>{
+    fetch(`http://localhost:8080/user/all`)
+      .then(response => response.json())
+      .then(data => { setAllUser(data.allUser)})
+      
+      .catch(err => console.log(err))
+  }, []);
 
 
   async function successChenge() {
@@ -63,6 +85,7 @@ const EditMyPage = () => {
   const pass1 = () => {
     document.querySelector(".passbox").classList.toggle("passcheck")
   }
+
 
   function nickNameCheck(value) {
     let pattern_space = /\s/g;	// 공백체크
@@ -95,7 +118,17 @@ const EditMyPage = () => {
       setNickCheck("type2")
       setSaveNickName(userData.nickName)
 
-    }
+    } else if ( myAuthData.nickName === value ) {
+      data.innerText = "현재 사용중인 닉네임 입니다."
+      setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
+    } else if ( allNameData.includes(value) ) {
+      data.innerText = "중복된 닉네임 입니다."
+      setNickCheck("type2")
+      setSaveNickName(userData.nickName)
+
+    } 
 
      else {
       data.innerText = "사용 가능한 닉네임 입니다."
@@ -104,6 +137,7 @@ const EditMyPage = () => {
     }
 
   }
+
 
   return (
       <EditMainBox>
@@ -119,7 +153,7 @@ const EditMyPage = () => {
                 setMyNickName(e.target.value)
                 nickNameCheck(e.target.value)
               }}/>
-              <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
+              <p style={{marginBottom: "30px"}}>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
               
               <MyPagePasswordEditBox className="passbox">
                 <span onClick={pass1}>비밀번호 바꾸기</span><br /><br />
@@ -128,7 +162,7 @@ const EditMyPage = () => {
                 <div className="showpass">
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "21px"}}>
+              <div style={{position: "relative", top: "-3px"}}>
               { nickCheck === "type2" 
               ? 
                 <EditBtn type="button" onClick={successChenge, () => nickNameInput.current.focus()}>
@@ -140,7 +174,7 @@ const EditMyPage = () => {
                   완료
                   </EditBtn>
                 </Link>
-              }
+              } 
               </div>
 
             </MyPageMainImgBox>
@@ -154,9 +188,12 @@ const EditMainBox = styled.div`
   
 `
 const EditImage = styled.img`
+  position: relative;
+  top: 16px;
   width: 190px;
   height: 190px;
   border-radius: 50%;
+  object-fit: cover;
   /* background-image: url("../images/profile.png");
   background-size: cover; */
 
@@ -221,6 +258,7 @@ const EditInput = styled.input`
 
     .checkError {
       font-size: 14px;
+
     }
 
     .checkSuccess {
