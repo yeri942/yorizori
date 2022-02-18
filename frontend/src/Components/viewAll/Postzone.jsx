@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { dropDownOptionsState } from "../../states/ViewAllAtom";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { searchAtom } from "../nav/NavAtom";
 import axios from "axios";
-import CategoryDropdown from "../post/PostStepFour/CategoryDropdown";
+import {
+  categoryAtom,
+  materialAtom,
+  conditionAtom,
+  cookAtom,
+  ViewAll,
+} from "../../states/ViewAllAtom";
+
 const Postzone = () => {
   const filteredData = useRecoilValue(searchAtom);
   const [page, setPage] = useState(1);
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const dropDownOptions = useRecoilValue(dropDownOptionsState);
-  const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
+
+  const categoryFilter = useRecoilState(categoryAtom);
+  const materialFilter = useRecoilState(materialAtom);
+  const conditionFilter = useRecoilState(conditionAtom);
+  const cookFilter = useRecoilState(cookAtom);
+
   console.log("레시피페이지 렌더링");
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
@@ -27,7 +36,7 @@ const Postzone = () => {
 
   const getRecipe = () => {
     try {
-      const query = String(filteredData);
+      const query = filteredData;
       const urlAll = `http://localhost:8080/post?startIndex=${page}&limit=10`;
       const urlSearch = `http://localhost:8080/post?recipeName=${query}`;
 
@@ -35,22 +44,24 @@ const Postzone = () => {
       if (query) {
         url = urlSearch;
         const fetchData = async () => {
-          // setLoading(true);
           const result = await axios(url);
-
           setRecipes(result.data);
-
-          // setLoading(false);
+          console.log(result.data);
         };
         fetchData();
-      } else {
+      }
+      if (
+        !query &&
+        !categoryFilter[0] &&
+        !materialFilter[0] &&
+        !conditionFilter[0] &&
+        !cookFilter[0]
+      ) {
         url = urlAll;
         const fetchData = async () => {
-          // setLoading(true);
           const result = await axios(url);
           const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
           setRecipes(resultrecipes);
-          // setLoading(false);
         };
         fetchData();
       }
@@ -60,49 +71,65 @@ const Postzone = () => {
   };
 
   useEffect(() => {
-    getRecipe();
-    // console.log("1", recipes, filteredData);
-    // if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-    //   console.log("page?", page);
-    //   // console.log(recipes);
-    //   // console.log(recipes.length);
-    // }
-  }, [filteredData, page]);
-  // console.log("2", recipes, filteredData);
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getRecipe();
+    }
+  }, [page, filteredData]);
+
+  const getCategoryRecipe = () => {
+    try {
+      const fetchData = async () => {
+        if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0])
+          return;
+        console.log(categoryFilter[0]);
+
+        const category = categoryFilter[0];
+        const material = materialFilter[0];
+        const condition = conditionFilter[0];
+        const cook = cookFilter[0];
+
+        const categoryParams = category === "" ? "" : `&category=${category}`;
+        const materialParams = material === "" ? "" : `&material=${material}`;
+
+        const conditionParams = condition === "" ? "" : `&condition=${condition}`;
+        const cookParams = cook === "" ? "" : `&cook=${cook}`;
+
+        const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
+
+        const result = await axios(url);
+        const resultrecipes = recipes.concat(result.data.userPosts);
+        setRecipes(resultrecipes);
+      };
+      fetchData();
+    } catch {
+      console.error("에러");
+    }
+  };
+
+  useEffect(() => {
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getCategoryRecipe();
+    }
+  }, [page, categoryFilter[0], materialFilter[0], conditionFilter[0], cookFilter[0]]);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    // console.log("3", recipes, filteredData);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  if (dropDownOptions.category) {
-    console.log(dropDownOptions.category, "카테고리가 생겼어요");
-    // const url = `http://localhost:8080/post/withFilter?category=${dropDownOptions.category}`;
-
-    // const fetchData = async () => {
-    //   // setLoading(true);
-    //   const result = await axios(url);
-    //   const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-    //   setRecipes(resultrecipes);
-    //   // setLoading(false);
-    // };
-    // fetchData();
-  }
-  // else console.log("카테고리가 생겼어요");
-  if (dropDownOptions.material) {
-    console.log("material가 생겼어요");
-  }
-  // else console.log("material가 생겼어요");
-  if (dropDownOptions.condition) {
-    console.log("condition가 생겼어요");
-  }
-  // else console.log("condition가 생겼어요");
-  if (dropDownOptions.cook) {
-    console.log("cook가 생겼어요");
-  }
-  // else console.log("cook가 생겼어요");
   console.log(recipes);
+  // for (let i = 0; i < recipes.length; i++) {
+  //   console.log(
+  //     recipes[i].category,
+  //     recipes[i].material,
+  //     recipes[i].condition,
+  //     recipes[i].cook,
+  //     recipes[i].recipeName
+  //   );
+  // }
   return (
     <Wrapper>
       <WrapperPost>
@@ -170,7 +197,7 @@ const Wrapper = styled.div`
 const WrapperPost = styled.div`
   // overflow: scroll;
   display: grid;
-  margin-top: 15px;
+  margin-top: 5px;
   grid: auto-flow 270px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
@@ -182,8 +209,7 @@ const WrapperPost = styled.div`
 `;
 const Img = styled.img`
   width: 160px;
-  height: 147px;
-  border-radius: 10px;
+  height: 160px;
   object-fit: cover;
 `;
 const TextBox = styled.div`
@@ -194,17 +220,17 @@ const TextBox = styled.div`
   text-align: left;
 `;
 const Title = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   margin: 0px;
 `;
 const Author = styled.p`
-  font-size: 13px;
-  margin: 5px 0 10px 0;
+  font-size: 12px;
+  margin: 5px 0 5px 0;
 `;
 const WrapperHeartComment = styled.div`
   line-height: 15px;
 `;
 const HeartCommentCount = styled.span`
-  font-size: 13px;
+  font-size: 10px;
   margin-right: 8px;
 `;

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import axios from "axios";
 import {
   randomButtonState,
   randomPostState,
   dropDownOptionsState,
   sortState,
+  ViewAll,
 } from "../../states/ViewAllAtom";
-import dummy from "../../posts.json";
 
 const Buttons = () => {
   const setRandomButton = useSetRecoilState(randomButtonState);
@@ -18,7 +18,7 @@ const Buttons = () => {
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
   const currentSortState = useRecoilValue(sortState);
   const setCurrentSortState = useSetRecoilState(sortState);
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
   const [page, setPage] = useState(1);
 
   const randompost = () => {
@@ -31,64 +31,29 @@ const Buttons = () => {
   };
 
   const clearDropDownOptions = (e) => {
-    if (e.target.id === "famous") {
-      setCurrentSortState("famous");
-    } else {
-      setCurrentSortState("recent");
-    }
+    window.location.replace("/view_all");
   };
 
-  // const getRecipe = async () => {
-  //   try {
-  //     const url = `http://localhost:8080/post`;
-
-  //     const fetchData = async () => {
-  //       // setLoading(true);
-  //       const result = await axios(url);
-  //       const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-  //       setRecipes(resultrecipes);
-  //       // setLoading(false);
-  //     };
-  //     fetchData();
-  //   } catch {
-  //     console.error("에러");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-  //     console.log("page?", page);
-  //     getRecipe();
-  //   }
-  // });
-
-  useEffect(() => {
-    const defaultName = document.querySelectorAll(".rdn-control-placeholder");
-    const defaultCategory = ["category", "material", "condition", "cook"];
-    const defaultNameList = ["종류", "재료", "상황", "방법"];
-
-    defaultName.forEach((item, index) => {
-      if (!dropDownOptions[defaultCategory[index]]) {
-        item.innerText = defaultNameList[index];
-      } else {
-        item.innerText = dropDownOptions[defaultCategory[index]];
-      }
-    });
-    // getRecipe();
-    // if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-    //   console.log("page?", page);
-    //   getRecipe();
-    // }
-  }, [page]);
-
+  const sortByFamous = (e) => {
+    console.log("인기순");
+    setCurrentSortState("famous");
+  };
+  const sortByRecent = (e) => {
+    console.log("최신순");
+    setCurrentSortState("recent");
+  };
   return (
     <>
       <Wrapper>
         <ButtonWrapper currentValue={currentSortState}>
-          <button id="famous" onClick={clearDropDownOptions}>
+          <RefreshButtonWapper onClick={clearDropDownOptions}>
+            <div />
+            <p>새로고침</p>
+          </RefreshButtonWapper>
+          <button id="famous" onClick={(e) => sortByFamous(e)}>
             인기순
           </button>
-          <button id="recent" onClick={clearDropDownOptions}>
+          <button id="recent" onClick={(e) => sortByRecent(e)}>
             최신순
           </button>
           <RandomButtonWapper
@@ -130,6 +95,7 @@ const ButtonWrapper = styled.div`
     }
   }
   #famous {
+    margin-right: 10px;
     background-color: ${(props) => (props.currentValue === "famous" ? "#feae11" : "white")};
     color: ${(props) => (props.currentValue === "famous" ? "white" : "#feae11")};
   }
@@ -138,7 +104,29 @@ const ButtonWrapper = styled.div`
     color: ${(props) => (props.currentValue === "recent" ? "white" : "#feae11")};
   }
 `;
-
+const RefreshButtonWapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  left: 15px;
+  top: 91px;
+  & > div {
+    background-color: transparent;
+    background-image: url(${process.env.PUBLIC_URL + "../images/refresh.png"});
+    background-size: cover;
+    border: none;
+    width: 35px;
+    height: 35px;
+  }
+  & > p {
+    width: 44px;
+    color: #feae11;
+    font-size: 11px;
+    font-weight: 900;
+    margin: 0;
+  }
+`;
 const RandomButtonWapper = styled.div`
   position: absolute;
   display: flex;
