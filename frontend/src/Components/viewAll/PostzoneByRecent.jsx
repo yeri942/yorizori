@@ -15,15 +15,16 @@ import {
   viewAllPostsByLikesAtom,
   entirePostsCountAtom,
   viewAllFamousPage,
+  viewAllRecentPosts,
   viewAllRecentPage,
 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
   const filteredData = useRecoilValue(searchAtom);
-  // const [page, setPage] = useState(1);
+  //   const [page, setPage] = useState(1);
   // const [recentRecipePage,setRecentRecipePage] = useState(1);
-  const [recipes, setRecipes] = useRecoilState(ViewAll);
-  const [page, setPage] = useRecoilState(viewAllFamousPage);
+  const [recipes, setRecipes] = useRecoilState(viewAllRecentPosts);
+  const [page, setPage] = useRecoilState(viewAllRecentPage);
 
   const categoryFilter = useRecoilState(categoryAtom);
   const materialFilter = useRecoilState(materialAtom);

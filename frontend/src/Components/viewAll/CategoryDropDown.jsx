@@ -11,6 +11,10 @@ import {
   conditionAtom,
   cookAtom,
   ViewAll,
+  viewAllFamousPage,
+  viewAllRecentPage,
+  viewAllRecentPosts,
+  sortState,
 } from "../../states/ViewAllAtom";
 
 const CategoryDropdown = () => {
@@ -28,6 +32,11 @@ const CategoryDropdown = () => {
   const resetMaterial = useResetRecoilState(materialAtom);
   const resetCondition = useResetRecoilState(conditionAtom);
   const resetCook = useResetRecoilState(cookAtom);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
+  const [recentRecipes, setRecentRecipes] = useRecoilState(viewAllRecentPosts);
+  const [famousPage, setFamousPage] = useRecoilState(viewAllFamousPage);
+  const [recentPage, setRecentPage] = useRecoilState(viewAllRecentPage);
+  const famousOrRecentCondition = useRecoilValue(sortState);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -73,6 +82,17 @@ const CategoryDropdown = () => {
     setFilterCondition(e.value);
   };
 
+  const onSelectResethandler = () => {
+    if (famousOrRecentCondition === "famous") {
+      if (famousPage !== 1) setRecipes([]);
+      setFamousPage(1);
+    }
+    if (famousOrRecentCondition === "recent") {
+      if (recentPage !== 1) setRecentRecipes([]);
+      setRecentPage(1);
+    }
+  };
+
   return (
     <>
       <DropdownWrapper>
@@ -85,6 +105,7 @@ const CategoryDropdown = () => {
               ...dropDownValues,
               category: value.value === "전체" ? "" : value.value,
             }));
+            onSelectResethandler();
             console.log("dropDownOptions", dropDownOptions);
           }} // always fires once a selection happens even if there is no change
         />
@@ -98,6 +119,7 @@ const CategoryDropdown = () => {
               ...dropDownValues,
               material: value.value === "전체" ? "" : value.value,
             }));
+            onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
         <Dropdown
@@ -121,6 +143,7 @@ const CategoryDropdown = () => {
               ...dropDownValues,
               condition: value.value === "전체" ? "" : value.value,
             }));
+            onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
         <Dropdown
@@ -134,6 +157,7 @@ const CategoryDropdown = () => {
               ...dropDownValues,
               cook: value.value === "전체" ? "" : value.value,
             }));
+            onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
       </DropdownWrapper>

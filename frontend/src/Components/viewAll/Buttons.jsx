@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Dropdown } from "react-dropdown-now";
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import Recoil, {
+  useRecoilValue,
+  useSetRecoilState,
+  useRecoilState,
+  useResetRecoilState,
+} from "recoil";
 import axios from "axios";
 import {
   randomButtonState,
@@ -9,6 +14,9 @@ import {
   dropDownOptionsState,
   sortState,
   ViewAll,
+  viewAllRecentPage,
+  viewAllFamousPage,
+  viewAllRecentPosts,
 } from "../../states/ViewAllAtom";
 
 const Buttons = () => {
@@ -16,9 +24,13 @@ const Buttons = () => {
   const setRandomPost = useSetRecoilState(randomPostState);
   const dropDownOptions = useRecoilValue(dropDownOptionsState);
   const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
+  const resetDropDownOptions = useResetRecoilState(dropDownOptionsState);
   const currentSortState = useRecoilValue(sortState);
   const setCurrentSortState = useSetRecoilState(sortState);
   const [recipes, setRecipes] = useRecoilState(ViewAll);
+  const [recentRecipes, setRecentRecipes] = useRecoilState(viewAllRecentPosts);
+  const [famousPage, setFamousPage] = useRecoilState(viewAllFamousPage);
+  const [recentPage, setRecentPage] = useRecoilState(viewAllRecentPage);
   const [page, setPage] = useState(1);
 
   const randompost = () => {
@@ -36,11 +48,35 @@ const Buttons = () => {
 
   const sortByFamous = (e) => {
     console.log("인기순");
+    if (
+      !(
+        recipes.length == 10 &&
+        currentSortState === "famous" &&
+        dropDownOptions instanceof Recoil.DefaultValue
+      )
+    ) {
+      console.log("doosan", recipes.length, currentSortState, dropDownOptions);
+      setRecipes([]);
+    }
     setCurrentSortState("famous");
+    resetDropDownOptions();
+    setFamousPage(1);
   };
   const sortByRecent = (e) => {
     console.log("최신순");
     setCurrentSortState("recent");
+    resetDropDownOptions();
+    // if (recentPage !== 1) setRecentRecipes([]);
+    if (
+      !(
+        recentRecipes.length == 10 &&
+        currentSortState === "recent" &&
+        dropDownOptions == { category: "", material: "", condition: "", cook: "" }
+      )
+    ) {
+      setRecentRecipes([]);
+    }
+    setRecentPage(1);
   };
   return (
     <>
