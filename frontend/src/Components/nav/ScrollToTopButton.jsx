@@ -34,13 +34,13 @@ export default ScrollToTopButton;
 const Button = styled.button`
   position: fixed;
   z-index: 999;
-  bottom: 100px;
+  bottom: 95px;
   right: 20px;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   border: none;
-  background-color: #feae11;
+  background-color: #feaf11e3;
   color: white;
   font-size: 15px;
   box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.4);
