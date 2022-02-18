@@ -189,7 +189,7 @@ const MyPageTemplate = () => {
         <MyPageMainImgBox>
           <MyPageMainInfoBox>
             <div className="InfoProfile">
-              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/baseimage.png"}/>
+              <MyPageImage src={targetUserData.profileImage ? targetUserData.profileImage : "../../images/onlylogo.png"}/>
               <p>{targetUserData.nickName}</p>
             </div>
           </MyPageMainInfoBox>
