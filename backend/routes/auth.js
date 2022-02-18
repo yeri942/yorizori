@@ -5,6 +5,7 @@ const { isLoggedIn, isNotLoggedIn } = require("./middlewares"); // 내가 만든
 const { User } = require("../models/");
 const axios = require("axios");
 const asyncHandler = require("../utils/asyncHandler");
+const qs = require("qs");
 
 const router = express.Router();
 
@@ -39,30 +40,82 @@ router.post(
   })
 );
 
-router.post(
+router.get(
   "/find",
   isNotLoggedIn,
   asyncHandler(async (req, res) => {
-    const { email, nickName, kakaoId, profileImage } = req.body;
+    const { code } = req.query;
+    console.log("code: ", code);
+    token = await axios({
+      //token
+      method: "POST",
+      url: "https://kauth.kakao.com/oauth/token",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify({
+        grant_type: "authorization_code", //특정 스트링
+        client_id: process.env.KAKAO_ID,
+        client_secret: process.env.KAKAO_SECRET,
+        redirectUri: "http://localhost:3000/oauth/kakao/callback",
+        code: code, //결과값을 반환했다. 안됐다.
+      }), //객체를 string 으로 변환
+    });
+    const {
+      data: {
+        id: kakaoId,
+        properties: { nickname: nickName },
+        kakao_account: {
+          profile: { profile_image_url: img },
+          email,
+        },
+      },
+    } = await await axios({
+      method: "get",
+      url: "https://kapi.kakao.com/v2/user/me",
+      headers: {
+        Authorization: `Bearer ${token.data.access_token}`,
+      }, //헤더에 내용을 보고 보내주겠다.
+    });
+    // console.log(user);
+    console.log(`kakaoId: ${kakaoId}, nickName: ${nickName}, img: ${img}, email: ${email}`);
     const isUserExist = await User.findOne({ email });
-    console.log(isUserExist, "유져 있냐??");
-    let id;
     if (!isUserExist) {
-      const user = await User.create({
+      const nUser = await User.create({
         email,
         nickName,
-        profileImage,
-        kakaoId,
-      });
-      id = user._id;
-      console.log(id);
-      res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: user.profileImage });
-    } else if (!isUserExist.kakaoId) {
-      id = isUserExist?._id;
-      isUserExist.kakaoId = kakaoId;
-      isUserExist.save();
-      res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: isUserExist.profileImage });
+        profileImage: img,
+        kakaoId
+      })
+      res.cookie("id", nUser._id)
+      res.status(201).json({ message: "회원가입 완료", uid: nUser._id, uimg: img})
     }
+    if (!(isUserExist.kakaoId)) {
+      isUserExist.kakaoId = kakaoId
+      isUserExist.save()
+    }
+    res.cookie("id", isUserExist._id)
+    res.status(200).json({ message: "소셜로그인 완료", uid: isUserExist._id, uimg: isUserExist.profileImage });
+    // const { email, nickName, kakaoId, profileImage } = req.body;
+    // const isUserExist = await User.findOne({ email });
+    // console.log(isUserExist, "유져 있냐??");
+    // let id;
+    // if (!isUserExist) {
+    //   const user = await User.create({
+    //     email,
+    //     nickName,
+    //     profileImage,
+    //     kakaoId,
+    //   });
+    //   id = user._id;
+    //   console.log(id);
+    //   res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: user.profileImage });
+    // } else if (!isUserExist.kakaoId) {
+    //   id = isUserExist?._id;
+    //   isUserExist.kakaoId = kakaoId;
+    //   isUserExist.save();
+    //   res.status(200).json({ message: "업데이트 성공!", uid: id, uimg: isUserExist.profileImage });
+    // }
   })
 );
 
