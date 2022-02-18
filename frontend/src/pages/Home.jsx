@@ -7,7 +7,7 @@ const HomePageBlock = styled.div``;
 
 const HomePage = () => {
   const setPageState = useSetRecoilState(pageStateAtom);
-  
+  console.log("0734499ca487a114ff01aed588ab068c");
   useEffect(() => {
     setPageState("home");
     return () => {

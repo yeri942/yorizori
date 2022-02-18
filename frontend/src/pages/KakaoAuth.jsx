@@ -11,19 +11,18 @@ function KakaoAuth() {
     // const script = document.createElement("script")
     // script.src = "https://developers.kakao.com/sdk/js/kakao.min.js"
     // document.body.appendChild(script)
-
     // return () => {
     //   document.body.removeChild(script)
     // }
-  },[])
-  const REST_API_KEY = process.env.REACT_APP_REST_API;
-  const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
+  }, []);
+  const REST_API_KEY = "0734499ca487a114ff01aed588ab068c";
+  const CLIENT_SECRET = "GIDxRVULPyKVl1l7SCqFxW74psn827fa";
   const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
   const code = new URL(window.location.href).searchParams.get("code");
-  const setAuth = useSetRecoilState(authAtom)
-  const setUid = useSetRecoilState(userIdAtom)
-  const setUimg = useSetRecoilState(userImage)
-  const navigate = useNavigate()
+  const setAuth = useSetRecoilState(authAtom);
+  const setUid = useSetRecoilState(userIdAtom);
+  const setUimg = useSetRecoilState(userImage);
+  const navigate = useNavigate();
 
   const getToken = async () => {
     const payload = qs.stringify({
@@ -35,10 +34,10 @@ function KakaoAuth() {
     });
 
     try {
-      console.log(payload)
+      console.log(payload);
       // access token 가져오기
       const res = await axios.post("https://kauth.kakao.com/oauth/token", payload);
-      console.log(res)
+      console.log(res);
 
       // Kakao Javascript SDK 초기화
       window.Kakao.init(REST_API_KEY);
@@ -51,16 +50,16 @@ function KakaoAuth() {
         email: data.kakao_account.email,
         nickName: data.properties.nickname,
         profileImage: data.kakao_account.profile.thumbnail_image_url,
-        kakaoId: data.id
+        kakaoId: data.id,
       });
-      console.log(result)
+      console.log(result);
       localStorage.setItem("user", JSON.stringify(result.data));
-      setAuth(true)
-      setUid(result.data.uid)
-      setUimg(result.data.uimg)
+      setAuth(true);
+      setUid(result.data.uid);
+      setUimg(result.data.uimg);
       swal("로그인 성공", "로그인되었습니다.", "success").then(() => navigate("/"));
     } catch (err) {
-      console.log("왜 에러나고 지랄이야")
+      console.log("왜 에러나고 지랄이야");
       console.error(err);
     }
   };

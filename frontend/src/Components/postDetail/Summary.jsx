@@ -22,7 +22,8 @@ const Summary = ({ data, postId }) => {
 
   const setShare = () => {
     const shareURL = url + "/detail/" + data._id;
-
+    Kakao.init("7167c35645975dba28659201aa6df28b");
+    Kakao.isInitialized();
     Kakao.Link.sendDefault({
       objectType: "feed",
       content: {
