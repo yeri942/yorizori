@@ -144,7 +144,7 @@ const EditMyPage = () => {
                 <div className="showpass">
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "7px"}}>
+              <div style={{position: "relative", top: "-3px"}}>
               { nickCheck === "type2" 
               ? 
                 <EditBtn type="button" onClick={successChenge, () => nickNameInput.current.focus()}>
