@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { dropDownOptionsState } from "../../states/ViewAllAtom";
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { searchAtom } from "../nav/NavAtom";
 import axios from "axios";
+import {
+  categoryAtom,
+  materialAtom,
+  conditionAtom,
+  cookAtom,
+  ViewAll,
+} from "../../states/ViewAllAtom";
+
 const Postzone = () => {
   const filteredData = useRecoilValue(searchAtom);
   const [page, setPage] = useState(1);
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const dropDownOptions = useRecoilValue(dropDownOptionsState);
+  const [recipes, setRecipes] = useRecoilState(ViewAll);
 
+  const categoryFilter = useRecoilState(categoryAtom);
+  const materialFilter = useRecoilState(materialAtom);
+  const conditionFilter = useRecoilState(conditionAtom);
+  const cookFilter = useRecoilState(cookAtom);
+
+  console.log("레시피페이지 렌더링");
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
@@ -23,30 +34,34 @@ const Postzone = () => {
     }
   };
 
-  const getRecipe = async () => {
+  const getRecipe = () => {
     try {
       const query = filteredData;
-      const urlAll = `http://localhost:8080/post?page=${page}&perPage=10`;
-      const urlSearch = `http://localhost:8080/post/search?recipeName=${query}`;
+      const urlAll = `http://localhost:8080/post?startIndex=${page}&limit=10`;
+      const urlSearch = `http://localhost:8080/post?recipeName=${query}`;
 
       let url;
-      if (filteredData === "") {
-        url = urlAll;
-        const fetchData = async () => {
-          // setLoading(true);
-          const result = await axios(url);
-          const resultrecipes = recipes.concat(result.data);
-          setRecipes(resultrecipes);
-          // setLoading(false);
-        };
-        fetchData();
-      } else {
+      if (query) {
         url = urlSearch;
         const fetchData = async () => {
-          // setLoading(true);
           const result = await axios(url);
           setRecipes(result.data);
-          // setLoading(false);
+          console.log(result.data);
+        };
+        fetchData();
+      }
+      if (
+        !query &&
+        !categoryFilter[0] &&
+        !materialFilter[0] &&
+        !conditionFilter[0] &&
+        !cookFilter[0]
+      ) {
+        url = urlAll;
+        const fetchData = async () => {
+          const result = await axios(url);
+          const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
+          setRecipes(resultrecipes);
         };
         fetchData();
       }
@@ -54,12 +69,50 @@ const Postzone = () => {
       console.error("에러");
     }
   };
+
   useEffect(() => {
     if (page <= (Math.ceil(recipes.length) + 10) / 10) {
       console.log("page?", page);
       getRecipe();
     }
-  }, [filteredData, page]);
+  }, [page, filteredData]);
+
+  const getCategoryRecipe = () => {
+    try {
+      const fetchData = async () => {
+        if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0])
+          return;
+        console.log(categoryFilter[0]);
+
+        const category = categoryFilter[0];
+        const material = materialFilter[0];
+        const condition = conditionFilter[0];
+        const cook = cookFilter[0];
+
+        const categoryParams = category === "" ? "" : `&category=${category}`;
+        const materialParams = material === "" ? "" : `&material=${material}`;
+
+        const conditionParams = condition === "" ? "" : `&condition=${condition}`;
+        const cookParams = cook === "" ? "" : `&cook=${cook}`;
+
+        const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
+
+        const result = await axios(url);
+        const resultrecipes = recipes.concat(result.data.userPosts);
+        setRecipes(resultrecipes);
+      };
+      fetchData();
+    } catch {
+      console.error("에러");
+    }
+  };
+
+  useEffect(() => {
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getCategoryRecipe();
+    }
+  }, [page, categoryFilter[0], materialFilter[0], conditionFilter[0], cookFilter[0]]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -67,68 +120,49 @@ const Postzone = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
   console.log(recipes);
-
+  // for (let i = 0; i < recipes.length; i++) {
+  //   console.log(
+  //     recipes[i].category,
+  //     recipes[i].material,
+  //     recipes[i].condition,
+  //     recipes[i].cook,
+  //     recipes[i].recipeName
+  //   );
+  // }
   return (
     <Wrapper>
-      <WrapperPost onScroll={handleScroll}>
-        {recipes
-          .filter((data) => {
-            if (dropDownOptions.category === "") {
-              return data.category;
-            }
-            return data.category === dropDownOptions.category;
-          })
-          .filter((data) => {
-            if (dropDownOptions.material === "") {
-              return data.material;
-            }
-            return data.material === dropDownOptions.material;
-          })
-          .filter((data) => {
-            if (dropDownOptions.condition === "") {
-              return data.condition;
-            }
-            return data.condition === dropDownOptions.condition;
-          })
-          .filter((data) => {
-            if (dropDownOptions.cook === "") {
-              return data.cook;
-            }
-            return data.cook === dropDownOptions.cook;
-          })
-          .map((data) => {
-            let recipeName = data.recipeName;
-            let nickname = data.userId.nickName;
-            if (recipeName.length > 20) {
-              recipeName = recipeName.substring(0, 19) + "…";
-            }
-
-            return (
-              <Link
-                to={`/detail/${data._id}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-                nickname={nickname}
-                title={recipeName}
-                key={data._id}
-              >
-                <div>
-                  <Img src={data.thumbnail} />
-                  <TextBox>
-                    <Title>{recipeName}</Title>
-                    <Author>{nickname}</Author>
-                    <WrapperHeartComment>
-                      <span className="sprite heart" />{" "}
-                      <HeartCommentCount>{data.numLikes}</HeartCommentCount>
-                      <span className="sprite comment" />{" "}
-                      <HeartCommentCount>{data.numComments}</HeartCommentCount>
-                    </WrapperHeartComment>
-                  </TextBox>
-                </div>
-              </Link>
-            );
-          })}
+      <WrapperPost>
+        {recipes.map((data, index) => {
+          let recipeName = data.recipeName;
+          let nickname = data.userId.nickName;
+          if (recipeName.length > 20) {
+            recipeName = recipeName.substring(0, 19) + "…";
+          }
+          return (
+            <Link
+              to={`/detail/${data._id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+              nickname={nickname}
+              title={recipeName}
+              key={index}
+            >
+              <div>
+                <Img src={data.thumbnail} />
+                <TextBox>
+                  <Title>{recipeName}</Title>
+                  <Author>{nickname}</Author>
+                  <WrapperHeartComment>
+                    <span className="sprite heart" />{" "}
+                    <HeartCommentCount>{data.numLikes}</HeartCommentCount>
+                    <span className="sprite comment" />{" "}
+                    <HeartCommentCount>{data.numComments}</HeartCommentCount>
+                  </WrapperHeartComment>
+                </TextBox>
+              </div>
+            </Link>
+          );
+        })}
       </WrapperPost>
     </Wrapper>
   );
@@ -136,7 +170,7 @@ const Postzone = () => {
 export default Postzone;
 
 const Wrapper = styled.div`
-  overflow: scroll;
+  // overflow: scroll;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -161,14 +195,13 @@ const Wrapper = styled.div`
   }
 `;
 const WrapperPost = styled.div`
+  // overflow: scroll;
   display: grid;
-  margin-top: 15px;
+  margin-top: 5px;
   grid: auto-flow 270px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
   justify-items: center;
-  overflow: scroll;
-
   & > div {
     width: 160px;
     height: 228px;
@@ -176,8 +209,7 @@ const WrapperPost = styled.div`
 `;
 const Img = styled.img`
   width: 160px;
-  height: 147px;
-  border-radius: 10px;
+  height: 160px;
   object-fit: cover;
 `;
 const TextBox = styled.div`
@@ -188,17 +220,17 @@ const TextBox = styled.div`
   text-align: left;
 `;
 const Title = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   margin: 0px;
 `;
 const Author = styled.p`
-  font-size: 13px;
-  margin: 5px 0 10px 0;
+  font-size: 12px;
+  margin: 5px 0 5px 0;
 `;
 const WrapperHeartComment = styled.div`
   line-height: 15px;
 `;
 const HeartCommentCount = styled.span`
-  font-size: 13px;
+  font-size: 10px;
   margin-right: 8px;
 `;
