@@ -101,10 +101,14 @@ const CategoryDropdown = () => {
           options={["전체", "한식", "중식", "일식", "아시안", "양식", "기타"]}
           onChange={(e) => handleFilterCategory(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              category: value.value === "전체" ? "" : value.value,
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.category == value.value) return dropDownValues;
+              if (dropDownValues.category == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                category: value.value === "전체" ? "" : value.value,
+              };
+            });
             onSelectResethandler();
             console.log("dropDownOptions", dropDownOptions);
           }} // always fires once a selection happens even if there is no change
@@ -115,10 +119,14 @@ const CategoryDropdown = () => {
           value="one"
           onChange={(e) => handleFilterMaterial(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              material: value.value === "전체" ? "" : value.value,
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.material == value.value) return dropDownValues;
+              if (dropDownValues.material == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                material: value.value === "전체" ? "" : value.value,
+              };
+            });
             onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
@@ -139,10 +147,14 @@ const CategoryDropdown = () => {
           value="one"
           onChange={(e) => handleFilterCondition(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              condition: value.value === "전체" ? "" : value.value,
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.condition == value.value) return dropDownValues;
+              if (dropDownValues.condition == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                condition: value.value === "전체" ? "" : value.value,
+              };
+            });
             onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />
@@ -153,10 +165,14 @@ const CategoryDropdown = () => {
           value="one"
           onChange={(e) => handleFilterCook(e)}
           onSelect={(value) => {
-            setDropDownOptions((dropDownValues) => ({
-              ...dropDownValues,
-              cook: value.value === "전체" ? "" : value.value,
-            }));
+            setDropDownOptions((dropDownValues) => {
+              if (dropDownValues.cook == value.value) return dropDownValues;
+              if (dropDownValues.cook == "" && value.value === "전체") return dropDownValues;
+              return {
+                ...dropDownValues,
+                cook: value.value === "전체" ? "" : value.value,
+              };
+            });
             onSelectResethandler();
           }} // always fires once a selection happens even if there is no change
         />

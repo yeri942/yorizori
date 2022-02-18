@@ -17,6 +17,7 @@ import {
   viewAllRecentPage,
   viewAllFamousPage,
   viewAllRecentPosts,
+  getDefaultViewAllPostAtom,
 } from "../../states/ViewAllAtom";
 
 const Buttons = () => {
@@ -32,6 +33,7 @@ const Buttons = () => {
   const [famousPage, setFamousPage] = useRecoilState(viewAllFamousPage);
   const [recentPage, setRecentPage] = useRecoilState(viewAllRecentPage);
   const [page, setPage] = useState(1);
+  const setDefaultViewAllPost = useSetRecoilState(getDefaultViewAllPostAtom);
 
   const randompost = () => {
     setRandomButton(true);
@@ -48,19 +50,12 @@ const Buttons = () => {
 
   const sortByFamous = (e) => {
     console.log("인기순");
-    if (
-      !(
-        recipes.length == 10 &&
-        currentSortState === "famous" &&
-        dropDownOptions instanceof Recoil.DefaultValue
-      )
-    ) {
-      console.log("doosan", recipes.length, currentSortState, dropDownOptions);
-      setRecipes([]);
-    }
+
+    setRecipes([]);
     setCurrentSortState("famous");
     resetDropDownOptions();
     setFamousPage(1);
+    setDefaultViewAllPost((prev) => !prev);
   };
   const sortByRecent = (e) => {
     console.log("최신순");

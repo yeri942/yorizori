@@ -16,6 +16,7 @@ import {
   entirePostsCountAtom,
   viewAllFamousPage,
   viewAllRecentPage,
+  getDefaultViewAllPostAtom,
 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
@@ -31,6 +32,7 @@ const Postzone = () => {
   const cookFilter = useRecoilState(cookAtom);
   const filteredCondition = useRecoilValue(dropDownOptionsState);
   const famousOrRecentCondition = useRecoilValue(sortState);
+  const getDefaultViewAllPost = useRecoilValue(getDefaultViewAllPostAtom);
 
   console.log("레시피페이지 렌더링");
   const handleScroll = () => {
@@ -75,7 +77,7 @@ const Postzone = () => {
       console.log("page?", page);
       getRecipe();
     }
-  }, [page, filteredData, filteredCondition, famousOrRecentCondition]);
+  }, [page, filteredData, filteredCondition, famousOrRecentCondition, getDefaultViewAllPost]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

@@ -97,3 +97,8 @@ export const sortState = atom({
   key: "sortState",
   default: "famous",
 });
+
+export const getDefaultViewAllPostAtom = atom({
+  key: "getDefaultViewAllPostAtom",
+  default: true,
+});
