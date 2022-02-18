@@ -121,15 +121,15 @@ const Postzone = () => {
     };
   }, []);
   console.log(recipes);
-  for (let i = 0; i < recipes.length; i++) {
-    console.log(
-      recipes[i].category,
-      recipes[i].material,
-      recipes[i].condition,
-      recipes[i].cook,
-      recipes[i].recipeName
-    );
-  }
+  // for (let i = 0; i < recipes.length; i++) {
+  //   console.log(
+  //     recipes[i].category,
+  //     recipes[i].material,
+  //     recipes[i].condition,
+  //     recipes[i].cook,
+  //     recipes[i].recipeName
+  //   );
+  // }
   return (
     <Wrapper>
       <WrapperPost>
@@ -197,7 +197,7 @@ const Wrapper = styled.div`
 const WrapperPost = styled.div`
   // overflow: scroll;
   display: grid;
-  margin-top: 15px;
+  margin-top: 5px;
   grid: auto-flow 270px / repeat(2, 175px);
   justify-content: center;
   align-items: center;
@@ -209,8 +209,7 @@ const WrapperPost = styled.div`
 `;
 const Img = styled.img`
   width: 160px;
-  height: 147px;
-  border-radius: 10px;
+  height: 160px;
   object-fit: cover;
 `;
 const TextBox = styled.div`
@@ -221,17 +220,17 @@ const TextBox = styled.div`
   text-align: left;
 `;
 const Title = styled.p`
-  font-size: 16px;
+  font-size: 14px;
   margin: 0px;
 `;
 const Author = styled.p`
-  font-size: 13px;
-  margin: 5px 0 10px 0;
+  font-size: 12px;
+  margin: 5px 0 5px 0;
 `;
 const WrapperHeartComment = styled.div`
   line-height: 15px;
 `;
 const HeartCommentCount = styled.span`
-  font-size: 13px;
+  font-size: 10px;
   margin-right: 8px;
 `;
