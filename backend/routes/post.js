@@ -235,6 +235,18 @@ router.get(
   })
 );
 
+//레시피 랜덤추천
+router.get(
+  "/random",
+  asyncHandler(async (req, res, next) => {
+    const totalCount = await Post.find({ useYN: true }).countDocuments();
+    console.log(totalCount);
+    const randomNum = Math.round(Math.random() * totalCount);
+    const post = await Post.findOne({ useYN: true }).skip(randomNum);
+    res.status(200).json({ post });
+  })
+);
+
 //개별 레시피 조회
 router.get(
   "/:postId",
