@@ -138,7 +138,7 @@ const MyPageTemplate = () => {
   // console.log("타켓팔로잉", targetFollowee)
   // console.log("나의팔로워", myFollower)
   // console.log("나의팔로잉", myFollowee)
-
+  console.log(userData)
   return (
     <div>
       <NavTop />

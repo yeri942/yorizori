@@ -119,7 +119,7 @@ const EditMyPage = () => {
                 setMyNickName(e.target.value)
                 nickNameCheck(e.target.value)
               }}/>
-              <p>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
+              <p style={{marginBottom: "30px"}}>{nickCheck === "type2" ? <FontAwesomeIcon icon={faCircleXmark} className="checkError"/> : <FontAwesomeIcon icon={faCircleCheck} className="checkSuccess"/> } <span id="nickNameCheckText"></span></p>
               
               <MyPagePasswordEditBox className="passbox">
                 <span onClick={pass1}>비밀번호 바꾸기</span><br /><br />
@@ -128,7 +128,7 @@ const EditMyPage = () => {
                 <div className="showpass">
                 </div>
               </MyPagePasswordEditBox>
-              <div style={{position: "relative", top: "21px"}}>
+              <div style={{position: "relative", top: "7px"}}>
               { nickCheck === "type2" 
               ? 
                 <EditBtn type="button" onClick={successChenge, () => nickNameInput.current.focus()}>
@@ -154,6 +154,8 @@ const EditMainBox = styled.div`
   
 `
 const EditImage = styled.img`
+  position: relative;
+  top: 16px;
   width: 190px;
   height: 190px;
   border-radius: 50%;
@@ -221,6 +223,7 @@ const EditInput = styled.input`
 
     .checkError {
       font-size: 14px;
+
     }
 
     .checkSuccess {
