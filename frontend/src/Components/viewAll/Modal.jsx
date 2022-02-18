@@ -88,6 +88,9 @@ const Modal = () => {
             style={{ textDecoration: "none", color: "inherit" }}
             nickname={randomPost.userId.nickName}
             title={randomPost.recipeName}
+            onClick={() => {
+              document.body.style.overflow = "unset";
+            }}
           >
             <Img src={randomPost.thumbnail} />
           </Link>
