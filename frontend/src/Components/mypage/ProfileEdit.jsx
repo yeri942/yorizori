@@ -156,7 +156,7 @@ const EditMyPage = () => {
                   완료
                   </EditBtn>
                 </Link>
-              }
+              } 
               </div>
 
             </MyPageMainImgBox>
