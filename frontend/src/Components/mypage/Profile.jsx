@@ -119,9 +119,9 @@ const MyPageTemplate = () => {
   async function followerUnCall() {
     await axios
       .delete("/follow", {
-        followeeId: userId,
-        headers: {
-          "Content-Type": "application/json",
+      data: { followerId: userId },
+      headers: {
+        "Content-Type": "application/json",
         },
       })
       .then((data) => alert("언팔로우 성공"))
