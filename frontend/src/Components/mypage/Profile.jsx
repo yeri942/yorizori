@@ -8,7 +8,7 @@ import ResipeButton from "../mypage/ResipeList"
 import axios from 'axios';
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../states";
-import { TargetPostZone, TargetPostBox } from "./FollowerStyle";
+import { TargetPostZone, TargetPostBox, PostWrapper } from "./FollowerStyle";
 
 const MyPageTemplate = () => {
   const [ userData, setUserData] = useState([])
@@ -206,12 +206,20 @@ const MyPageTemplate = () => {
           <div style={{width: "100%", borderBottom : "1px solid #c5c5c5", marginBottom: "20px"}} />
           <TargetPostBox>
             
+                    
             <TargetPostZone>
               { targetPostResipe.map((item, input) => {
                 return (
-                  <Link key={input} to={`/detail/${item.id}`}>
-                    <img src={item.thumbnail}/>
-                  </Link>
+                  <Link
+                      key={input}
+                      to={`/detail/${item.id} `}
+                      style={{ textDecoration: "none", color: "inherit", height: "170px;" }}
+                    >
+                      <PostWrapper>
+                        <img style={{ objectFit: "cover" }} src={item.thumbnail} />
+                        <div>{item.recipeName}</div>
+                      </PostWrapper>
+                    </Link>
                 )
               })}
             </TargetPostZone>
