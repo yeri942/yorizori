@@ -65,17 +65,10 @@ const PostForm = () => {
   const category = useRecoilValue(categoryAtom);
   const [invalidationState, setInvalidationState] = useRecoilState(InvalidationAtom);
 
-  const [ingredientsList, setIngredientsList] = useRecoilState(IngredientsListAtom);
-  const [SourceList, setSourceList] = useRecoilState(SourceListAtom);
   const { state } = useLocation();
   const { data, postId } = state;
   const navigate = useNavigate();
   const methods = useForm();
-
-  useEffect(() => {
-    setPostpostPageState(2);
-    setPostpostPageState(1);
-  }, []);
 
   const onSubmit = async (data) => {
     let ingredient = [];
