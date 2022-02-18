@@ -180,20 +180,18 @@ const PostForm = () => {
         console.log(pair[0] + ", " + pair[1]);
       }
 
-      await axios.delete(`/post/${postId}`);
+      // await axios.delete(`/post/${postId}`);
 
       await axios
-        .post("/post", formData, {
+        .post(`/post/${postId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then(async (res) => {
-          await axios.get("/post?page=1&perPage=1").then((res) => {
-            console.log(res);
-            // navigate("/");
-            window.location.replace(`/detail/${res.data[0]._id}`);
-            swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {});
+        .then((res) => {
+          console.log(res);
+          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {
+            window.location.replace(`/detail/${postId}`);
           });
         })
         .catch((err) => {
