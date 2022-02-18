@@ -130,24 +130,6 @@ router.post(
   })
 );
 
-//레시피명 검색
-router.get(
-  "/search",
-  asyncHandler(async (req, res, next) => {
-    // const page = Number(req.query.page || 1);
-    // const perPage = Number(req.query.perPage || 4);
-    const recipeName = req.query.recipeName;
-
-    const posts = await Post.find({ useYN: true, recipeName: { $regex: recipeName } })
-      .populate({ path: "userId", select: "-password" })
-      .populate({ path: "numComments", match: { isDeleted: false } })
-      .sort({ createdAt: -1 }); //최근 순으로 정렬
-    // .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
-    // .limit(perPage);
-    res.status(200).json(posts);
-  })
-);
-
 //게시글들을 좋아요 받은 순으로 내림차순 정렬해서 값을 전달.
 router.get(
   "/sortByLike",
@@ -194,6 +176,7 @@ router.get(
   "/withFilter",
   asyncHandler(async (req, res, next) => {
     let { startIndex, limit, currentPost } = req.query;
+
     console.log("currentPost", currentPost);
 
     if (!startIndex) startIndex = 1;
@@ -215,17 +198,25 @@ router.get(
     }
 
     console.log("filteredCondition", filteredCondition);
-    const filteredPost = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
-      .sort({ createdAt: -1 }) // 최신순정렬
-      .skip(startIndex - 1)
-      .limit(limit)
-      .populate({
-        path: "userId",
-        select: "-password",
-      })
-      .populate({ path: "numComments", match: { isDeleted: false } });
+    const totalPost = await Post.find({
+      ...filteredCondition,
+      _id: { $ne: currentPost },
+      useYN: true,
+    }).countDocuments({});
+    // console.log(Math.round(totalPost / limit));
+    if (startIndex <= Math.round(totalPost / limit)) {
+      const userPosts = await Post.find({ ...filteredCondition, _id: { $ne: currentPost } })
+        .sort({ numLikes: -1, createdAt: -1 })
+        .skip((startIndex - 1) * limit)
+        .limit(limit)
+        .populate({
+          path: "userId",
+          select: "-password",
+        })
+        .populate({ path: "numComments", match: { isDeleted: false } });
 
-    res.status(200).json({ filteredPost });
+      res.status(200).json({ userPosts });
+    }
   })
 );
 
@@ -257,7 +248,7 @@ router.get(
 );
 
 //레시피 수정
-router.patch(
+router.post(
   "/:postId",
   isLoggedIn,
   recipeUpload.fields([
@@ -368,24 +359,38 @@ router.patch(
   })
 );
 
-//전체 레시피 조회
+//레시피 조회
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
     const totalPost = await Post.find({ useYN: true }).countDocuments({});
-    const page = Number(req.query.page);
-    const perPage = Number(req.query.perPage);
-    //현재 페이지수가 최대 페이지개수 나누기 페이지당 게시물로 한것까지만 프론트로 보낸다.
-    if (page <= Math.round(totalPost / perPage)) {
-      const posts = await Post.find({
-        useYN: true,
-      })
+    let { startIndex, limit, recipeName } = req.query;
+    if (!startIndex) startIndex = 1;
+    if (!limit) limit = 0;
+    if (recipeName) {
+      const posts = await Post.find({ useYN: true, recipeName: { $regex: recipeName } })
         .populate({ path: "userId", select: "-password" })
         .populate({ path: "numComments", match: { isDeleted: false } })
-        .sort({ createdAt: -1 }) //최근 순으로 정렬
-        .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
-        .limit(perPage);
+        .sort({ createdAt: -1 }); //최근 순으로 정렬
+      // .skip((page - 1) * perPage) // (현재페이지-1) * 페이지당 게시글수
+      // .limit(perPage);
       res.status(200).json(posts);
+    } else {
+      //startIndex와 limit으로 정제된 데이터를 보내줌
+      startIndex = parseInt(startIndex);
+      limit = parseInt(limit);
+      if (startIndex <= Math.round(totalPost / limit)) {
+        const limitedSortedPosts = await Post.find({ useYN: true })
+          .populate({ path: "userId", select: "-password" })
+          .populate({ path: "numComments", match: { isDeleted: false } })
+          .sort({ numLikes: -1, createdAt: -1 })
+          .skip((startIndex - 1) * limit)
+          .limit(limit)
+          .populate({ path: "userId", select: "-password" })
+          //게시글이 받은 댓글 수를 populate 해옴
+          .populate({ path: "numComments", match: { isDeleted: false } });
+        res.status(200).json({ limitedSortedPosts });
+      }
     }
   })
 );
