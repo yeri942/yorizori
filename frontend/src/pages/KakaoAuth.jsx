@@ -8,13 +8,13 @@ import swal from "sweetalert";
 
 function KakaoAuth() {
   useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://developers.kakao.com/sdk/js/kakao.min.js"
-    document.body.appendChild(script)
+    // const script = document.createElement("script")
+    // script.src = "https://developers.kakao.com/sdk/js/kakao.min.js"
+    // document.body.appendChild(script)
 
-    return () => {
-      // document.body.removeChild(script)
-    }
+    // return () => {
+    //   document.body.removeChild(script)
+    // }
   },[])
   const REST_API_KEY = process.env.REACT_APP_REST_API;
   const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
