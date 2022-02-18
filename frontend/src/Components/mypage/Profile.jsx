@@ -239,6 +239,7 @@ const MyPageImage = styled.img`
   width: 115px;
   height: 115px;
   border-radius: 50%;
+  object-fit: cover;
 
   + p {
     font-family: sans-serif;
