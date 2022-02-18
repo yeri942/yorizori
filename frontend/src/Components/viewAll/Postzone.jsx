@@ -10,6 +10,10 @@ import {
   conditionAtom,
   cookAtom,
   ViewAll,
+  dropDownOptionsState,
+  sortState,
+  viewAllPostsAtom,
+  entirePostsCountAtom,
 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
@@ -21,7 +25,11 @@ const Postzone = () => {
   const materialFilter = useRecoilState(materialAtom);
   const conditionFilter = useRecoilState(conditionAtom);
   const cookFilter = useRecoilState(cookAtom);
+  const filteredCondition = useRecoilValue(dropDownOptionsState);
+  const famousOrRecentCondition = useRecoilValue(sortState);
+  const entirePostsCount = useRecoilValue(entirePostsCountAtom);
 
+  console.log("entirePostsCount");
   console.log("레시피페이지 렌더링");
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
@@ -34,85 +42,111 @@ const Postzone = () => {
     }
   };
 
-  const getRecipe = () => {
+  const getRecipe = async () => {
     try {
-      const query = filteredData;
-      const urlAll = `http://localhost:8080/post?startIndex=${page}&limit=10`;
-      const urlSearch = `http://localhost:8080/post?recipeName=${query}`;
-
-      let url;
-      if (query) {
-        url = urlSearch;
-        const fetchData = async () => {
-          const result = await axios(url);
-          setRecipes(result.data);
-          console.log(result.data);
-        };
-        fetchData();
-      }
-      if (
-        !query &&
-        !categoryFilter[0] &&
-        !materialFilter[0] &&
-        !conditionFilter[0] &&
-        !cookFilter[0]
-      ) {
-        url = urlAll;
-        const fetchData = async () => {
-          const result = await axios(url);
-          const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-          setRecipes(resultrecipes);
-        };
-        fetchData();
-      }
-    } catch {
-      console.error("에러");
+      const filterByLikes = famousOrRecentCondition === "famous" ? "likes" : "recent";
+      const limit = 10;
+      const startIndex = (page - 1) * limit + 1;
+      console.log("getRecipe", filterByLikes, startIndex);
+      const {
+        data: { filteredPost },
+      } = await axios({
+        url: "/post/withFilter",
+        method: "get",
+        params: {
+          ...filteredCondition,
+          filterByLikes,
+          startIndex,
+          limit,
+        },
+      });
+      setRecipes((prevPosts) => {
+        return prevPosts.concat(filteredPost);
+      });
+    } catch (err) {
+      console.error(err);
     }
   };
+
+  // const getRecipe = () => {
+  //   try {
+  //     const query = filteredData;
+  //     const urlAll = `http://localhost:8080/post?startIndex=${page}&limit=10`;
+  //     const urlSearch = `http://localhost:8080/post?recipeName=${query}`;
+
+  //     let url;
+  //     if (query) {
+  //       url = urlSearch;
+  //       const fetchData = async () => {
+  //         const result = await axios(url);
+  //         setRecipes(result.data);
+  //         console.log(result.data);
+  //       };
+  //       fetchData();
+  //     }
+  //     if (
+  //       !query &&
+  //       !categoryFilter[0] &&
+  //       !materialFilter[0] &&
+  //       !conditionFilter[0] &&
+  //       !cookFilter[0]
+  //     ) {
+  //       url = urlAll;
+  //       const fetchData = async () => {
+  //         const result = await axios(url);
+  //         const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
+  //         setRecipes(resultrecipes);
+  //       };
+  //       fetchData();
+  //     }
+  //   } catch {
+  //     console.error("에러");
+  //   }
+  // };
 
   useEffect(() => {
     if (page <= (Math.ceil(recipes.length) + 10) / 10) {
       console.log("page?", page);
       getRecipe();
     }
-  }, [page, filteredData]);
+  }, [page, filteredData, filteredCondition, famousOrRecentCondition]);
 
-  const getCategoryRecipe = () => {
-    try {
-      const fetchData = async () => {
-        if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0])
-          return;
-        console.log(categoryFilter[0]);
+  // const getCategoryRecipe = () => {
+  //   try {
+  //     const fetchData = async () => {
+  //       if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0])
+  //         return;
+  //       console.log(categoryFilter[0]);
 
-        const category = categoryFilter[0];
-        const material = materialFilter[0];
-        const condition = conditionFilter[0];
-        const cook = cookFilter[0];
+  //       const category = categoryFilter[0];
+  //       const material = materialFilter[0];
+  //       const condition = conditionFilter[0];
+  //       const cook = cookFilter[0];
 
-        const categoryParams = category === "" ? "" : `&category=${category}`;
-        const materialParams = material === "" ? "" : `&material=${material}`;
+  //       const categoryParams = category === "" ? "" : `&category=${category}`;
+  //       const materialParams = material === "" ? "" : `&material=${material}`;
 
-        const conditionParams = condition === "" ? "" : `&condition=${condition}`;
-        const cookParams = cook === "" ? "" : `&cook=${cook}`;
+  //       const conditionParams = condition === "" ? "" : `&condition=${condition}`;
+  //       const cookParams = cook === "" ? "" : `&cook=${cook}`;
 
-        const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
+  //       const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
 
-        const result = await axios(url);
-        const resultrecipes = recipes.concat(result.data.userPosts);
-        setRecipes(resultrecipes);
-      };
-      fetchData();
-    } catch {
-      console.error("에러");
-    }
-  };
+  //       const result = await axios(url);
+  //       const resultrecipes = recipes.concat(result.data.userPosts);
+  //       setRecipes(resultrecipes);
+  //     };
+  //     fetchData();
+  //   } catch {
+  //     console.error("에러");
+  //   }
+  // };
 
-  useEffect(() => {
-    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-      console.log("page?", page);
-      getCategoryRecipe();
-    }
-  }, [page, categoryFilter[0], materialFilter[0], conditionFilter[0], cookFilter[0]]);
+  // useEffect(() => {
+  //   if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+  //     console.log("page?", page);
+  //     getCategoryRecipe();
+  //   }
+  // }, [page, categoryFilter[0], materialFilter[0], conditionFilter[0], cookFilter[0]]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

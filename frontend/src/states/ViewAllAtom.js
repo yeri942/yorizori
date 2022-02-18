@@ -1,5 +1,27 @@
 import { atom, selector } from "recoil";
 import { getFamousPosts } from "../actions/homeAction";
+import axios from "axios";
+
+//뷰올페이지 전체게시글 수 가져오기
+export const entirePostsCountAtom = atom({
+  key: "entirePostsCountAtom",
+  default: null,
+});
+
+export const EntirePostsCountSelector = selector({
+  key: "EntirePostsCountSelector",
+  get: async ({ get }) => {
+    try {
+      const {
+        data: { filteredPostCount },
+      } = await axios.get("/post/withFilter/count");
+      return filteredPostCount;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  },
+});
 
 export const categoryAtom = atom({
   key: "categoryAtom",
@@ -19,6 +41,11 @@ export const cookAtom = atom({
 });
 export const ViewAll = atom({
   key: "viewAll",
+  default: [],
+});
+
+export const viewAllPostsAtom = atom({
+  key: "viewAllPostsAtom",
   default: [],
 });
 
