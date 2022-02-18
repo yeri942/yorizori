@@ -188,10 +188,12 @@ const PostForm = () => {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((res) => {
-          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {
+        .then(async (res) => {
+          await axios.get("/post?page=1&perPage=1").then((res) => {
+            console.log(res);
             // navigate("/");
-            window.location.replace("/");
+            window.location.replace(`/detail/${res.data[0]._id}`);
+            swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {});
           });
         })
         .catch((err) => {
