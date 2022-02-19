@@ -9,7 +9,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Theme } from "./theme";
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://localhost:8080"
+// axios.defaults.baseURL = "http://elice-kdt-sw-1st-team9.elicecoding.com"
 
 /*const GlobalStyle = createGlobalStyle`
    html, body, div, span, applet, object, iframe,
@@ -77,5 +77,5 @@ ReactDOM.render(
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals  
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

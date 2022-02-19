@@ -26,7 +26,7 @@ const MyPageTemplate = () => {
   const authId = useRecoilValue(userIdAtom);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/profile`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/profile`)
       .then((response) => response.json())
       .then((data) => setUserData(data.user))
 
@@ -34,7 +34,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${userId}/profile`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/profile`)
       .then((response) => response.json())
       .then((data) => setTargetUserData(data.user))
 
@@ -42,7 +42,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/follower`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/follower`)
       .then((response) => response.json())
       .then((data) => setMyFollower(data.followers))
 
@@ -50,7 +50,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${userId}/follower`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/follower`)
       .then((response) => response.json())
       .then((data) => setTargetFollower(data.followers))
 
@@ -58,7 +58,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/followee`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/followee`)
       .then((response) => response.json())
       .then((data) => setMyFollowee(data.followees))
 
@@ -66,7 +66,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${userId}/followee`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/followee`)
       .then((response) => response.json())
       .then((data) => setTargetFollowee(data.followees))
 
@@ -74,31 +74,31 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/post`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/post`)
       .then((response) => response.json())
       .then((data) => setMyPostResipe(data.userPosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${userId}/post`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/post`)
       .then((response) => response.json())
       .then((data) => setTargetPostResipe(data.userPosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/like`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/like`)
       .then((response) => response.json())
       .then((data) => setMyLikeResipe(data.likePosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/comment`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/comment`)
       .then((response) => response.json())
       .then((data) => setMyCommentResipe(data.commentPosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/history`)
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/history`)
       .then((response) => response.json())
       .then((data) => setHistoryResipe(data.lastViewedPosts));
   }, []);
