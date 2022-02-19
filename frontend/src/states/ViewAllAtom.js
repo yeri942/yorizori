@@ -44,9 +44,19 @@ export const ViewAll = atom({
   default: [],
 });
 
-export const viewAllPostsAtom = atom({
-  key: "viewAllPostsAtom",
+export const viewAllRecentPosts = atom({
+  key: "viewAllRecentPosts",
   default: [],
+});
+
+export const viewAllFamousPage = atom({
+  key: "viewAllFamousPage",
+  default: 1,
+});
+
+export const viewAllRecentPage = atom({
+  key: "viewAllRecentPage",
+  default: 1,
 });
 
 export const randomButtonState = atom({
@@ -86,4 +96,9 @@ export const famousPostsSelector2 = selector({
 export const sortState = atom({
   key: "sortState",
   default: "famous",
+});
+
+export const getDefaultViewAllPostAtom = atom({
+  key: "getDefaultViewAllPostAtom",
+  default: true,
 });
