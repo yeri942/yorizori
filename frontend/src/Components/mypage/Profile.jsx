@@ -178,7 +178,6 @@ const MyPageTemplate = () => {
               <ResipeButton likeResipe={myLikeResipe} nums="1" />
               <ResipeButton commentResipe={myCommentResipe} nums="2" />
               <ResipeButton historyResipe={myHistoryResipe} nums="3" />
-              <div style={{ width: "300px", height: "70px" }}></div>
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
         ) : (

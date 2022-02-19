@@ -10,11 +10,12 @@ export const TargetPostBox = styled.div`
 
 export const TargetPostZone = styled.div`
   display: grid;
+  height: 265px;
   margin-top: 5px;
   grid: auto-flow 200px / repeat(2, 175px);
   justify-items: center;
   width: 330px;
-  margin-bottom: 90px;
+  margin-bottom: 110px;
 
   flex-wrap: wrap;
   overflow: scroll;
