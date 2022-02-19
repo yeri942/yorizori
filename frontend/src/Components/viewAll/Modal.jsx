@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { randomButtonState, randomPostState, ViewAll } from "../../states/ViewAllAtom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { randomButtonState, randomPostState } from "../../states/ViewAllAtom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -10,9 +10,7 @@ const Modal = () => {
   const setRandomButton = useSetRecoilState(randomButtonState);
   const randomPost = useRecoilValue(randomPostState);
   const setRandomPost = useSetRecoilState(randomPostState);
-  const [recipes, setRecipes] = useRecoilState(ViewAll);
   const { Kakao } = window;
-  const [page, setPage] = useState(1);
   const url = "http://localhost:80";
 
   //
@@ -57,31 +55,8 @@ const Modal = () => {
       } = await axios.get("/api/post/random");
       console.log(post);
       setRandomPost(post);
-      // let random = parseInt(Math.random() * recipes.length);
-      // setRandomPost(recipes[random]);
     }
   };
-
-  // const getRecipe = async () => {
-  //   try {
-  //     const url = `http://localhost:8080/post`;
-
-  //     const fetchData = async () => {
-  //       // setLoading(true);
-  //       const result = await axios(url);
-  //       const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-  //       setRecipes(resultrecipes);
-  //       // setLoading(false);
-  //     };
-  //     fetchData();
-  //   } catch {
-  //     console.error("에러");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getRecipe();
-  // });
 
   return (
     <ModalWrapping RandomButtonPush={randomButton}>

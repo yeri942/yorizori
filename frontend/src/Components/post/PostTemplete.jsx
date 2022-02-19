@@ -78,10 +78,10 @@ const PostTempleteBlock = styled.div`
 `;
 
 const StepDiv = styled.div`
-  padding: 35px 20px 10px 30px;
+  padding: 35px 0 10px 10px;
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.5);
-  margin-right: 232px;
+  margin-right: 202px;
 `;
 
 const ContentsWrapper = styled.div`

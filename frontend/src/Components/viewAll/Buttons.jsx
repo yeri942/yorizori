@@ -23,8 +23,6 @@ import {
 const Buttons = () => {
   const setRandomButton = useSetRecoilState(randomButtonState);
   const setRandomPost = useSetRecoilState(randomPostState);
-  const dropDownOptions = useRecoilValue(dropDownOptionsState);
-  const setDropDownOptions = useSetRecoilState(dropDownOptionsState);
   const resetDropDownOptions = useResetRecoilState(dropDownOptionsState);
   const currentSortState = useRecoilValue(sortState);
   const setCurrentSortState = useSetRecoilState(sortState);

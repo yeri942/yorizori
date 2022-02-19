@@ -183,9 +183,16 @@ const PostForm = () => {
           },
         })
         .then((res) => {
-          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(() => {
-            // navigate("/");
-            window.location.replace("/");
+          swal("등록 성공", "레시피가 등록되었습니다.", "success").then(async () => {
+            const {
+              data: { filteredPost },
+            } = await axios.get("/api/post/withFilter", {
+              params: {
+                startIndex: 1,
+                limit: 1,
+              },
+            });
+            window.location.replace(`/detail/${filteredPost[0].id}`);
           });
         })
         .catch((err) => {

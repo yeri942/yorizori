@@ -23,7 +23,6 @@ const CategoryDropdown = () => {
   const [filterCategory, setFilterCategory] = useRecoilState(categoryAtom);
   const [filterMaterial, setFilterMaterial] = useRecoilState(materialAtom);
   const [filterCondition, setFilterCondition] = useRecoilState(conditionAtom);
-  const [filterCook, setFilterCook] = useRecoilState(cookAtom);
   const resetSearchValue = useResetRecoilState(searchAtom);
   const [category, setCategoty] = useState([]);
   const [recipe, setRecipe] = useRecoilState(ViewAll);
@@ -38,17 +37,6 @@ const CategoryDropdown = () => {
   const [recentPage, setRecentPage] = useRecoilState(viewAllRecentPage);
   const famousOrRecentCondition = useRecoilValue(sortState);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const category = dropDownOptions.value;
-
-  //     const url = `http://localhost:8080/post/withFilter?category=${category}`;
-  //     const response = await fetch(url);
-  //     const data = await response.json();
-  //     setCategoty(data.category);
-  //   };
-  //   fetchData();
-  // }, []);
   const handleFilterCategory = (e) => {
     resetView();
     resetSearchValue();

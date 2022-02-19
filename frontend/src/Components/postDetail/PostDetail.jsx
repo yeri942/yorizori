@@ -10,7 +10,7 @@ import Recipe from "./Recipe";
 import Comments from "./Comments";
 import Recommend from "./Recommend";
 import axios from "axios";
-import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { detailDataAtom, delAndAmendBtnStateAtom } from "../../states/detail";
 import { Watch } from "react-loader-spinner";
 import { Loading } from "../home/ariticleTemplateWithOneSlide";

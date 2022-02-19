@@ -1,8 +1,4 @@
-import { useSetRecoilState, selector } from "recoil";
-// import { authAtom, usersAtom } from "../states";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import React, { useState } from "react";
 
 const baseURL = process.env.REACT_APP_API_URL;
 
@@ -56,29 +52,4 @@ const getUserPosts = async (userId, startIndex, limit) => {
   return data.userPosts;
 };
 
-// const getFamousPostLikeUser = async (postId) => {
-//   const { data } = await axios({
-//     baseURL,
-//     method: "get",
-//     url: `/like/${postId}`,
-//   });
-//   return data;
-// };
-
-// const getFamousPostCommentUserCount = async (postId) => {
-//   const { data } = await axios({
-//     baseURL,
-//     method: "get",
-//     url: `/comment/${postId}/count`,
-//   });
-//   return data;
-// };
-
-export {
-  getFamousPosts,
-  // getFamousPostLikeUser,
-  // getFamousPostCommentUserCount,
-  getFamousUsers,
-  getUserPosts,
-  getUser,
-};
+export { getFamousPosts, getFamousUsers, getUserPosts, getUser };

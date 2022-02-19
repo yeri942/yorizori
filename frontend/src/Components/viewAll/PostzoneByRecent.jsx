@@ -1,36 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { searchAtom } from "../nav/NavAtom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { dataAtom } from "../nav/NavAtom";
 import axios from "axios";
 import {
-  categoryAtom,
-  materialAtom,
-  conditionAtom,
-  cookAtom,
-  ViewAll,
   dropDownOptionsState,
   sortState,
-  viewAllPostsByLikesAtom,
-  entirePostsCountAtom,
-  viewAllFamousPage,
   viewAllRecentPosts,
   viewAllRecentPage,
   getDefaultViewAllPostAtom,
 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
-  const filteredData = useRecoilValue(searchAtom);
-  //   const [page, setPage] = useState(1);
-  // const [recentRecipePage,setRecentRecipePage] = useState(1);
+  const filteredData = useRecoilValue(dataAtom);
   const [recipes, setRecipes] = useRecoilState(viewAllRecentPosts);
   const [page, setPage] = useRecoilState(viewAllRecentPage);
-
-  const categoryFilter = useRecoilState(categoryAtom);
-  const materialFilter = useRecoilState(materialAtom);
-  const conditionFilter = useRecoilState(conditionAtom);
-  const cookFilter = useRecoilState(cookAtom);
   const filteredCondition = useRecoilValue(dropDownOptionsState);
   const famousOrRecentCondition = useRecoilValue(sortState);
   const getDefaultViewAllPost = useRecoilValue(getDefaultViewAllPostAtom);

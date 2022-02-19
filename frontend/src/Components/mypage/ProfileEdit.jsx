@@ -173,16 +173,6 @@ const EditMyPage = () => {
             <span id="nickNameCheckText"></span>
           </p>
 
-          <MyPagePasswordEditBox className="passbox">
-            <span onClick={pass1}>비밀번호 바꾸기</span>
-            <br />
-            <br />
-            <span onClick={pass1}>회원탈퇴</span>
-            <br />
-            <br />
-            <span onClick={pass1}>로그아웃</span>
-            <div className="showpass"></div>
-          </MyPagePasswordEditBox>
           <div style={{ position: "relative", top: "-3px" }}>
             {nickCheck === "type2" ? (
               <EditBtn type="button" onClick={(successChenge, () => nickNameInput.current.focus())}>

@@ -7,7 +7,7 @@ import { userIdAtom, userImage } from "../../states";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { commentAtom } from "../../states/comment";
 import Toast from "./Toast";
-import { isLoadingAtom, messageAtom, postIdAtom, toastAtom } from "./toastAtom";
+import { isLoadingAtom, messageAtom, toastAtom } from "./toastAtom";
 import { commentScrollStateAtom } from "../../states/detail";
 
 const Comments = () => {

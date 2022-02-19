@@ -1,11 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { useMatch } from "react-router";
+import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { authAtom, userIdAtom } from "../../states";
+import { userIdAtom } from "../../states";
 import { AuthInput, SubmitButton } from "./Comments";
-import ReplyComment from "./ReplyComment";
 import Toast from "./Toast";
 import { toastAtom, messageAtom, isLoadingAtom } from "./toastAtom";
 
@@ -36,12 +34,6 @@ function Comment({ comment, isMore, isAuth, postId }) {
   const [replyComment, setReplyComment] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const [editComment, setEditComment] = useState(comment.comment);
-
-  // useEffect(() => {
-  //   if (toastStatus) {
-  //     setTimeout(() => setToastStatus(false), 1000);
-  //   }
-  // }, [toastStatus]);
 
   const deleteHandler = async (commentId) => {
     const res = await axios.patch(`/api/comment/${commentId}/delete`, { isDelete: true });

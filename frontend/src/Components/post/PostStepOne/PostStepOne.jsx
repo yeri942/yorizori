@@ -139,7 +139,7 @@ const ImgUploadLabel = styled.label`
 `;
 
 const ImgUploadButton = styled.label`
-  width: 157.5px;
+  width: 150.5px;
   height: 60px;
   border-radius: 10px 0px 0px 10px;
   background-color: #feae11;
@@ -151,7 +151,7 @@ const ImgUploadButton = styled.label`
 
 const ImgCheckButton = styled.input`
   border: none;
-  width: 157.5px;
+  width: 150.5px;
   height: 60px;
   border-radius: 0px 10px 10px 0px;
   background-color: ${(props) => (props.state === true ? "#feae11" : "#c4c4c4")};

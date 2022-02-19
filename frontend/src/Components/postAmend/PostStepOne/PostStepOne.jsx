@@ -228,11 +228,11 @@ const PositionRelative = styled.div`
 
 const StyledTextArea = styled.textarea`
   width: 315px;
-  height: 159px;
+  height: 109px;
   border: 1px solid #feae11;
   box-sizing: border-box;
   border-radius: 15px;
-  padding: 50px 45px 0 45px;
+  margin: 34px 33px 0 45px;
   font-size: 1rem;
   font-weight: bold;
   ${ResetTextarea}
