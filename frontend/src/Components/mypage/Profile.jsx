@@ -26,11 +26,7 @@ const MyPageTemplate = () => {
   const authId = useRecoilValue(userIdAtom);
 
   useEffect(() => {
-<<<<<<< HEAD
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/profile`)
-=======
     fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/profile`)
->>>>>>> 0fb9eb6dba83cb044cb9903ee94df0e5071156d2
       .then((response) => response.json())
       .then((data) => setUserData(data.user))
 
