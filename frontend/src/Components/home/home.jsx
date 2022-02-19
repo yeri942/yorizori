@@ -39,6 +39,7 @@ const Home = () => {
   // }, [loginUserLoadable]);
 
   // if (loginUserLoadable.state === "loading") return <div>loading...</div>;
+  console.log("REACT_APP_API_URL", process.env.REACT_APP_API_URL);
   console.log("홈 렌더링");
   return (
     <HomeBlock>
