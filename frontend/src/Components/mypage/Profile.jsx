@@ -178,7 +178,6 @@ const MyPageTemplate = () => {
               <ResipeButton likeResipe={myLikeResipe} nums="1" />
               <ResipeButton commentResipe={myCommentResipe} nums="2" />
               <ResipeButton historyResipe={myHistoryResipe} nums="3" />
-              <div style={{ width: "300px", height: "70px" }}></div>
             </MyPageMainBtnBox>
           </MyPageMainImgBox>
         ) : (
@@ -214,6 +213,9 @@ const MyPageTemplate = () => {
             <TargetPostBox>
               <TargetPostZone>
                 {targetPostResipe.map((item, input) => {
+                  if (item.recipeName.length > 20) {
+                    item.recipeName = item.recipeName.substring(0, 19) + "…";
+                  }
                   return (
                     <Link
                       key={input}

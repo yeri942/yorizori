@@ -5,3 +5,9 @@ export const searchAtom = atom({
   key: "searchAtom",
   default: "",
 });
+
+//데이터 상태설정
+export const dataAtom = atom({
+  key: "dataAtom",
+  default: "",
+});
