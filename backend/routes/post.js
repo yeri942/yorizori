@@ -160,7 +160,10 @@ router.get(
     }
 
     console.log("filteredCondition", filteredCondition);
-    const filteredPostCount = await Post.find(filteredCondition).countDocuments();
+    const filteredPostCount = await Post.find({
+      ...filteredCondition,
+      useYN: true,
+    }).countDocuments();
 
     res.status(200).json({ filteredPostCount });
   })
