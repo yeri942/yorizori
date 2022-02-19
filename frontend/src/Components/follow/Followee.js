@@ -12,7 +12,7 @@ const MyFollowee = () => {
   const [myFolloweeList, setMyFolloweeList] = useState([]);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/followee`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/followee`)
       .then((response) => response.json())
       .then((data) => setMyFolloweeList(data.followees))
 

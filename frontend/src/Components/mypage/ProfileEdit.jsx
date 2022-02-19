@@ -30,7 +30,7 @@ const EditMyPage = () => {
   const authId = useRecoilValue(userIdAtom);
   const allNameData = allUser.map((item) => item.nickName);
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/profile`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${userId}/profile`)
       .then((response) => response.json())
       .then((data) => {
         setUserData(data.user);
@@ -41,7 +41,7 @@ const EditMyPage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/profile`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/profile`)
       .then((response) => response.json())
       .then((data) => setMyAuthData(data.user))
 
@@ -49,7 +49,7 @@ const EditMyPage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/all`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/all`)
       .then((response) => response.json())
       .then((data) => {
         setAllUser(data.allUser);
