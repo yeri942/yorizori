@@ -13,7 +13,7 @@ const Modal = () => {
   const [recipes, setRecipes] = useRecoilState(ViewAll);
   const { Kakao } = window;
   const [page, setPage] = useState(1);
-  const url = "http://localhost:3000";
+  const url = "http://elice-kdt-sw-1st-team9.elicecoding.com";
 
   //
   const setShare = () => {
@@ -64,7 +64,7 @@ const Modal = () => {
 
   // const getRecipe = async () => {
   //   try {
-  //     const url = `http://localhost:8080/post`;
+  //     const url = `http://elice-kdt-sw-1st-team9.elicecoding.com/post`;
 
   //     const fetchData = async () => {
   //       // setLoading(true);

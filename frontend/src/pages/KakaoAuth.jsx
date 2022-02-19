@@ -18,7 +18,7 @@ function KakaoAuth() {
   // },[])
   const REST_API_KEY = "0734499ca487a114ff01aed588ab068c";
   const CLIENT_SECRET = "GIDxRVULPyKVl1l7SCqFxW74psn827fa";
-  const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
+  const REDIRECT_URI = "http://elice-kdt-sw-1st-team9.elicecoding.com/oauth/kakao/callback";
   const code = new URL(window.location.href).searchParams.get("code");
   const setAuth = useSetRecoilState(authAtom);
   const setUid = useSetRecoilState(userIdAtom);

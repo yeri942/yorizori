@@ -1,47 +1,53 @@
 import styled, { css } from "styled-components";
-import { Link, useParams} from "react-router-dom";
-import React, { useState, useEffect} from "react";
+import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import BottomNav from "../nav/BottomNav";
 import TopNav from "../nav/TopNav";
 import { useRecoilValue } from "recoil";
 import { userIdAtom } from "../../states";
 
 const MyFollowee = () => {
-  const { userId } = useParams()
-  const authId =  useRecoilValue(userIdAtom)
-  const [ myFolloweeList, setMyFolloweeList ] = useState([])
+  const { userId } = useParams();
+  const authId = useRecoilValue(userIdAtom);
+  const [myFolloweeList, setMyFolloweeList] = useState([]);
 
-  useEffect(()=>{
-    fetch(`http://localhost:8080/user/${authId}/followee`)
-      .then(response => response.json())
-      .then(data => setMyFolloweeList(data.followees))
-      
-      .catch(err => console.log(err))
-  },[]);
+  useEffect(() => {
+    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/followee`)
+      .then((response) => response.json())
+      .then((data) => setMyFolloweeList(data.followees))
+
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div>
       <TopNav />
-       <MainBox>
-         <p>나의 팔로워</p>
-       </MainBox>
-       { myFolloweeList.map((item, index) => {
-          return (
-            <FolloweeListBox key={index} >
-              <Link to={`/user/${item.followeeId.id}/profile`}>
-                <FolloweeInfoBtnBox>
-                    <img src={ item.followeeId.profileImage ? item.followeeId.profileImage : "../../images/onlylogo.png"}></img>
-                    <span>{ item.followeeId.nickName }</span>
-                </FolloweeInfoBtnBox>
-              </Link>
-            </FolloweeListBox>
-          )
-        })}
-    
+      <MainBox>
+        <p>나의 팔로워</p>
+      </MainBox>
+      {myFolloweeList.map((item, index) => {
+        return (
+          <FolloweeListBox key={index}>
+            <Link to={`/user/${item.followeeId.id}/profile`}>
+              <FolloweeInfoBtnBox>
+                <img
+                  src={
+                    item.followeeId.profileImage
+                      ? item.followeeId.profileImage
+                      : "../../images/onlylogo.png"
+                  }
+                ></img>
+                <span>{item.followeeId.nickName}</span>
+              </FolloweeInfoBtnBox>
+            </Link>
+          </FolloweeListBox>
+        );
+      })}
+
       <BottomNav />
     </div>
-  )
-}
+  );
+};
 
 const MainBox = styled.div`
   display: flex;
@@ -53,10 +59,10 @@ const MainBox = styled.div`
     position: relative;
     top: 10px;
     right: 110px;
-    color: #FCAD2C;
+    color: #fcad2c;
     font-weight: bold;
   }
-`
+`;
 
 const FolloweeListBox = styled.div`
   display: flex;
@@ -66,7 +72,7 @@ const FolloweeListBox = styled.div`
   a {
     text-decoration: none;
   }
-`
+`;
 
 const FolloweeInfoBtnBox = styled.button`
   width: 320px;
@@ -91,7 +97,7 @@ const FolloweeInfoBtnBox = styled.button`
   }
 
   :hover {
-    background-color: #F9F8F8;
+    background-color: #f9f8f8;
   }
-`
+`;
 export default MyFollowee;

@@ -30,7 +30,7 @@
 // const FamoustViewRapper = styled.div``;
 
 // const FamousViewWithSlider = () => {
-//   // const baseURL = "http://localhost:8080";
+//   // const baseURL = "http://elice-kdt-sw-1st-team9.elicecoding.com";
 //   const navigatge = useNavigate();
 //   // const [famousLists, setFamousLists] = useRecoilState(datailedPostAtom);
 //   // const getFamousList = async (startIndex, limit) => {

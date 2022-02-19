@@ -18,7 +18,7 @@ const Summary = ({ data, postId }) => {
   const userId = useRecoilValue(userIdAtom);
   const [heart, setHeart] = useState(false);
   const { Kakao } = window;
-  const url = "http://localhost:3000";
+  const url = "http://elice-kdt-sw-1st-team9.elicecoding.com";
 
   const setShare = () => {
     Kakao.init("7167c35645975dba28659201aa6df28b");
