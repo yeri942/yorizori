@@ -1,33 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
-import { searchAtom } from "../nav/NavAtom";
+import { dataAtom, searchAtom } from "../nav/NavAtom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 
 function SearchBar({}) {
-  const setItem = useSetRecoilState(searchAtom);
-
+  const [data, setData] = useRecoilState(dataAtom);
   const [filteredData, setFilteredData] = useRecoilState(searchAtom);
-  const searchText = () => {
-    setItem(filteredData);
+  const clickChange = () => {
+    setData(filteredData);
   };
-  const handleSearch = (e) => {
-    setFilteredData(e.target.value);
+
+  const inputChange = (e) => {
+    const { value } = e.target;
+    setFilteredData(value);
   };
 
   return (
     <>
-      <SearchInputs
-        placeholder="검색어"
-        onChange={handleSearch}
-        value={filteredData}
-      ></SearchInputs>
+      <SearchInputs placeholder="검색어" onChange={inputChange} value={filteredData}></SearchInputs>
       <Link to="/view_all">
-        <SearchButton onClick={searchText} />
+        <SearchButton onClick={clickChange} />
       </Link>
     </>
   );
 }
+
 export default SearchBar;
 
 const SearchInputs = styled.input`

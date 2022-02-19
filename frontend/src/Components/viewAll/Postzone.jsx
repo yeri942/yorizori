@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { searchAtom } from "../nav/NavAtom";
 import axios from "axios";
+import { dataAtom } from "../nav/NavAtom";
 import {
   categoryAtom,
   materialAtom,
@@ -20,7 +21,7 @@ import {
 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
-  const filteredData = useRecoilValue(searchAtom);
+  const filteredData = useRecoilValue(dataAtom);
   // const [page, setPage] = useState(1);
   // const [recentRecipePage,setRecentRecipePage] = useState(1);
   const [recipes, setRecipes] = useRecoilState(ViewAll);
@@ -67,10 +68,26 @@ const Postzone = () => {
       setRecipes((prevPosts) => {
         return prevPosts.concat(filteredPost);
       });
+      if (filteredData) {
+        const searchData = filteredData;
+        const urlSerarch = `http://localhost:8080/post?recipeName=${searchData}`;
+
+        const fetchData = async () => {
+          const result = await axios(urlSerarch);
+          setRecipes(result.data);
+        };
+        fetchData();
+      }
     } catch (err) {
       console.error(err);
     }
   };
+  useEffect(() => {
+    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
+      console.log("page?", page);
+      getRecipe();
+    }
+  }, [page, filteredData, filteredCondition, famousOrRecentCondition, getDefaultViewAllPost]);
 
   useEffect(() => {
     if (page <= (Math.ceil(recipes.length) + 10) / 10) {
