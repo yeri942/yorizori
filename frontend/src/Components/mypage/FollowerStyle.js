@@ -9,9 +9,13 @@ export const TargetPostBox = styled.div`
 `;
 
 export const TargetPostZone = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  margin-top: 5px;
+  grid: auto-flow 200px / repeat(2, 175px);
+  justify-items: center;
   width: 330px;
+  margin-bottom: 90px;
+
   flex-wrap: wrap;
   overflow: scroll;
   overflow-x: hidden;
@@ -28,16 +32,13 @@ export const TargetPostZone = styled.div`
 
 export const PostWrapper = styled.div`
   width: 150px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   & > div {
     width: 140px;
-    margin: 0;
     font-size: 14px;
     font-weight: 900;
   }
-
 `;
