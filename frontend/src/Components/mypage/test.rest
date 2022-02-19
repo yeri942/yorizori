@@ -1,7 +1,0 @@
-POST http://elice-kdt-sw-1st-team9.elicecoding.com/user/profile
-Content-Type: application/json
-
-{
-  "profileImage" : "1234.jpg",
-  "nickName" : "하이"
-}

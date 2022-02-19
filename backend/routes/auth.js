@@ -57,7 +57,7 @@ router.get(
         grant_type: "authorization_code", //특정 스트링
         client_id: process.env.KAKAO_ID,
         client_secret: process.env.KAKAO_SECRET,
-        redirectUri: "http://localhost:3000/oauth/kakao/callback",
+        redirectUri: "http://localhost:80/oauth/kakao/callback",
         code: code, //결과값을 반환했다. 안됐다.
       }), //객체를 string 으로 변환
     });
@@ -85,17 +85,19 @@ router.get(
         email,
         nickName,
         profileImage: img,
-        kakaoId
-      })
-      res.cookie("id", nUser._id)
-      res.status(201).json({ message: "회원가입 완료", uid: nUser._id, uimg: img})
+        kakaoId,
+      });
+      res.cookie("id", nUser._id);
+      res.status(201).json({ message: "회원가입 완료", uid: nUser._id, uimg: img });
     }
-    if (!(isUserExist.kakaoId)) {
-      isUserExist.kakaoId = kakaoId
-      isUserExist.save()
+    if (!isUserExist.kakaoId) {
+      isUserExist.kakaoId = kakaoId;
+      isUserExist.save();
     }
-    res.cookie("id", isUserExist._id)
-    res.status(200).json({ message: "소셜로그인 완료", uid: isUserExist._id, uimg: isUserExist.profileImage });
+    res.cookie("id", isUserExist._id);
+    res
+      .status(200)
+      .json({ message: "소셜로그인 완료", uid: isUserExist._id, uimg: isUserExist.profileImage });
     // const { email, nickName, kakaoId, profileImage } = req.body;
     // const isUserExist = await User.findOne({ email });
     // console.log(isUserExist, "유져 있냐??");
