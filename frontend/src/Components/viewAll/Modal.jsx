@@ -15,7 +15,10 @@ const Modal = () => {
   const [page, setPage] = useState(1);
   const url = "http://localhost:3000";
 
+  //
   const setShare = () => {
+    Kakao.init("75b86b45a7630e0d846144c11cebb951");
+    Kakao.isInitialized();
     const shareURL = url + "/detail/" + randomPost._id;
 
     Kakao.Link.sendDefault({
@@ -44,34 +47,41 @@ const Modal = () => {
   const closeModal = () => {
     setRandomButton(false);
     console.log(randomButton);
+    document.body.style.overflow = "unset";
   };
 
   const getRandomIndex = async () => {
     if (randomButton) {
-      let random = parseInt(Math.random() * recipes.length);
-      setRandomPost(recipes[random]);
+      const {
+        data: { post },
+      } = await axios.get("/post/random");
+      console.log(post);
+      setRandomPost(post);
+      // let random = parseInt(Math.random() * recipes.length);
+      // setRandomPost(recipes[random]);
     }
   };
 
-  const getRecipe = async () => {
-    try {
-      const url = `http://localhost:8080/post`;
+  // const getRecipe = async () => {
+  //   try {
+  //     const url = `http://localhost:8080/post`;
 
-      const fetchData = async () => {
-        // setLoading(true);
-        const result = await axios(url);
-        const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-        setRecipes(resultrecipes);
-        // setLoading(false);
-      };
-      fetchData();
-    } catch {
-      console.error("에러");
-    }
-  };
-  useEffect(() => {
-    getRecipe();
-  });
+  //     const fetchData = async () => {
+  //       // setLoading(true);
+  //       const result = await axios(url);
+  //       const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
+  //       setRecipes(resultrecipes);
+  //       // setLoading(false);
+  //     };
+  //     fetchData();
+  //   } catch {
+  //     console.error("에러");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getRecipe();
+  // });
 
   return (
     <ModalWrapping RandomButtonPush={randomButton}>
@@ -85,6 +95,9 @@ const Modal = () => {
             style={{ textDecoration: "none", color: "inherit" }}
             nickname={randomPost.userId.nickName}
             title={randomPost.recipeName}
+            onClick={() => {
+              document.body.style.overflow = "unset";
+            }}
           >
             <Img src={randomPost.thumbnail} />
           </Link>

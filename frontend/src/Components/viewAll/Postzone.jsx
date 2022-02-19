@@ -10,17 +10,29 @@ import {
   conditionAtom,
   cookAtom,
   ViewAll,
+  dropDownOptionsState,
+  sortState,
+  viewAllPostsByLikesAtom,
+  entirePostsCountAtom,
+  viewAllFamousPage,
+  viewAllRecentPage,
+  getDefaultViewAllPostAtom,
 } from "../../states/ViewAllAtom";
 
 const Postzone = () => {
   const filteredData = useRecoilValue(searchAtom);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
+  // const [recentRecipePage,setRecentRecipePage] = useState(1);
   const [recipes, setRecipes] = useRecoilState(ViewAll);
+  const [page, setPage] = useRecoilState(viewAllFamousPage);
 
   const categoryFilter = useRecoilState(categoryAtom);
   const materialFilter = useRecoilState(materialAtom);
   const conditionFilter = useRecoilState(conditionAtom);
   const cookFilter = useRecoilState(cookAtom);
+  const filteredCondition = useRecoilValue(dropDownOptionsState);
+  const famousOrRecentCondition = useRecoilValue(sortState);
+  const getDefaultViewAllPost = useRecoilValue(getDefaultViewAllPostAtom);
 
   console.log("레시피페이지 렌더링");
   const handleScroll = () => {
@@ -34,39 +46,29 @@ const Postzone = () => {
     }
   };
 
-  const getRecipe = () => {
+  const getRecipe = async () => {
     try {
-      const query = filteredData;
-      const urlAll = `http://localhost:8080/post?startIndex=${page}&limit=10`;
-      const urlSearch = `http://localhost:8080/post?recipeName=${query}`;
-
-      let url;
-      if (query) {
-        url = urlSearch;
-        const fetchData = async () => {
-          const result = await axios(url);
-          setRecipes(result.data);
-          console.log(result.data);
-        };
-        fetchData();
-      }
-      if (
-        !query &&
-        !categoryFilter[0] &&
-        !materialFilter[0] &&
-        !conditionFilter[0] &&
-        !cookFilter[0]
-      ) {
-        url = urlAll;
-        const fetchData = async () => {
-          const result = await axios(url);
-          const resultrecipes = recipes.concat(result.data.limitedSortedPosts);
-          setRecipes(resultrecipes);
-        };
-        fetchData();
-      }
-    } catch {
-      console.error("에러");
+      const filterByLikes = famousOrRecentCondition === "famous" ? "likes" : "recent";
+      const limit = 10;
+      const startIndex = (page - 1) * limit + 1;
+      console.log("getRecipe", filterByLikes, startIndex);
+      const {
+        data: { filteredPost },
+      } = await axios({
+        url: "/post/withFilter",
+        method: "get",
+        params: {
+          ...filteredCondition,
+          filterByLikes,
+          startIndex,
+          limit,
+        },
+      });
+      setRecipes((prevPosts) => {
+        return prevPosts.concat(filteredPost);
+      });
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -75,44 +77,7 @@ const Postzone = () => {
       console.log("page?", page);
       getRecipe();
     }
-  }, [page, filteredData]);
-
-  const getCategoryRecipe = () => {
-    try {
-      const fetchData = async () => {
-        if (!categoryFilter[0] && !materialFilter[0] && !conditionFilter[0] && !cookFilter[0])
-          return;
-        console.log(categoryFilter[0]);
-
-        const category = categoryFilter[0];
-        const material = materialFilter[0];
-        const condition = conditionFilter[0];
-        const cook = cookFilter[0];
-
-        const categoryParams = category === "" ? "" : `&category=${category}`;
-        const materialParams = material === "" ? "" : `&material=${material}`;
-
-        const conditionParams = condition === "" ? "" : `&condition=${condition}`;
-        const cookParams = cook === "" ? "" : `&cook=${cook}`;
-
-        const url = `http://localhost:8080/post/withFilter?startIndex=${page}&limit=10${categoryParams}${materialParams}${conditionParams}${cookParams}`;
-
-        const result = await axios(url);
-        const resultrecipes = recipes.concat(result.data.userPosts);
-        setRecipes(resultrecipes);
-      };
-      fetchData();
-    } catch {
-      console.error("에러");
-    }
-  };
-
-  useEffect(() => {
-    if (page <= (Math.ceil(recipes.length) + 10) / 10) {
-      console.log("page?", page);
-      getCategoryRecipe();
-    }
-  }, [page, categoryFilter[0], materialFilter[0], conditionFilter[0], cookFilter[0]]);
+  }, [page, filteredData, filteredCondition, famousOrRecentCondition, getDefaultViewAllPost]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -121,15 +86,7 @@ const Postzone = () => {
     };
   }, []);
   console.log(recipes);
-  // for (let i = 0; i < recipes.length; i++) {
-  //   console.log(
-  //     recipes[i].category,
-  //     recipes[i].material,
-  //     recipes[i].condition,
-  //     recipes[i].cook,
-  //     recipes[i].recipeName
-  //   );
-  // }
+
   return (
     <Wrapper>
       <WrapperPost>
