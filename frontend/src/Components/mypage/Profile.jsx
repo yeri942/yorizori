@@ -26,7 +26,7 @@ const MyPageTemplate = () => {
   const authId = useRecoilValue(userIdAtom);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/profile`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/profile`)
       .then((response) => response.json())
       .then((data) => setUserData(data.user))
 
@@ -34,7 +34,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/profile`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${userId}/profile`)
       .then((response) => response.json())
       .then((data) => setTargetUserData(data.user))
 
@@ -42,7 +42,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/follower`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/follower`)
       .then((response) => response.json())
       .then((data) => setMyFollower(data.followers))
 
@@ -50,7 +50,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/follower`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${userId}/follower`)
       .then((response) => response.json())
       .then((data) => setTargetFollower(data.followers))
 
@@ -58,7 +58,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/followee`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/followee`)
       .then((response) => response.json())
       .then((data) => setMyFollowee(data.followees))
 
@@ -66,7 +66,7 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/followee`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${userId}/followee`)
       .then((response) => response.json())
       .then((data) => setTargetFollowee(data.followees))
 
@@ -74,31 +74,31 @@ const MyPageTemplate = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/post`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/post`)
       .then((response) => response.json())
       .then((data) => setMyPostResipe(data.userPosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${userId}/post`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${userId}/post`)
       .then((response) => response.json())
       .then((data) => setTargetPostResipe(data.userPosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/like`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/like`)
       .then((response) => response.json())
       .then((data) => setMyLikeResipe(data.likePosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/comment`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/comment`)
       .then((response) => response.json())
       .then((data) => setMyCommentResipe(data.commentPosts));
   }, []);
 
   useEffect(() => {
-    fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com/user/${authId}/history`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/history`)
       .then((response) => response.json())
       .then((data) => setHistoryResipe(data.lastViewedPosts));
   }, []);

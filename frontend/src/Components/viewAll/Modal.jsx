@@ -13,7 +13,7 @@ const Modal = () => {
   const [recipes, setRecipes] = useRecoilState(ViewAll);
   const { Kakao } = window;
   const [page, setPage] = useState(1);
-  const url = "http://elice-kdt-sw-1st-team9.elicecoding.com";
+  const url = process.env.REACT_APP_API_URL;
 
   //
   const setShare = () => {
