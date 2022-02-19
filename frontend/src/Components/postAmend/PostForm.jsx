@@ -192,7 +192,7 @@ const PostForm = () => {
       // await axios.delete(`/post/${postId}`);
 
       await axios
-        .post(`/post/${postId}`, formData, {
+        .post(`/api/post/${postId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -205,6 +205,7 @@ const PostForm = () => {
         })
         .catch((err) => {
           swal("등록 실패", "", "error");
+
           console.log(err);
         });
 
