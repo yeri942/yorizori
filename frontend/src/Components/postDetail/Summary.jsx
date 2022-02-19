@@ -18,7 +18,8 @@ const Summary = ({ data, postId }) => {
   const userId = useRecoilValue(userIdAtom);
   const [heart, setHeart] = useState(false);
   const { Kakao } = window;
-  const url = "http://localhost:3000";
+  // const url = "http://localhost:3000";
+  const url = "http://localhost:80";
 
   const setShare = () => {
     Kakao.init("7167c35645975dba28659201aa6df28b");
@@ -59,7 +60,7 @@ const Summary = ({ data, postId }) => {
           swal("게시물이 삭제되었습니다..", {
             icon: "success",
           }).then(() => {
-            axios.delete(`/post/${postId}`);
+            axios.delete(`/api/post/${postId}`);
             navigate("/");
           });
         }
@@ -70,7 +71,7 @@ const Summary = ({ data, postId }) => {
   };
 
   const heartStateCheck = async () => {
-    const { data: heartArray } = await axios.get(`/like/${postId}`);
+    const { data: heartArray } = await axios.get(`/api/like/${postId}`);
     setNumLikes(heartArray.likeUserList.length);
     setHeartCheck(false);
     heartArray.likeUserList.forEach((el) => {
@@ -94,7 +95,7 @@ const Summary = ({ data, postId }) => {
   const HeartState = async () => {
     if (heartCheck) {
       try {
-        await axios.delete("/like", {
+        await axios.delete("/api/like", {
           data: {
             postId: postId,
           },
@@ -104,7 +105,7 @@ const Summary = ({ data, postId }) => {
       }
     } else {
       try {
-        await axios.post("/like", { postId: postId });
+        await axios.post("/api/like", { postId: postId });
       } catch (e) {
         console.error(e);
         console.log(e.response.data.message);

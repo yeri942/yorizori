@@ -56,7 +56,7 @@ const Postzone = () => {
       const {
         data: { filteredPost },
       } = await axios({
-        url: "/post/withFilter",
+        url: "/api/post/withFilter",
         method: "get",
         params: {
           ...filteredCondition,
@@ -70,7 +70,7 @@ const Postzone = () => {
       });
       if (filteredData) {
         const searchData = filteredData;
-        const urlSerarch = `http://localhost:8080/post?recipeName=${searchData}`;
+        const urlSerarch = `${process.env.REACT_APP_API_URL}/post?recipeName=${searchData}`;
 
         const fetchData = async () => {
           const result = await axios(urlSerarch);

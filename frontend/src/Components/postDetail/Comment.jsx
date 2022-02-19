@@ -31,7 +31,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
   const [toastStatus, setToastStatus] = useRecoilState(toastAtom);
   const [toastMessage, setToastMessage] = useRecoilState(messageAtom);
   const isLogin = useRecoilValue(userIdAtom);
-  const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom)
+  const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom);
   const [toggleReply, setToggleReply] = useState(false);
   const [replyComment, setReplyComment] = useState("");
   const [isEdit, setIsEdit] = useState(false);
@@ -44,7 +44,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
   // }, [toastStatus]);
 
   const deleteHandler = async (commentId) => {
-    const res = await axios.patch(`/comment/${commentId}/delete`, { isDelete: true });
+    const res = await axios.patch(`/api/comment/${commentId}/delete`, { isDelete: true });
     setToastStatus(true);
     setToastMessage("댓글이 삭제되었습니다.");
     setIsLoading(true);
@@ -63,12 +63,12 @@ function Comment({ comment, isMore, isAuth, postId }) {
       setIsEdit(false);
       return;
     }
-    axios.patch(`/comment/${commentId}`, { comment: editComment }).then((res) => {
+    axios.patch(`/api/comment/${commentId}`, { comment: editComment }).then((res) => {
       console.log(res);
       setToastMessage("수정이 완료되었습니다");
       setToastStatus(true);
       setIsEdit(false);
-      setIsLoading(true)
+      setIsLoading(true);
     });
   };
 
@@ -89,7 +89,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
     }
     console.log("Let's start Axios~!");
     try {
-      const result = await axios.post(`/comment/`, {
+      const result = await axios.post(`/api/comment/`, {
         postId,
         parentComment: commentId,
         comment: replyComment,
@@ -97,7 +97,7 @@ function Comment({ comment, isMore, isAuth, postId }) {
       setToastMessage("댓글이 등록되었습니다.");
       setToastStatus(true);
       setToggleReply(false);
-      setIsLoading(true)
+      setIsLoading(true);
     } catch (err) {
       console.error(err);
       setToastStatus(true);
@@ -178,7 +178,7 @@ const ReplyImg = styled.img`
   margin-left: 8px;
   vertical-align: -4px;
   image-rendering: -webkit-optimize-contrast;
-  opacity: ${props => props.isActive ? 1:0.5};
+  opacity: ${(props) => (props.isActive ? 1 : 0.5)};
 `;
 
 const ButtonWrapper = styled.div`
@@ -248,4 +248,4 @@ const Time = styled.span`
 `;
 
 // export default Comment;
-export const MemoizeComment = React.memo(Comment)
+export const MemoizeComment = React.memo(Comment);

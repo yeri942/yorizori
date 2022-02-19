@@ -24,9 +24,9 @@ const PostDetail = () => {
   useEffect(() => {
     const getProcessData = async () => {
       try {
-        const { data } = await axios.get(`/post/${postId}`);
+        const { data } = await axios.get(`/api/post/${postId}`);
         if (isLogin)
-          await axios.post("/history", {
+          await axios.post("/api/history", {
             postId,
           });
         setDetailData(data);

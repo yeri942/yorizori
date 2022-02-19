@@ -14,7 +14,7 @@ export const EntirePostsCountSelector = selector({
     try {
       const {
         data: { filteredPostCount },
-      } = await axios.get("/post/withFilter/count");
+      } = await axios.get("/api/post/withFilter/count");
       return filteredPostCount;
     } catch (err) {
       console.error(err);

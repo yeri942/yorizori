@@ -13,7 +13,7 @@ const Modal = () => {
   const [recipes, setRecipes] = useRecoilState(ViewAll);
   const { Kakao } = window;
   const [page, setPage] = useState(1);
-  const url = "http://localhost:3000";
+  const url = "http://localhost:80";
 
   //
   const setShare = () => {
@@ -54,7 +54,7 @@ const Modal = () => {
     if (randomButton) {
       const {
         data: { post },
-      } = await axios.get("/post/random");
+      } = await axios.get("/api/post/random");
       console.log(post);
       setRandomPost(post);
       // let random = parseInt(Math.random() * recipes.length);

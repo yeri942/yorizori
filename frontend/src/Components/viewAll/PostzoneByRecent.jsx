@@ -56,7 +56,7 @@ const Postzone = () => {
       const {
         data: { filteredPost },
       } = await axios({
-        url: "/post/withFilter",
+        url: "/api/post/withFilter",
         method: "get",
         params: {
           ...filteredCondition,

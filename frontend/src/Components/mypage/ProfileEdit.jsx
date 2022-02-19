@@ -30,7 +30,7 @@ const EditMyPage = () => {
   const authId = useRecoilValue(userIdAtom);
   const allNameData = allUser.map((item) => item.nickName);
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${userId}/profile`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${userId}/profile`)
       .then((response) => response.json())
       .then((data) => {
         setUserData(data.user);
@@ -41,7 +41,7 @@ const EditMyPage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/${authId}/profile`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/${authId}/profile`)
       .then((response) => response.json())
       .then((data) => setMyAuthData(data.user))
 
@@ -49,7 +49,7 @@ const EditMyPage = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/user/all`)
+    fetch(`${process.env.REACT_APP_API_URL}/user/all`)
       .then((response) => response.json())
       .then((data) => {
         setAllUser(data.allUser);
@@ -63,7 +63,7 @@ const EditMyPage = () => {
     formData.append("nickName", savenickName);
     formData.append("profileImage", saveImage);
     await axios
-      .post("/user/profile", formData, {
+      .post("/api/user/profile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

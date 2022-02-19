@@ -39,8 +39,8 @@ const LoginForm = () => {
   console.log("랜더링");
   console.log(errors);
   const REST_API_KEY = "0734499ca487a114ff01aed588ab068c";
-  const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const REDIRECT_URI = `${process.env.REACT_APP_API_URL}/oauth/kakao/callback`;
+  const KAKAO_AUTH_URL = `${process.env.REACT_APP_API_URL}/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (
     <LoginFormBlock onSubmit={handleSubmit(onSubmit)}>

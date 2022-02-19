@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { userIdAtom } from "../../states";
 import { commentAtom } from "../../states/comment";
 import TopNav from "../nav/TopNav";
-import {MemoizeComment as Comment} from "./Comment";
+import { MemoizeComment as Comment } from "./Comment";
 import ReplyComment from "./ReplyComment";
 import { isLoadingAtom, messageAtom, toastAtom } from "./toastAtom";
 
@@ -15,7 +15,7 @@ function MoreComments() {
   console.log("It's more comments", comments);
   const isLogin = useRecoilValue(userIdAtom);
   const { postId } = useParams();
-  const url = `/comment/${postId}/detail`;
+  const url = `/api/comment/${postId}/detail`;
   // const [myComments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useRecoilState(isLoadingAtom);
   const [newComment, setNewComment] = useState("");
@@ -36,7 +36,7 @@ function MoreComments() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/comment", { postId, comment: newComment });
+      const res = await axios.post("/api/comment", { postId, comment: newComment });
       setNewComment("");
       setToastStatus(true);
       setToastMessage("댓글이 등록되었습니다.");

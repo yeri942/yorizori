@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import React, { useState } from "react";
 
-const baseURL = "http://localhost:8080";
+const baseURL = process.env.REACT_APP_API_URL;
 
 const getUser = async (userId) => {
   const { data } = await axios({

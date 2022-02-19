@@ -17,7 +17,7 @@ const Comments = () => {
   const isLogin = useRecoilValue(userIdAtom);
   const userImg = useRecoilValue(userImage);
   const { postId } = useParams();
-  const url = `/comment/${postId}/detail`;
+  const url = `/api/comment/${postId}/detail`;
   const [write, setWrite] = useState("");
   const [toastStatus, setToastStatus] = useRecoilState(toastAtom);
   const [toastMessage, setToastMessage] = useRecoilState(messageAtom);
@@ -59,7 +59,7 @@ const Comments = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/comment", { postId, comment: write });
+      const res = await axios.post("/api/comment", { postId, comment: write });
       setWrite("");
       setToastStatus(true);
       setToastMessage("댓글이 등록되었습니다.");

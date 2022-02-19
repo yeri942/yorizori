@@ -12,7 +12,7 @@ const Recommend = ({ data }) => {
       try {
         const {
           data: { filteredPostCount },
-        } = await axios.get("/post/withFilter/count", {
+        } = await axios.get("/api/post/withFilter/count", {
           params: {
             category: data.category,
           },
@@ -22,7 +22,7 @@ const Recommend = ({ data }) => {
         console.log("startIndex", startIndex);
         const {
           data: { filteredPost },
-        } = await axios.get("/post/withFilter", {
+        } = await axios.get("/api/post/withFilter", {
           params: {
             startIndex,
             limit,

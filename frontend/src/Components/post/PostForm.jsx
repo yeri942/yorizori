@@ -177,7 +177,7 @@ const PostForm = () => {
       }
 
       await axios
-        .post("/post", formData, {
+        .post("/api/post", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

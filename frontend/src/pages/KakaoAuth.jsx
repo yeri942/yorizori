@@ -18,7 +18,7 @@ function KakaoAuth() {
   // },[])
   const REST_API_KEY = "0734499ca487a114ff01aed588ab068c";
   const CLIENT_SECRET = "GIDxRVULPyKVl1l7SCqFxW74psn827fa";
-  const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
+  const REDIRECT_URI = "http://localhost:80/oauth/kakao/callback";
   const code = new URL(window.location.href).searchParams.get("code");
   const setAuth = useSetRecoilState(authAtom);
   const setUid = useSetRecoilState(userIdAtom);
@@ -26,7 +26,7 @@ function KakaoAuth() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/auth/find?code=${code}`).then((res) => {
+    axios.get(`/api/auth/find?code=${code}`).then((res) => {
       console.log(res);
       setAuth(true);
       setUid(res.data.uid);

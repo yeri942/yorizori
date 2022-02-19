@@ -7,7 +7,7 @@ import swal from "sweetalert";
 
 export { useUserActions };
 function useUserActions() {
-  const baseUrl = `/auth`;
+  const baseUrl = `/api/auth`;
   const setAuth = useSetRecoilState(authAtom);
   const setUid = useSetRecoilState(userIdAtom);
   const setUimg = useSetRecoilState(userImage);
@@ -52,7 +52,7 @@ function useUserActions() {
     try {
       console.log("test why");
       console.log(`${baseUrl} kakao`);
-      const res = await fetch(`http://localhost:8080${baseUrl}/kakao`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}${baseUrl}/kakao`);
       console.log(res);
     } catch (e) {
       console.log(e);
