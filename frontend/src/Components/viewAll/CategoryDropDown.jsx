@@ -42,7 +42,7 @@ const CategoryDropdown = () => {
   //   const fetchData = async () => {
   //     const category = dropDownOptions.value;
 
-  //     const url = `http://localhost:8080/post/withFilter?category=${category}`;
+  //     const url = `http://elice-kdt-sw-1st-team9.elicecoding.com/post/withFilter?category=${category}`;
   //     const response = await fetch(url);
   //     const data = await response.json();
   //     setCategoty(data.category);

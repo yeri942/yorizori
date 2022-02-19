@@ -62,6 +62,7 @@ const Buttons = () => {
     setCurrentSortState("recent");
     resetDropDownOptions();
     setRecentRecipes([]);
+    setRecentPage(1);
     setDefaultViewAllPost((prev) => !prev);
   };
   return (

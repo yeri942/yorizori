@@ -52,7 +52,7 @@ function useUserActions() {
     try {
       console.log("test why");
       console.log(`${baseUrl} kakao`);
-      const res = await fetch(`http://localhost:8080${baseUrl}/kakao`);
+      const res = await fetch(`http://elice-kdt-sw-1st-team9.elicecoding.com${baseUrl}/kakao`);
       console.log(res);
     } catch (e) {
       console.log(e);
