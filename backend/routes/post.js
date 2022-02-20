@@ -245,7 +245,13 @@ router.get(
     const totalCount = await Post.find({ useYN: true }).countDocuments();
     console.log(totalCount);
     const randomNum = Math.round(Math.random() * totalCount);
-    const post = await Post.findOne({ useYN: true }).skip(randomNum);
+    const post = await Post.findOne({ useYN: true })
+      .skip(randomNum)
+      .populate({
+        path: "userId",
+        select: "-password",
+      })
+      .populate({ path: "numComments", match: { isDeleted: false } });
     res.status(200).json({ post });
   })
 );
