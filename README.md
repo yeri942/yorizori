@@ -88,24 +88,24 @@
 ## 페이지별 화면
 
 **전체 시연영상은 <a href="https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/Final-Web-View">이곳</a>에 자세하게 안내되어있습니다. <a href="https://kdt-gitlab.elice.io/sw_track/class_01/project_2/team9/project-template/-/wikis/Final-Web-View">이곳</a>을 클릭해주세요 !**
-
+| |
+:------------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://user-images.githubusercontent.com/94670393/155182395-4b0628a1-3a9f-4bc3-9d5e-91d0df0db56f.png" height="400" /> |
-| :------------------------------------------------------------------------------------------------------------------------------: |
-|                                                           메인 페이지                                                            |
+| 메인 페이지 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182299-4d7b7839-5301-40e6-b443-c17a8d477319.png" height="400" /> |
-|                                                          글쓰기 페이지                                                           |
+| 글쓰기 페이지 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182319-a703d894-16b1-4abc-b034-e4eafd63b4b7.png" height="400" /> |
-|                                                  전체 레시피페이지 및 랜덤추천                                                   |
+| 전체 레시피페이지 및 랜덤추천 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182352-229be08b-c072-43cb-9397-edb0823a72a6.png" height="400" /> |
-|                                                      상세 레시피페이지 상단                                                      |
+| 상세 레시피페이지 상단 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182369-8415bdda-cb24-44fe-99aa-3a1c3e8f5444.png" height="400" /> |
-|                                                      상세 레시피페이지 하단                                                      |
+| 상세 레시피페이지 하단 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182381-4ead1bac-fb5e-4686-8d7e-8069e57d24ff.png" height="400" /> |
-|                                                            마이페이지                                                            |
+| 마이페이지 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182389-166fe355-00e2-4d6d-a01f-e0b7643ba56c.png" height="400" /> |
-|                                                            유저페이지                                                            |
+| 유저페이지 |
 | <img src="https://user-images.githubusercontent.com/94670393/155182393-cfb6656a-c107-4a2b-b2d4-cd0a04a22219.png" height="400" /> |
-|                                                        로그인 및 회원가입                                                        |
+| 로그인 및 회원가입 |
 
 <br>
 <br>
